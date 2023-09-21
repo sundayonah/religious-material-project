@@ -1,4 +1,8 @@
 /** @type {import('next').NextConfig} */
-const nextConfig = {}
+const nextConfig = {
+   images: {
+      domains: ['course-api.com'], // Add the allowed domain(s) here
+   },
+};
 
-module.exports = nextConfig
+module.exports = nextConfig;

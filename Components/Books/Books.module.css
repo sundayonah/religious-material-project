@@ -1,0 +1,138 @@
+/* Style.css */
+.main {
+   display: flex;
+   justify-content: center;
+   margin-bottom: 2rem;
+   gap: 0.5rem;
+}
+
+.sidebar {
+   width: 20%;
+   padding: 10px;
+   /* position: fixed; */
+   top: 0;
+   left: 0;
+}
+
+.rightMain {
+   width: 60%;
+   padding: 20px;
+   /* border: 1px solid red; */
+}
+
+.sidebar li {
+   list-style: none;
+}
+
+/* from udemy course */
+
+/*
+=============== 
+Products 
+===============
+*/
+.products {
+   width: var(--fluid-width);
+   display: grid;
+   grid-gap: 1rem;
+   margin: 4rem auto;
+   max-width: var(--max-width);
+}
+
+.filtersContainer h5 {
+   font-weight: 500;
+   margin: 1.5rem 0 0.5rem;
+   font-size: 0.85rem;
+}
+
+.searchInput {
+   padding: 0.5rem;
+   background: var(--grey-200);
+   border-radius: var(--borderRadius);
+   border-color: transparent;
+   letter-spacing: var(--letterSpacing);
+}
+
+.companyBtn {
+   display: block;
+   margin: 0.25em 0;
+   padding: 0.25rem;
+   text-transform: capitalize;
+   background: transparent;
+   border-color: transparent;
+   letter-spacing: var(--letterSpacing);
+   color: var(--grey-500);
+   cursor: pointer;
+   transition: var(--transition);
+   font-size: 0.85rem;
+}
+.companyBtn:hover {
+   color: gray;
+}
+.product {
+   margin-bottom: 1rem;
+   padding: 0.75rem 0;
+   text-align: center;
+   border-radius: ;
+   box-shadow: inset 0 -3em 3em rgba(0, 0, 0, 0.1), 0 0 0 2px rgb(255, 255, 255),
+      0.3em 0.3em 1em rgba(0, 0, 0, 0.3);
+}
+/* .productImg {
+   border-radius: var(--borderRadius);
+} */
+.img {
+   width: 100%;
+   height: 10rem;
+   display: block;
+   object-fit: cover;
+}
+
+.productName {
+   margin-bottom: 0.25rem;
+   text-transform: capitalize;
+   letter-spacing: var(--letterSpacing);
+   color: var(--grey-500);
+}
+.productPrice {
+   margin-bottom: 0;
+   color: var(--grey-700);
+   font-weight: 700;
+   font-size: 1rem;
+   letter-spacing: var(--letterSpacing);
+}
+.namePrice {
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   gap: 1rem;
+}
+
+@media screen and (min-width: 768px) {
+   .products {
+      grid-template-columns: 200px 1fr;
+   }
+}
+@media screen and (min-width: 992px) {
+   .productsContainer {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1rem;
+   }
+   .productsContainer .img {
+      height: 10rem;
+   }
+   .productsContainer .productName {
+      font-size: 0.85rem;
+   }
+   .productsContainer .productPrice {
+      font-size: 0.85rem;
+   }
+   .product {
+      margin-bottom: 0;
+   }
+}
+@media screen and (min-width: 1170px) {
+   .productsContainer {
+      grid-template-columns: repeat(3, 1fr);
+   }
+}

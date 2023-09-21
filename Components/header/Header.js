@@ -6,9 +6,8 @@ const Header = () => {
    const menuItems = [
       { name: 'Home', url: '../../app/home.js' },
       { name: 'Books', url: './Home.js' },
-      { name: 'MP3', url: './Home.js' },
-      { name: 'MP4', url: './Home.js' },
-      { name: 'Song/Ministration', url: './Home.js' },
+      { name: 'Messages', url: './Home.js' },
+      { name: 'Songs', url: './Home.js' },
    ];
 
    return (

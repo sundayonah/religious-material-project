@@ -1,4 +1,4 @@
-const products = [
+const Products = [
    {
       id: 'rec43w3ipXvP28vog',
       title: 'high-back bench',
@@ -87,4 +87,7 @@ const products = [
    },
 ];
 
-export default products;
+export default Products;
+
+// const Products = 'https://course-api.com/javascript-store-products';
+// module.exports = Products;

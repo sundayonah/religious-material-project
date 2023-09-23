@@ -1,6 +1,6 @@
 import React from 'react';
-import Header from '../header/Header';
-import Style from './single.module.css';
+import Header from '../header';
+import Style from '../../style/single.module.css';
 import Image from 'next/image';
 
 const singleBook = () => {
@@ -22,13 +22,13 @@ const singleBook = () => {
                   Describe the technical challenges you encountered during the
                   project. Be specific and provide examples. For instance, you
                   might mention issues related to data synchronization between
-                  front-end and back-end, handling complex user interactions, or
-                  optimizing performance.
                </p>
-               <span>$9.99</span>
-               <span>Buy Now</span>
+
+               <div className={Style.priceBuy}>
+                  <span>$9.99</span>
+                  <button>Buy Now</button>
+               </div>
             </div>
-            {/* <div className={Style.priceBuy}></div> */}
          </div>
       </>
    );

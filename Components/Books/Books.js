@@ -2,13 +2,16 @@
 
 import React, { useState, useEffect } from 'react';
 import Style from './Books.module.css';
+import { useRouter } from 'next/router';
 
-import products from './religiousBooks';
+import products from '../../pages/products/[id]';
+import Link from 'next/link';
 
 const Books = () => {
    const [filteredProducts, setFilteredProducts] = useState([...products]);
    const [searchInput, setSearchInput] = useState('');
    const [selectedCompany, setSelectedCompany] = useState('all');
+   const [selectedProductId, setSelectedProductId] = useState(null);
 
    useEffect(() => {
       // Filter products based on searchInput and selectedCompany
@@ -31,12 +34,22 @@ const Books = () => {
 
    const displayProducts = () => {
       if (filteredProducts.length < 1) {
-         //  return <h6>Sorry, no products matched your search</h6>;
+         // return <h6>Sorry, no products matched your search</h6>;
       }
 
       return filteredProducts.map(({ id, title, image, price }) => (
          <div className={Style.product} key={id}>
-            <img src={image} className={Style.img} alt="images" />
+            <Link href={`/single?id=${id}`} passHref>
+               {/* <Link href={`/single/${id}`} passHref> */}
+               <img
+                  src={image}
+                  className={Style.img}
+                  alt="images"
+                  // No need for the console.log here
+               />
+            </Link>
+
+            <div className={Style.productIcons}></div>
             <div className={Style.namePrice}>
                <h5 className={Style.productName}>{title}</h5>
                <h4 className={Style.productPrice}>${price}</h4>

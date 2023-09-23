@@ -42,13 +42,7 @@ const Books = () => {
       return filteredProducts.map(({ id, title, image, price }) => (
          <div className={Style.product} key={id}>
             <Link href={`/single?id=${id}`} passHref>
-               {/* <Link href={`/single/${id}`} passHref> */}
-               <img
-                  src={image}
-                  className={Style.img}
-                  alt="images"
-                  // No need for the console.log here
-               />
+               <img src={image} className={Style.img} alt="images" />
             </Link>
 
             <div className={Style.productIcons}></div>

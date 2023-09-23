@@ -5,6 +5,7 @@ import { useRouter } from 'next/router';
 import Products from './products/[id]'; // Import your product data
 import Style from '../style/single.module.css';
 import Header from '@/Components/header';
+import '../app/globals.css';
 
 const single = () => {
    const router = useRouter();
@@ -16,14 +17,22 @@ const single = () => {
    // const categories = Products.map((category) => category.category);
    // console.log(categories);
 
+   if (!product) {
+      return (
+         <div>
+            <p>Loading...</p>
+         </div>
+      );
+   }
+
    // Render the product details
    return (
       <div>
          <Header />
-         <hr />
-         {product ? (
-            <div className={Style.main}>
-               <div>
+
+         <div className={Style.main}>
+            {product ? (
+               <>
                   <img
                      className={Style.img}
                      src={product.image}
@@ -31,22 +40,22 @@ const single = () => {
                      height={300}
                      alt="single image"
                   />
-               </div>
-               <div className={Style.imgContent}>
-                  <h4>{product.title}</h4>
-                  <h4>{product.category}</h4>
-                  <p>{product.description}</p>
 
-                  <div className={Style.priceBuy}>
-                     <span>${product.price}</span>
-                     <button>Buy Now</button>
+                  <div className={Style.imgContent}>
+                     <h4>{product.title}</h4>
+                     <h4>{product.category}</h4>
+                     <p>{product.description}</p>
+
+                     <div className={Style.priceBuy}>
+                        <span>${product.price}</span>
+                        <button>Buy Now</button>
+                     </div>
                   </div>
-               </div>
-            </div>
-         ) : (
-            <p>Product not found</p>
-         )}
-         {/* <div>{categories}</div> */}
+               </>
+            ) : (
+               <p>Product not found</p>
+            )}
+         </div>
       </div>
    );
 };

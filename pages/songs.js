@@ -1,7 +1,17 @@
+import Header from '@/Components/header';
 import React from 'react';
+import Style from '@/style/songs.module.css';
+import '../app/globals.css';
 
-const songs = () => {
-   return <div>songs</div>;
+const Songs = () => {
+   return (
+      <>
+         <Header />
+         <div className={Style.main}>
+            <h1>Songs Page</h1>
+         </div>
+      </>
+   );
 };
 
-export default songs;
+export default Songs;

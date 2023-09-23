@@ -1,6 +1,7 @@
 .main {
    width: 80%;
    margin: auto;
+   margin-top: 7rem;
 }
 .search {
    display: flex;

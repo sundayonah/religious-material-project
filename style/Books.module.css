@@ -106,8 +106,8 @@ Products
 .img {
    width: 100%;
    height: 10rem;
-   display: block;
-   object-fit: cover;
+   /* display: block; */
+   /* object-fit: cover; */
 }
 
 .productName {
@@ -127,6 +127,7 @@ Products
    display: flex;
    justify-content: center;
    align-items: center;
+   margin-top: 0.5rem;
    gap: 1rem;
 }
 

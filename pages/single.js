@@ -6,14 +6,16 @@ import Products from './products/[id]'; // Import your product data
 import Style from '../style/single.module.css';
 import Header from '@/Components/header';
 
-const ProductDetails = () => {
+const single = () => {
    const router = useRouter();
    const { id } = router.query; // Get the product ID from the query parameter
 
    // Find the product with the matching ID
    const product = Products.find((product) => product.id === id);
 
-   console.log(product);
+   // const categories = Products.map((category) => category.category);
+   // console.log(categories);
+
    // Render the product details
    return (
       <div>
@@ -21,8 +23,9 @@ const ProductDetails = () => {
          <hr />
          {product ? (
             <div className={Style.main}>
-               <div className={Style.img}>
+               <div>
                   <img
+                     className={Style.img}
                      src={product.image}
                      width={400}
                      height={300}
@@ -31,6 +34,7 @@ const ProductDetails = () => {
                </div>
                <div className={Style.imgContent}>
                   <h4>{product.title}</h4>
+                  <h4>{product.category}</h4>
                   <p>{product.description}</p>
 
                   <div className={Style.priceBuy}>
@@ -42,11 +46,12 @@ const ProductDetails = () => {
          ) : (
             <p>Product not found</p>
          )}
+         {/* <div>{categories}</div> */}
       </div>
    );
 };
 
-export default ProductDetails;
+export default single;
 
 // 'use client';
 

@@ -1,11 +1,13 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import Style from './Books.module.css';
+import Style from '@/style/Books.module.css';
 import { useRouter } from 'next/router';
+import '../app/globals.css';
 
-import products from '../../pages/products/[id]';
+import products from './products/[id]';
 import Link from 'next/link';
+import Header from '@/Components/header';
 
 const Books = () => {
    const [filteredProducts, setFilteredProducts] = useState([...products]);
@@ -76,24 +78,29 @@ const Books = () => {
    };
 
    return (
-      <div className={Style.main}>
-         <div className={Style.sidebar}>
-            <form>
-               <input
-                  type="text"
-                  className={Style.searchInput}
-                  placeholder="Search..."
-                  value={searchInput}
-                  onChange={(e) => setSearchInput(e.target.value)}
-               />
-            </form>
-            <span>Books</span>
-            <div className={Style.companies}>{displayButtons()}</div>
+      <>
+         <Header />
+         <div className={Style.main}>
+            <div className={Style.sidebar}>
+               <form>
+                  <input
+                     type="text"
+                     className={Style.searchInput}
+                     placeholder="Search..."
+                     value={searchInput}
+                     onChange={(e) => setSearchInput(e.target.value)}
+                  />
+               </form>
+               <span className={Style.book}>Books</span>
+               <div className={Style.companies}>{displayButtons()}</div>
+            </div>
+            <div className={Style.rightMain}>
+               <div className={Style.productsContainer}>
+                  {displayProducts()}
+               </div>
+            </div>
          </div>
-         <div className={Style.rightMain}>
-            <div className={Style.productsContainer}>{displayProducts()}</div>
-         </div>
-      </div>
+      </>
    );
 };
 

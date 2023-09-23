@@ -8,6 +8,9 @@
    align-items: center;
    gap: 2rem;
 }
+.img {
+   border-radius: 0.5rem;
+}
 
 .priceBuy {
    display: flex;

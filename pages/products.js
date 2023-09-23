@@ -5,11 +5,6 @@ const Products = [
       category: 'healing',
       image: 'https://imgs.search.brave.com/2ssloejy0HTozm630hIPr2hxYHvtpBVwHIogZ-eHL9M/rs:fit:860:0:0/g:ce/aHR0cHM6Ly9tLm1l/ZGlhLWFtYXpvbi5j/b20vaW1hZ2VzL0kv/NTFseVMtTllvZ0wu/anBn',
       price: 9.99,
-      description: `Describe the technical challenges you encountered during the project. 
-                     Be specific and provide examples. For instance, 
-                     you might mention issues related to data synchronization 
-                     between front-end and back-end, handling 
-                     complex user interactions, or optimizing performance.`,
    },
    {
       id: 'rec4f2RIftFCb7aHh',

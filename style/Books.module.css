@@ -1,23 +1,44 @@
 /* Style.css */
+
+.hr {
+}
+
 .main {
    display: flex;
    justify-content: center;
+   width: 92%;
+   margin-left: 7rem;
+   margin-top: 7rem;
    margin-bottom: 2rem;
-   gap: 0.5rem;
+   gap: 1rem;
+   /* border: 1px solid blue; */
 }
 
-.sidebar {
-   width: 20%;
+/* .sidebar {
+   margin-top: 1rem;
    padding: 10px;
-   /* position: fixed; */
    top: 0;
    left: 0;
+} */
+
+.sidebar {
+   position: fixed;
+   left: 13%;
+   width: 250px;
+   height: 100%;
+   color: white;
+   padding-top: 1.5rem;
+   /* border: 1px solid blue; */
+}
+
+.book {
+   color: black;
 }
 
 .rightMain {
-   width: 60%;
+   width: 65%;
    padding: 20px;
-   /* border: 1px solid red; */
+   /* border: 1px solid blue; */
 }
 
 .sidebar li {
@@ -47,6 +68,7 @@ Products
 
 .searchInput {
    padding: 0.5rem;
+   margin-bottom: 0.8rem;
    background: var(--grey-200);
    border-radius: var(--borderRadius);
    border-color: transparent;
@@ -95,7 +117,7 @@ Products
    color: var(--grey-500);
 }
 .productPrice {
-   margin-bottom: 0;
+   margin-bottom: 0.5rem;
    color: var(--grey-700);
    font-weight: 700;
    font-size: 1rem;

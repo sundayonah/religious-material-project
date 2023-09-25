@@ -4,7 +4,7 @@ import React from 'react';
 import { useRouter } from 'next/router';
 import Products from './products/[id]'; // Import your product data
 import Style from '../style/single.module.css';
-import Header from '@/Components/header';
+import Header from '@/Components/header/header';
 import '../app/globals.css';
 
 const single = () => {

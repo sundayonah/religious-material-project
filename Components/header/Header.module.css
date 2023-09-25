@@ -16,7 +16,6 @@
 
 .menu {
    display: flex;
-   gap: 2rem;
 }
 
 .menu li {

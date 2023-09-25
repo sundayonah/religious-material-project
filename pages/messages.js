@@ -1,4 +1,4 @@
-import Header from '@/Components/header';
+import Header from '@/Components/header/header';
 import React from 'react';
 import Style from '@/style/messages.module.css';
 

@@ -24,12 +24,6 @@ const Books = () => {
    // const { address, disconnect, connect } = useContext(StateContext);
 
    // console.log(address);
-
-   // const booksURL = 'https://apis.kayibank.com:8002/api/Lookup/GetCountryCodes';
-
-   // const booksURL =
-   //    'http://kingdomcoin-001-site1.ctempurl.com/api/Book/GetAllBooks';
-
    // const fetchBooks = async () => {
    //    try {
    //       const res = await axios.get(booksURL);
@@ -42,6 +36,59 @@ const Books = () => {
    //       console.log('Failed to fetch', error);
    //    }
    // };
+
+   //    To make calls to other endpoints fetch the token value from the data you stored on local storage and pass it in the authorization header of your request
+
+   // create another function called fetchBooks
+
+   // const booksURL =
+   //    'http://kingdomcoin-001-site1.ctempurl.com/api/Book/GetAllBooks';
+
+   // // Function to fetch books using the stored token
+   // const fetchBooks = async () => {
+   //    try {
+   //       // Get the stored token from local storage
+   //       const storedData = JSON.parse(localStorage.getItem('responseData'));
+   //       const token = storedData.token;
+   //       console.log(token);
+
+   //       if (token) {
+   //          // Define the API endpoint for fetching books
+   //          // const booksURL =
+   //          //    'http://kingdomcoin-001-site1.ctempurl.com/api/Book/GetAllBooks';
+
+   //          // Make a GET request to the books endpoint with the token in the Authorization header
+   //          const res = await axios.get(booksURL, {
+   //             headers: {
+   //                Authorization: `Bearer ${token}`,
+   //             },
+   //          });
+   //          console.log(res);
+
+   //          if (res.data.statusCode === 200) {
+   //             const booksData = res.data; // Access the res data
+   //             console.log(booksData);
+   //          } else {
+   //             console.error(
+   //                `API request failed with status code ${res.status}`
+   //             );
+   //             if (res.status === 401) {
+   //                console.error(
+   //                   'Unauthorized: Check your authorization token.'
+   //                );
+   //             }
+   //          }
+   //       } else {
+   //          console.error('Token not found in local storage');
+   //       }
+   //    } catch (error) {
+   //       console.error('Error fetching books:', error);
+   //    }
+   // };
+
+   // // Now you can call fetchBooks whenever you need to fetch books
+
+   // fetchBooks();
 
    useEffect(() => {
       // Filter products based on searchInput and selectedCompany

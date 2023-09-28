@@ -2,12 +2,10 @@
 
 import React from 'react';
 import { useRouter } from 'next/router';
-import Products from './products/[id]'; // Import your product data
-import Style from '../style/single.module.css';
-import Header from '@/Components/header/header';
-import '../app/globals.css';
+import Products from './api/[id]'; // Import your product data
+import Style from '@/styles/single.module.css';
 
-const single = () => {
+const Single = () => {
    const router = useRouter();
    const { id } = router.query; // Get the product ID from the query parameter
 
@@ -28,8 +26,6 @@ const single = () => {
    // Render the product details
    return (
       <div>
-         <Header />
-
          <div className={Style.main}>
             {product ? (
                <>
@@ -60,7 +56,7 @@ const single = () => {
    );
 };
 
-export default single;
+export default Single;
 
 // 'use client';
 

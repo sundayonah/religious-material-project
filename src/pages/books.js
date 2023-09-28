@@ -1,13 +1,12 @@
 'use client';
 
 import React, { useState, useEffect, useContext, useRef } from 'react';
-import Style from '@/style/Books.module.css';
+import Style from '@/styles/Books.module.css';
 import { useRouter } from 'next/router';
-import '../app/globals.css';
 
-import products from './products/[id]';
+// import products from './products/[id]';
+import products from '@/pages/api/[id]';
 import Link from 'next/link';
-import Header from '@/Components/header/header';
 import axios from 'axios';
 
 // import { StateContext } from '@/Context/ReligiousContext';
@@ -116,36 +115,6 @@ const Books = () => {
          // return <h6>Sorry, no products matched your search</h6>;
       }
 
-      // useEffect(() => {
-      //    const handleScroll = () => {
-      //       const header = document.querySelector('.header'); // Replace with your actual header class or ID
-      //       const sidebar = sidebarRef.current;
-
-      //       if (header && sidebar) {
-      //          const headerRect = header.getBoundingClientRect();
-      //          const sidebarRect = sidebar.getBoundingClientRect();
-
-      //          // Calculate the point where the sidebar should become fixed
-      //          const scrollY = window.scrollY;
-      //          const threshold = headerRect.bottom;
-
-      //          // Determine if the sidebar should be fixed or unfixed
-      //          if (scrollY >= threshold) {
-      //             sidebar.style.position = 'fixed';
-      //             // sidebar.style.top = '0';
-      //          } else {
-      //             sidebar.style.position = 'relative';
-      //             sidebar.style.top = '';
-      //          }
-      //       }
-      //    };
-
-      //    window.addEventListener('scroll', handleScroll);
-      //    return () => {
-      //       window.removeEventListener('scroll', handleScroll);
-      //    };
-      // }, []);
-
       return filteredProducts.map(({ id, title, image, price }) => (
          <div className={Style.product} key={id}>
             <Link href={`/single?id=${id}`} passHref>
@@ -180,7 +149,6 @@ const Books = () => {
 
    return (
       <>
-         <Header />
          <div className={Style.main}>
             <div className={Style.sidebar} ref={sidebarRef}>
                <form>

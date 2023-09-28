@@ -7,8 +7,15 @@ import { StateContext } from '@/Context/ReligiousContext';
 import { ethers } from 'ethers';
 import axios from 'axios';
 
+import { useConnectWallet } from '@web3-onboard/react';
+
+// import { useAccount, useConnect, useDisconnect } from 'wagmi';
+// import { InjectedConnector } from 'wagmi/connectors/injected';
+// import { useWeb3Modal, useWeb3ModalTheme } from '@web3modal/wagmi/react';
+
 const Header = () => {
-   const { address, disconnect, connect } = useContext(StateContext);
+   // const { address, disconnect, connect, connectWallet } =
+   //    useContext(StateContext);
 
    // const [message, setMessage] = useState('');
    // const [signature, setSignature] = useState('');
@@ -107,94 +114,101 @@ const Header = () => {
    //    }
    // };
 
-   const connectWallet = async () => {
-      try {
-         if (window.ethereum) {
-            const accounts = await window.ethereum.request({
-               method: 'eth_requestAccounts',
-            });
+   // const connectWallet = async () => {
+   //    try {
+   //       if (window.ethereum) {
+   //          const accounts = await window.ethereum.request({
+   //             method: 'eth_requestAccounts',
+   //          });
 
-            const provider = new ethers.providers.Web3Provider(window.ethereum);
-            const signer = provider.getSigner();
+   //          const provider = new ethers.providers.Web3Provider(window.ethereum);
+   //          const signer = provider.getSigner();
 
-            setIsLoading(true);
+   //          setIsLoading(true);
 
-            const messageHash = ethers.utils.hashMessage(
-               'Sign-in to web3 kigdom-coin e-comerce'
-            );
-            const signature = await signer.signMessage(messageHash);
+   //          const messageHash = ethers.utils.hashMessage(
+   //             'Sign-in to web3 kigdom-coin e-comerce'
+   //          );
+   //          const signature = await signer.signMessage(messageHash);
 
-            // console.log(messageHash);
+   //          // Save the signature in local storage
+   //          localStorage.setItem('userSignature', signature);
 
-            // Save the signature in local storage
-            localStorage.setItem('userSignature', signature);
+   //          const userSignature = localStorage.getItem('userSignature');
 
-            // console.log(signature);
+   //          if (userSignature) {
+   //             // Include the signature in the request header
 
-            // setAccounts(accounts);
+   //             const authURL =
+   //                'http://kingdomcoin-001-site1.ctempurl.com/api/Account/AuthenticateUser';
 
-            const userSignature = localStorage.getItem('userSignature');
+   //             const res = await axios.post(
+   //                authURL,
+   //                {
+   //                   address: accounts[0], // Use the user's address
+   //                   signature: userSignature, // Use the user's signature
+   //                },
+   //                {
+   //                   headers: {
+   //                      'Content-Type': 'application/json',
+   //                   },
+   //                }
+   //             );
 
-            if (userSignature) {
-               // Include the signature in the request header
+   //             if (res.data.statusCode === 200) {
+   //                // Store responseData in localStorage
+   //                const responseData = res.data.data;
+   //                localStorage.setItem(
+   //                   'responseData',
+   //                   JSON.stringify(responseData)
+   //                );
+   //                // Now you can access it later by parsing it back
+   //                const storedData = JSON.parse(
+   //                   localStorage.getItem('responseData')
+   //                );
+   //             } else {
+   //                console.error(
+   //                   `API request failed with status code ${res.status}`
+   //                );
+   //                if (res.status === 401) {
+   //                   console.error(
+   //                      'Unauthorized: Check your authorization token.'
+   //                   );
+   //                }
+   //             }
+   //          } else {
+   //             console.error('User signature not found in local storage');
+   //          }
+   //          setIsLoading(false);
+   //       } else {
+   //          console.error('MetaMask not installed');
+   //       }
+   //    } catch (error) {
+   //       console.error('Error signing in with message hash:', error);
+   //    }
+   // };
 
-               const authURL =
-                  'http://kingdomcoin-001-site1.ctempurl.com/api/Account/AuthenticateUser';
+   const [{ wallet, connecting }, connect, disconnect] = useConnectWallet();
+   console.log(wallet);
+   if (wallet) {
+      if (wallet[0]) {
+         const ethersProvider = new ethers.providers.Web3Provider(
+            wallet[0].provider,
+            'any'
+         );
 
-               const res = await axios.post(
-                  authURL,
-                  {
-                     address: accounts[0], // Use the user's address
-                     signature: userSignature, // Use the user's signature
-                  },
-                  {
-                     headers: {
-                        'Content-Type': 'application/json',
-                     },
-                  }
-               );
-               // 0x8ad5f5891bd251bb46c8a545a2c032d319858601674d0a44195cedf98203a827357c0723b9056707d8dfb7450e0448fe415b8c5aa6c4cc86d4b623f132c3b6d31b
+         const signer = ethersProvider.getSigner();
 
-               if (res.data.statusCode === 200) {
-                  // Store responseData in localStorage
-                  const responseData = res.data.data;
-                  localStorage.setItem(
-                     'responseData',
-                     JSON.stringify(responseData)
-                  );
-                  // console.log(responseData);
-                  // Now you can access it later by parsing it back
-                  const storedData = JSON.parse(
-                     localStorage.getItem('responseData')
-                  );
-                  // console.log(storedData);
-               } else {
-                  console.error(
-                     `API request failed with status code ${res.status}`
-                  );
-                  if (res.status === 401) {
-                     console.error(
-                        'Unauthorized: Check your authorization token.'
-                     );
-                  }
-               }
-            } else {
-               console.error('User signature not found in local storage');
-            }
-            setIsLoading(false);
-
-            // setSignature(signature);
-         } else {
-            console.error('MetaMask not installed');
-         }
-      } catch (error) {
-         console.error('Error signing in with message hash:', error);
+         console.log(signer);
+      } else {
+         console.log(
+            "Wallet is not connected yet or doesn't have a selected address."
+         );
       }
-   };
+   }
 
    return (
       <main className={Style.header}>
-         <div></div>
          <div className={Style.logo}>
             <span>LOGO</span>
          </div>
@@ -208,21 +222,24 @@ const Header = () => {
             ))}
          </div>
          <div className={Style.connectWallet}>
-            {accounts ? (
+            {/* {address ? (
                <button onClick={() => disconnect()}>Disconnect</button>
             ) : (
-               <button onClick={() => connectWallet()}>Connect Wallet</button>
-            )}
+               // <button onClick={() => connectWallet()}>Connect Wallet</button>
+               <button onClick={() => connect()}>connect</button>
+            )} */}
+            {/* <button onClick={() => connectWallet()}>connect</button> */}
 
-            {/* <div>
-               Message to Sign: {message}
-               <input
-                  type="text"
-                  value={message}
-                  onChange={(e) => setMessage(e.target.value)}
-               />
-            </div>
-            <span>signature :{signature} </span> */}
+            <button
+               disabled={connecting}
+               onClick={() => (wallet ? disconnect(wallet) : connect())}
+            >
+               {connecting
+                  ? 'Connecting'
+                  : wallet
+                  ? 'Disconnect'
+                  : 'Connect Wallet'}
+            </button>
          </div>
       </main>
    );

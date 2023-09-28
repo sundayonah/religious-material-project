@@ -1,13 +1,6 @@
 import React, { useState, useEffect, useContext, createContext } from 'react';
 import axios from 'axios';
 import { ethers } from 'ethers';
-import {
-   useAddress,
-   useContract,
-   useMetamask,
-   useDisconnect,
-   useSigner,
-} from '@thirdweb-dev/react';
 
 export const StateContext = createContext({});
 
@@ -17,11 +10,13 @@ export const StateContextProvider = ({ children }) => {
    //       '0x46525740483e6cf321313372F8eCa8bBb625a57B'
    //    );
 
-   const address = useAddress();
-   const connect = useMetamask();
-   const disconnect = useDisconnect();
+   // const address = useAddress();
+   // const connect = useMetamask();
+   // const disconnect = useDisconnect();
+   const [accounts, setAccounts] = useState('');
+   const [isLoading, setIsLoading] = useState(false);
 
-   console.log(address);
+   // console.log(address);
 
    const connectWallet = async () => {
       try {
@@ -40,35 +35,42 @@ export const StateContextProvider = ({ children }) => {
             );
             const signature = await signer.signMessage(messageHash);
 
-            console.log(messageHash);
-
             // Save the signature in local storage
             localStorage.setItem('userSignature', signature);
-
-            console.log(signature);
-
-            // setAccounts(accounts);
 
             const userSignature = localStorage.getItem('userSignature');
 
             if (userSignature) {
                // Include the signature in the request header
 
-               // Make the API request with the headers
-               const res = await axios(
-                  'http://kingdomcoin-001-site1.ctempurl.com/api/Book/GetAllBooks',
+               const authURL =
+                  'http://kingdomcoin-001-site1.ctempurl.com/api/Account/AuthenticateUser';
+
+               const res = await axios.post(
+                  authURL,
                   {
-                     method: 'GET',
+                     address: accounts[0], // Use the user's address
+                     signature: userSignature, // Use the user's signature
+                  },
+                  {
                      headers: {
-                        Authorization: `Bearer ${userSignature}`,
-                        Accept: 'application/json, text/plain, */*',
+                        'Content-Type': 'application/json',
                      },
                   }
                );
+               // console.log(res);
 
-               if (res.status === 200) {
-                  const data = res.data; // Access the response data
-                  console.log(data);
+               if (res.data.statusCode === 200) {
+                  // Store responseData in localStorage
+                  const responseData = res.data.data;
+                  localStorage.setItem(
+                     'responseData',
+                     JSON.stringify(responseData)
+                  );
+                  // Now you can access it later by parsing it back
+                  const storedData = JSON.parse(
+                     localStorage.getItem('responseData')
+                  );
                } else {
                   console.error(
                      `API request failed with status code ${res.status}`
@@ -83,8 +85,6 @@ export const StateContextProvider = ({ children }) => {
                console.error('User signature not found in local storage');
             }
             setIsLoading(false);
-
-            // setSignature(signature);
          } else {
             console.error('MetaMask not installed');
          }
@@ -92,13 +92,12 @@ export const StateContextProvider = ({ children }) => {
          console.error('Error signing in with message hash:', error);
       }
    };
-
    return (
       <StateContext.Provider
          value={{
-            address,
-            connect,
-            disconnect,
+            // address,
+            // connect,
+            // disconnect,
             connectWallet,
          }}
       >

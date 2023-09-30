@@ -165,7 +165,7 @@ export default function App({ Component, pageProps }) {
    web3Onboard.state.actions.updateAccountCenter({
       position: 'topRight',
       enabled: true,
-      minimal: false,
+      minimal: true,
    });
 
    return (

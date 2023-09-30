@@ -1,12 +1,19 @@
+/*
+#121212
+rgb(18,18,18)
+*/
+
 .main {
    width: 80%;
    margin: auto;
    margin-top: 7rem;
+   /* background-color: #1f2020; */
 }
 .search {
    display: flex;
    margin-top: 2rem;
-   justify-content: center;
+   justify-content: space-between;
+   align-items: center;
 }
 
 .search input {
@@ -17,14 +24,26 @@
 .messages {
    margin: auto;
    display: grid;
-   grid-template-columns: repeat(3, 1fr);
+   grid-template-columns: repeat(2, 1fr);
    gap: 2rem;
    margin-top: 1rem;
    border-radius: 0.5rem;
 }
 
-.messages div {
+.messagesDetails {
+   display: flex;
    padding: 1rem;
    border-radius: 0.5rem;
-   border: 1px solid blue;
+   box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+
+.artistDetails span {
+   display: flex;
+   flex-direction: columns;
+   margin-left: 2rem;
+   margin-top: 1rem;
+}
+
+.imgCard img {
+   border-radius: 0.5rem;
 }

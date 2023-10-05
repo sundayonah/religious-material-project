@@ -1,3 +1,7 @@
 .main {
    margin-top: 7rem;
 }
+
+.thePerk {
+   display: flex;
+}

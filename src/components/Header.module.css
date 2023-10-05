@@ -18,6 +18,12 @@
    display: flex;
 }
 
+.menu .menuItems {
+   padding-right: 2.5rem;
+
+   color: white;
+}
+
 .menu li {
    list-style: none;
    cursor: pointer;

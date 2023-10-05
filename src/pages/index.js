@@ -10,6 +10,7 @@ import Onboard from '@web3-onboard/core';
 import injectedModule from '@web3-onboard/injected-wallets';
 import { ethers } from 'ethers';
 import { useWeb3Onboard } from '@/Context/Web3OnBoardContext'; // Import the hook
+import PerkImage from '@/components/images';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -154,31 +155,30 @@ export default function Home() {
 
    return (
       <div className={Style.main}>
-         <h1>Home Page</h1>
-         {/* {address ? (
-            <button onClick={() => disconnect()}>disconnect</button>
-         ) : (
-            )} */}
-         <button onClick={() => connectWallets()}>connect</button>
-         {books.map((book) => {
-            const { recId, author, category, description, price, cover } = book;
-
-            return (
-               <div key={recId}>
-                  <img
-                     src={cover}
-                     alt={`Cover for ${recId}`}
-                     width={150}
-                     height={100}
-                  />
-                  <p>{recId}</p>
-                  <p>{author}</p>
-                  <p>{description}</p>
-                  <p>{price}</p>
-                  <p>{category}</p>
+         <div className=" flex w-full flex-col md:flex-row space-x-6 justify-evenly items-center m-4">
+            <div className="">
+               <h3 className="text-[#DAA851]">
+                  Explore a Word of Christian <br /> Literature and Oratory
+               </h3>
+               <p className=" text-[#fff]">
+                  Dive into our vast collection of Faith-based literature, fuel
+                  your spirit with enlightening sermons and music and make
+                  seamless downloads using E-Wallet{' '}
+               </p>
+               <div className="flex w-[85%] text-[#fff] justify-center items-center  p-1 rounded-sm bg-[#DAA851] mb-7 ">
+                  <button>Get Stared</button>
                </div>
-            );
-         })}
+            </div>
+            <div className="">
+               <Image
+                  src="/images/explore2.jpg"
+                  width={400}
+                  height={200}
+                  alt="hero-image"
+               />
+            </div>
+         </div>
+         <PerkImage />
       </div>
    );
 }

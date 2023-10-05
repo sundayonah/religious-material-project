@@ -188,24 +188,24 @@ const Header = () => {
    //    }
    // };
 
-   const [{ wallet, connecting }, connect, disconnect] = useConnectWallet();
-   console.log(wallet);
-   if (wallet) {
-      if (wallet[0]) {
-         const ethersProvider = new ethers.providers.Web3Provider(
-            wallet[0].provider,
-            'any'
-         );
+   // const [{ wallet, connecting }, connect, disconnect] = useConnectWallet();
+   // console.log(wallet);
+   // if (wallet) {
+   //    if (wallet[0]) {
+   //       const ethersProvider = new ethers.providers.Web3Provider(
+   //          wallet[0].provider,
+   //          'any'
+   //       );
 
-         const signer = ethersProvider.getSigner();
+   //       const signer = ethersProvider.getSigner();
 
-         console.log(signer);
-      } else {
-         console.log(
-            "Wallet is not connected yet or doesn't have a selected address."
-         );
-      }
-   }
+   //       console.log(signer);
+   //    } else {
+   //       console.log(
+   //          "Wallet is not connected yet or doesn't have a selected address."
+   //       );
+   //    }
+   // }
 
    return (
       <main className={Style.header}>
@@ -217,7 +217,9 @@ const Header = () => {
             {menuItems.map((item, i) => (
                <ul key={i + 1}>
                   {/* <li>{item.name}</li> */}
-                  <Link href={item.url}>{item.name}</Link>
+                  <Link className={Style.menuItems} href={item.url}>
+                     {item.name}
+                  </Link>
                </ul>
             ))}
          </div>
@@ -228,8 +230,8 @@ const Header = () => {
                // <button onClick={() => connectWallet()}>Connect Wallet</button>
                <button onClick={() => connect()}>connect</button>
             )} */}
-            {/* <button onClick={() => connectWallet()}>connect</button> */}
-
+            <button onClick={() => connectWallet()}>connect</button>
+            {/* 
             <button
                disabled={connecting}
                onClick={() => (wallet ? disconnect(wallet) : connect())}
@@ -239,7 +241,7 @@ const Header = () => {
                   : wallet
                   ? 'Disconnect'
                   : 'Connect Wallet'}
-            </button>
+            </button> */}
          </div>
       </main>
    );

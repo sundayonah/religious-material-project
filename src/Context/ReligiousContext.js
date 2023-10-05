@@ -105,3 +105,24 @@ export const StateContextProvider = ({ children }) => {
       </StateContext.Provider>
    );
 };
+{
+   /* {books.map((book) => {
+            const { recId, author, category, description, price, cover } = book;
+
+            return (
+               <div key={recId}>
+                  <img
+                     src={cover}
+                     alt={`Cover for ${recId}`}
+                     width={150}
+                     height={100}
+                  />
+                  <p>{recId}</p>
+                  <p>{author}</p>
+                  <p>{description}</p>
+                  <p>{price}</p>
+                  <p>{category}</p>
+               </div>
+            );
+         })} */
+}

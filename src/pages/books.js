@@ -108,8 +108,6 @@ const Books = () => {
       setFilteredProducts(filtered);
    }, [searchInput, selectedCompany, products]);
 
-   console.log();
-
    const displayProducts = () => {
       if (filteredProducts.length < 1) {
          // return <h6>Sorry, no products matched your search</h6>;
@@ -162,7 +160,6 @@ const Books = () => {
                </form>
                <span className={Style.book}>Books</span>
                <div className={Style.companies}>{displayButtons()}</div>
-               <button onClick={() => connect()}>Connect Wallet</button>
             </div>
             <div className={Style.rightMain}>
                <div className={Style.productsContainer}>
@@ -170,7 +167,7 @@ const Books = () => {
                </div>
                <div>
                   <ul>
-                     {kingdomBook.map((book, index) => (
+                     {/* {kingdomBook.map((book, index) => (
                         <li key={index}>
                            <h2>{book.name}</h2>
                            <img
@@ -192,7 +189,7 @@ const Books = () => {
                               <strong>Price:</strong> ${book.price}
                            </p>
                         </li>
-                     ))}
+                     ))} */}
                   </ul>
                </div>
             </div>

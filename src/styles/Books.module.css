@@ -14,19 +14,9 @@
    /* border: 1px solid blue; */
 }
 
-/* 
-.sidebar {
-   position: relative;
-   left: 13%;
-   width: 250px;
-   color: white;
-   padding-top: 1.5rem;
-   transition: top 0.3s;
-} */
-
 .sidebar {
    position: fixed;
-   left: 13%;
+   left: 10%;
    width: 250px;
    height: 100%;
    color: white;
@@ -34,7 +24,7 @@
 }
 
 .book {
-   color: black;
+   color: #daa851;
 }
 
 .rightMain {
@@ -133,17 +123,6 @@ Products
    gap: 1rem;
 }
 
-/*  */
-
-/* .productIcons {
-   position: absolute;
-   top: 50%;
-   left: 50%;
-   transform: translate(-50%, -50%);
-   opacity: 0;
-   display: flex;
-   transition: var(--transition);
-} */
 .productIcon {
    width: 2.25rem;
    height: 2.25rem;
@@ -188,9 +167,6 @@ Products
    .product {
       margin-bottom: 0;
    }
-   /* .sidebar {
-      display: none;
-   } */
 }
 @media screen and (min-width: 1170px) {
    .productsContainer {

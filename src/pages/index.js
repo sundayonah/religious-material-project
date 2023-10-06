@@ -85,7 +85,7 @@ export default function Home() {
    const { address, disconnect, connect } = useContext(StateContext);
 
    return (
-      <div className={Style.main}>
+      <div className="mt-28">
          <div className=" flex w-full flex-col md:flex-row space-x-6 justify-evenly items-center m-4">
             <div className="">
                <h3 className="text-[#DAA851]">

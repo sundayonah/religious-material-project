@@ -12,6 +12,14 @@ module.exports = {
             'gradient-conic':
                'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
          },
+         boxShadow: {
+            'box-shadow': '0.4rem 0.4rem 1rem #111, -0.4rem -0.4rem 1rem #333',
+            'box-shadow-index':
+               '0.4rem 0.4rem 1rem #111 inset, -0.4rem -0.4rem 1rem #333 inset',
+         },
+         // boxShadow: {
+         //    custom: '0.4rem 0.4rem 1rem #111, -0.4rem -0.4rem 1rem #333',
+         // },
          //  screens: {
          //     '2xl': { max: '1535px' },
          //     // => @media (max-width: 1535px) { ... }

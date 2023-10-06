@@ -24,18 +24,18 @@ const Songs = () => {
                            src="https://imgs.search.brave.com/Yt7ANTS12Zv5enO6ryAZnxpmdabPW_KJgPs_RQy8-b8/rs:fit:860:0:0/g:ce/aHR0cHM6Ly9jb250/ZW50LndlcGlrLmNv/bS9zdGF0aWNzLzEz/ODgzNTMxL3ByZXZp/ZXctcGFnZTAuanBn"
                            alt=""
                            className={Style.img}
-                           width={200}
+                           width={250}
                            height={150}
                         />
                      </div>
                      <div className={Style.artistDetails}>
-                        <span>Artist</span>
-                        <span>Title</span>
+                        <span className="text-white">Artist</span>
+                        <span className="text-white">Title</span>
                         <div className={Style.actions}>
-                           <span>O</span>
-                           <span>O</span>
-                           <span>O</span>
-                           <span>O</span>
+                           <span className="text-white">O</span>
+                           <span className="text-white">O</span>
+                           <span className="text-white">O</span>
+                           <span className="text-white">O</span>
                         </div>
                      </div>
                   </div>

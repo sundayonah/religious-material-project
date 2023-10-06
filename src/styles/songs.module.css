@@ -27,8 +27,7 @@
    display: flex;
    padding: 0.5rem;
    border-radius: 0.5rem;
-   box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-   /* border: 1px solid blue; */
+   box-shadow: 0 0 10px rgba(225, 225, 225, 1);
 }
 
 .artistDetails span {
@@ -42,4 +41,11 @@
 
 .actions {
    display: flex;
+}
+
+@media (max-width: 768px) {
+   .songs {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+   }
 }

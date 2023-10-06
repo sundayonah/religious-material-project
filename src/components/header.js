@@ -1,7 +1,6 @@
 'use client';
 
 import React, { useContext, useState } from 'react';
-import Style from './Header.module.css';
 import Link from 'next/link';
 import { StateContext } from '@/Context/ReligiousContext';
 import ConnectButton from './connectWallet';
@@ -207,16 +206,16 @@ const Header = () => {
    // }
 
    return (
-      <main className={Style.header}>
-         <div className={Style.logo}>
-            <span>LOGO</span>
+      <main className="flex justify-around items-center fixed left-0 top-0 w-full bg-opacity-10 backdrop-blur-md shadow-md h-16">
+         <div className="">
+            <span className="text-white bold">LOGO</span>
          </div>
 
-         <div className={Style.menu}>
+         <div className="flex">
             {menuItems.map((item, i) => (
                <ul key={i + 1}>
                   {/* <li>{item.name}</li> */}
-                  <Link className={Style.menuItems} href={item.url}>
+                  <Link className="pr-5 text-white" href={item.url}>
                      {item.name}
                   </Link>
                </ul>

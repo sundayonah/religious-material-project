@@ -4,18 +4,17 @@ import React, { useContext, useState } from 'react';
 import Style from './Header.module.css';
 import Link from 'next/link';
 import { StateContext } from '@/Context/ReligiousContext';
+import ConnectButton from './connectWallet';
 import { ethers } from 'ethers';
 import axios from 'axios';
-
-import { useConnectWallet } from '@web3-onboard/react';
 
 // import { useAccount, useConnect, useDisconnect } from 'wagmi';
 // import { InjectedConnector } from 'wagmi/connectors/injected';
 // import { useWeb3Modal, useWeb3ModalTheme } from '@web3modal/wagmi/react';
 
 const Header = () => {
-   // const { address, disconnect, connect, connectWallet } =
-   //    useContext(StateContext);
+   const { address, disconnect, connect, connectWallet } =
+      useContext(StateContext);
 
    // const [message, setMessage] = useState('');
    // const [signature, setSignature] = useState('');
@@ -223,26 +222,10 @@ const Header = () => {
                </ul>
             ))}
          </div>
-         <div className={Style.connectWallet}>
-            {/* {address ? (
-               <button onClick={() => disconnect()}>Disconnect</button>
-            ) : (
-               // <button onClick={() => connectWallet()}>Connect Wallet</button>
-               <button onClick={() => connect()}>connect</button>
-            )} */}
-            <button onClick={() => connectWallet()}>connect</button>
-            {/* 
-            <button
-               disabled={connecting}
-               onClick={() => (wallet ? disconnect(wallet) : connect())}
-            >
-               {connecting
-                  ? 'Connecting'
-                  : wallet
-                  ? 'Disconnect'
-                  : 'Connect Wallet'}
-            </button> */}
-         </div>
+
+         <button onClick={() => connectWallet()}>connect</button>
+
+         <ConnectButton />
       </main>
    );
 };

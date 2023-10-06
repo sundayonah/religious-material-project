@@ -24,8 +24,8 @@ const Songs = () => {
                            src="https://imgs.search.brave.com/Yt7ANTS12Zv5enO6ryAZnxpmdabPW_KJgPs_RQy8-b8/rs:fit:860:0:0/g:ce/aHR0cHM6Ly9jb250/ZW50LndlcGlrLmNv/bS9zdGF0aWNzLzEz/ODgzNTMxL3ByZXZp/ZXctcGFnZTAuanBn"
                            alt=""
                            className={Style.img}
-                           width={150}
-                           height={100}
+                           width={200}
+                           height={150}
                         />
                      </div>
                      <div className={Style.artistDetails}>

@@ -116,7 +116,13 @@ const Books = () => {
       return filteredProducts.map(({ id, title, image, price }) => (
          <div className={Style.product} key={id}>
             <Link href={`/single?id=${id}`} passHref>
-               <img src={image} className={Style.img} alt="images" />
+               <img
+                  src={image}
+                  className={Style.img}
+                  width={400}
+                  height={150}
+                  alt="images"
+               />
             </Link>
 
             <div className={Style.productIcons}></div>

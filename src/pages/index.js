@@ -1,18 +1,12 @@
 import Image from 'next/image';
-import { Inter } from 'next/font/google';
 import Header from '@/components/header';
 import React, { useContext, useEffect, useState } from 'react';
 import Style from '@/styles/home.module.css';
 import axios from 'axios';
 import { StateContext } from '@/Context/ReligiousContext';
 
-import Onboard from '@web3-onboard/core';
-import injectedModule from '@web3-onboard/injected-wallets';
 import { ethers } from 'ethers';
-import { useWeb3Onboard } from '@/Context/Web3OnBoardContext'; // Import the hook
 import PerkImage from '@/components/images';
-
-const inter = Inter({ subsets: ['latin'] });
 
 export default function Home() {
    // const onboard = useWeb3Onboard(); // Access the onboard instance
@@ -89,69 +83,6 @@ export default function Home() {
 
    ////////////////////////////////////////////////////////////////
    const { address, disconnect, connect } = useContext(StateContext);
-
-   const [books, setBooks] = useState([]);
-
-   const booksURL =
-      'http://kingdomcoin-001-site1.ctempurl.com/api/Book/GetAllBooks';
-
-   // Function to fetch books using the stored token
-   const fetchBooks = async () => {
-      try {
-         // Get the stored token from local storage
-         const storedData = JSON.parse(localStorage.getItem('responseData'));
-         const token = storedData.token;
-         // console.log(token);
-
-         if (token) {
-            // Make a GET request to the books endpoint with the token in the Authorization header
-            const res = await axios.get(booksURL, {
-               headers: {
-                  Authorization: `Bearer ${token}`,
-               },
-            });
-            // console.log(res.data.data);
-
-            if (res.data.statusCode === 200) {
-               const booksData = res.data; // Access the res data
-
-               setBooks(booksData.data);
-            } else {
-               console.error(
-                  `API request failed with status code ${res.status}`
-               );
-               if (res.status === 401) {
-                  console.error(
-                     'Unauthorized: Check your authorization token.'
-                  );
-               }
-            }
-         } else {
-            console.error('Token not found in local storage');
-         }
-      } catch (error) {
-         console.error('Error fetching books:', error);
-      }
-   };
-
-   // Now you can call fetchBooks whenever you need to fetch books
-
-   useEffect(() => {
-      fetchBooks();
-   }, []);
-   /*
- data: [
-      {
-        recId: '1',
-        cover: ' ... (length: 59455)',
-        name: ' ... (length: 17)',
-        author: ' ... (length: 13)',
-        category: ' ... (length: 7)',
-        description: ' ... (length: 37)',
-        price: 1.5,
-        bookFile: ' ... (length: 25)'
-      },
-    */
 
    return (
       <div className={Style.main}>

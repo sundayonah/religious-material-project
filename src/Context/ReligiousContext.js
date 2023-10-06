@@ -58,7 +58,7 @@ export const StateContextProvider = ({ children }) => {
                      },
                   }
                );
-               // console.log(res);
+               console.log(res);
 
                if (res.data.statusCode === 200) {
                   // Store responseData in localStorage
@@ -71,6 +71,7 @@ export const StateContextProvider = ({ children }) => {
                   const storedData = JSON.parse(
                      localStorage.getItem('responseData')
                   );
+                  console.log(storedData);
                } else {
                   console.error(
                      `API request failed with status code ${res.status}`
@@ -92,12 +93,10 @@ export const StateContextProvider = ({ children }) => {
          console.error('Error signing in with message hash:', error);
       }
    };
+
    return (
       <StateContext.Provider
          value={{
-            // address,
-            // connect,
-            // disconnect,
             connectWallet,
          }}
       >

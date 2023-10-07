@@ -19,7 +19,6 @@ box-shadow-index:.4rem .4rem 1rem #111 inset, -.4rem -.4rem 1rem #333 inset;
 
 .messagesDetails {
    display: flex;
-   justify-content: space-between;
    padding: 1rem;
    border-radius: 0.5rem;
    box-shadow: 0.4rem 0.4rem 1rem #111, -0.4rem -0.4rem 1rem #333;
@@ -27,13 +26,6 @@ box-shadow-index:.4rem .4rem 1rem #111 inset, -.4rem -.4rem 1rem #333 inset;
       -0.4rem -0.4rem 1rem #333 inset;
 }
 /* box-shadow: 0 0 10px rgba(225, 225, 225, 0.5); */
-
-.artistDetails span {
-   display: flex;
-   flex-direction: columns;
-   margin-left: 2rem;
-   margin-top: 1rem;
-}
 
 @media (max-width: 768px) {
    .messages {

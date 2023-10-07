@@ -6,6 +6,7 @@ const Messages = () => {
    const gatewayUrl = `https://ipfs.io/ipfs/${ipfsHash}`;
    const [imageUrls, setImageUrls] = useState([]);
    const [messages, setMessages] = useState([]);
+   const [selectedProduct, setSelectedProduct] = useState(null);
 
    const messagesDetails = [
       {
@@ -141,9 +142,30 @@ const Messages = () => {
       }
    };
 
+   const [searchInput, setSearchInput] = useState('');
+   const [filteredMessages, setFilteredMessages] = useState(messages);
+
+   useEffect(() => {
+      // Filter the messages based on the search input
+      const filtered = messagesDetails.filter(
+         (message) =>
+            message.artist.toLowerCase().includes(searchInput.toLowerCase()) ||
+            message.title.toLowerCase().includes(searchInput.toLowerCase())
+      );
+      console.log(filtered);
+
+      setFilteredMessages(filtered);
+   }, [searchInput]);
+
    useEffect(() => {
       fetchImageUrls();
    }, [gatewayUrl]);
+
+   const buyNow = (product) => {
+      if (product) {
+         console.log('Buy Now clicked for:', product.price);
+      }
+   };
 
    return (
       <>
@@ -155,13 +177,13 @@ const Messages = () => {
                      className="px-20 py-2 rounded-md"
                      type="text"
                      placeholder="Search message..."
-                     // value={searchInput}
-                     // onChange={(e) => setSearchInput(e.target.value)}
+                     value={searchInput}
+                     onChange={(e) => setSearchInput(e.target.value)}
                   />
                </form>
             </div>
             <div className={Style.messages}>
-               {messages.map((message, index) => (
+               {filteredMessages.map((message, index) => (
                   <div key={message.id} className={Style.messagesDetails}>
                      <div className="">
                         <img
@@ -172,11 +194,22 @@ const Messages = () => {
                            height={150}
                         />
                      </div>
-                     <div className={Style.artistDetails}>
+                     <div className="flex flex-col ml-6 text-sm">
                         <span className="text-white">{message.artist}</span>
-                        <span className="text-white">{message.title}</span>
-                        <span className="text-white">{message.price}</span>
-                        {/* Add more details here */}
+                        <span className="text-white pt-1 pb-1">
+                           {message.title}
+                        </span>
+                        <span className="text-gray-400">$ {message.price}</span>
+
+                        <button
+                           onClick={() => {
+                              setSelectedProduct(message);
+                              buyNow(message);
+                           }}
+                           className="text-white mt-5 bg-yellow-700 p-1 rounded-sm"
+                        >
+                           Buy Now
+                        </button>
                      </div>
                   </div>
                ))}
@@ -187,3 +220,12 @@ const Messages = () => {
 };
 
 export default Messages;
+
+// .messagesDetails {
+//    display: flex;
+//    padding: 1rem;
+//    border-radius: 0.5rem;
+//    box-shadow: 0.4rem 0.4rem 1rem #111, -0.4rem -0.4rem 1rem #333;
+//    box-shadow-index: 0.4rem 0.4rem 1rem #111 inset,
+//       -0.4rem -0.4rem 1rem #333 inset;
+// }

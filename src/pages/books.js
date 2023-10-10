@@ -118,7 +118,7 @@ const Books = () => {
             <Link href={`/single?id=${id}`} passHref>
                <img
                   src={image}
-                  className={Style.img}
+                  className="h-28 w-full object-cover"
                   width={400}
                   height={150}
                   alt="images"

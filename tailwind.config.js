@@ -13,8 +13,8 @@ module.exports = {
                'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
          },
          boxShadow: {
-            'box-shadow': '0.4rem 0.4rem 1rem #111, -0.4rem -0.4rem 1rem #333',
-            'box-shadow-index':
+            custom: '0.4rem 0.4rem 1rem #111, -0.4rem -0.4rem 1rem #333',
+            'custom-inset':
                '0.4rem 0.4rem 1rem #111 inset, -0.4rem -0.4rem 1rem #333 inset',
          },
          // boxShadow: {

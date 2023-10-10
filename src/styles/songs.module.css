@@ -1,28 +1,3 @@
-.main {
-   width: 80%;
-   margin: auto;
-   margin-top: 7rem;
-}
-.search {
-   display: flex;
-   margin-top: 2rem;
-   justify-content: center;
-}
-
-.search input {
-   padding: 0.5rem 5rem 0.5rem 5rem;
-   border-radius: 0.5rem;
-}
-
-.songs {
-   margin: auto;
-   display: grid;
-   grid-template-columns: repeat(3, 1fr);
-   gap: 2rem;
-   margin-top: 1rem;
-   border-radius: 0.5rem;
-}
-
 .songDetails {
    display: flex;
    padding: 0.5rem;
@@ -41,11 +16,4 @@
 
 .actions {
    display: flex;
-}
-
-@media (max-width: 768px) {
-   .songs {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-   }
 }

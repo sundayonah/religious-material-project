@@ -6,7 +6,7 @@ rgb(18,18,18)
 .messages {
    margin: auto;
    display: grid;
-   grid-template-columns: repeat(2, 1fr);
+   grid-template-columns: repeat(3, 1fr);
    gap: 2rem;
    margin-top: 1rem;
    border-radius: 0.5rem;

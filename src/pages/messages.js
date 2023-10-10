@@ -152,7 +152,7 @@ const Messages = () => {
             message.artist.toLowerCase().includes(searchInput.toLowerCase()) ||
             message.title.toLowerCase().includes(searchInput.toLowerCase())
       );
-      console.log(filtered);
+      // console.log(filtered);
 
       setFilteredMessages(filtered);
    }, [searchInput]);
@@ -168,54 +168,60 @@ const Messages = () => {
    };
 
    return (
-      <>
-         <div className="w-[80%] m-auto mt-28">
-            <div>
-               <form className="flex mt-8 justify-between items-center">
-                  <h4 className="text-white">Messages</h4>
-                  <input
-                     className="px-20 py-2 rounded-md"
-                     type="text"
-                     placeholder="Search message..."
-                     value={searchInput}
-                     onChange={(e) => setSearchInput(e.target.value)}
-                  />
-               </form>
-            </div>
-            <div className={Style.messages}>
-               {filteredMessages.map((message, index) => (
-                  <div key={message.id} className={Style.messagesDetails}>
-                     <div className="">
-                        <img
-                           src={imageUrls[index] || ''}
-                           alt={`Image ${index}`}
-                           className="rounded-md"
-                           width={200}
-                           height={150}
-                        />
-                     </div>
-                     <div className="flex flex-col ml-6 text-sm">
-                        <span className="text-white">{message.artist}</span>
-                        <span className="text-white pt-1 pb-1">
-                           {message.title}
-                        </span>
-                        <span className="text-gray-400">$ {message.price}</span>
-
-                        <button
-                           onClick={() => {
-                              setSelectedProduct(message);
-                              buyNow(message);
-                           }}
-                           className="text-white mt-5 bg-yellow-700 p-1 rounded-sm"
-                        >
-                           Buy Now
-                        </button>
-                     </div>
-                  </div>
-               ))}
-            </div>
+      <div className="w-[95%] m-auto mt-28 ">
+         <div className="flex mt-8 justify-evenly items-center mb-3">
+            <h4 className="text-white">Messages</h4>
+            <form>
+               <input
+                  className="px-20 py-2 rounded-md"
+                  type="text"
+                  placeholder="Search message..."
+                  value={searchInput}
+                  onChange={(e) => setSearchInput(e.target.value)}
+               />
+            </form>
          </div>
-      </>
+         <div className="flex flex-wrap gap-3 p-2 justify-center items-center">
+            {filteredMessages.map((message, index) => (
+               // <div key={message.id} className={Style.messagesDetails}>
+               <div
+                  key={message.id}
+                  // className="border rounded-md p-2"
+                  className=" rounded-md p-3 m-2 shadow-custom"
+               >
+                  <div class="md:flex-shrink-0">
+                     <img
+                        src={imageUrls[index] || ''}
+                        alt={`Image ${index}`}
+                        className="rounded-md"
+                        width={200}
+                        height={150}
+                     />
+                  </div>
+                  <div className="flex flex-col justify-center items-start pt-1">
+                     <span className="text-white text-sm pt-1 pb-1">
+                        {message.title}
+                     </span>
+                     <span className="text-white text-small">
+                        {message.artist}
+                     </span>
+                     <span className="text-gray-400">$TKC {message.price}</span>
+                  </div>
+                  <div className="flex justify-center items-center">
+                     <button
+                        onClick={() => {
+                           setSelectedProduct(message);
+                           buyNow(message);
+                        }}
+                        className="w-full text-white mt-1 bg-yellow-700 py-1 px-2 rounded-sm hover:bg-yellow-800 focus:outline-none focus:ring-1 focus:ring-yellow-500 focus:ring-opacity-50"
+                     >
+                        Buy Now
+                     </button>
+                  </div>
+               </div>
+            ))}
+         </div>
+      </div>
    );
 };
 

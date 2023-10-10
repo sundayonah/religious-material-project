@@ -17,6 +17,11 @@ const Products = [
       category: 'faith',
       image: 'https://imgs.search.brave.com/trzC8mS6mF5EutPRIS5zBa2HOx5p_M4zoWE2IdxRSag/rs:fit:860:0:0/g:ce/aHR0cHM6Ly9tLm1l/ZGlhLWFtYXpvbi5j/b20vaW1hZ2VzL0kv/NzE2V2pXR1hqV0wu/anBn',
       price: 79.99,
+      description: `Describe the technical challenges you encountered during the project. 
+                     Be specific and provide examples. For instance, 
+                     you might mention issues related to data synchronization 
+                     between front-end and back-end, handling 
+                     complex user interactions, or optimizing performance.`,
    },
    {
       id: 'rec8kkCmSiMkbkiko',
@@ -24,6 +29,11 @@ const Products = [
       category: 'faith',
       image: 'https://imgs.search.brave.com/i_b5978DLQcD8XQxGwZlXeY5bTjeI5oO7RvRL-nUC94/rs:fit:860:0:0/g:ce/aHR0cHM6Ly9pbWFn/ZXMtbmEuc3NsLWlt/YWdlcy1hbWF6b24u/Y29tL2ltYWdlcy9J/LzUxdG1RbE43MExM/LmpwZw',
       price: 25.99,
+      description: `Describe the technical challenges you encountered during the project. 
+                     Be specific and provide examples. For instance, 
+                     you might mention issues related to data synchronization 
+                     between front-end and back-end, handling 
+                     complex user interactions, or optimizing performance.`,
    },
    {
       id: 'recBohCqQsot4Q4II',
@@ -68,6 +78,8 @@ const Products = [
       category: 'faith',
       image: 'https://course-api.com/images/store/product-9.jpeg',
       price: 39.95,
+      description: `Describe the technical challenges you encountered during the project. 
+                     Be specific and provide examples. For instance.`,
    },
    {
       id: 'recvKMNR3YFw0bEt3',

@@ -8,7 +8,7 @@ import { ethers } from 'ethers';
 import axios from 'axios';
 
 const Header = () => {
-   const { address, disconnect, connect, connectWallet } =
+   const { address, disconnect, connect, connectWallet, ConnectButton } =
       useContext(StateContext);
 
    const [accounts, setAccounts] = useState('');
@@ -155,7 +155,16 @@ const Header = () => {
                      </Link>
                   </ul>
                ))}
-               <button onClick={() => connectWallet()}>connect</button>
+               {/* 
+               <div>
+                  {ConnectButton()}
+
+                  <button onClick={connectWallet}>Connect Wallet</button>
+
+               </div> */}
+
+               {/* <button onClick={() => connectWallet()}>connect</button>
+                */}
                <ConnectButton />
             </div>
          </main>

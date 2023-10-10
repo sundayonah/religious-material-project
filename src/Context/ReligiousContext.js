@@ -18,9 +18,16 @@ export const StateContextProvider = ({ children }) => {
 
    // console.log(address);
 
+   // const ConnectButton = () => {
+   //    return <w3m-button balance="hide" />;
+   // };
+
    const connectWallet = async () => {
       try {
          if (window.ethereum) {
+            // Call the ConnectButton component
+            // ConnectButton();
+
             const accounts = await window.ethereum.request({
                method: 'eth_requestAccounts',
             });
@@ -92,6 +99,14 @@ export const StateContextProvider = ({ children }) => {
       } catch (error) {
          console.error('Error signing in with message hash:', error);
       }
+   };
+
+   const ConnectButton = () => {
+      return (
+         <>
+            <w3m-button balance="hide" />;{connectWallet}
+         </>
+      );
    };
 
    // const connectWallet = async () => {
@@ -272,7 +287,8 @@ export const StateContextProvider = ({ children }) => {
    return (
       <StateContext.Provider
          value={{
-            connectWallet,
+            // connectWallet,
+            ConnectButton,
          }}
       >
          {children}

@@ -3,7 +3,7 @@
 import React from 'react';
 import { useRouter } from 'next/router';
 import Products from './api/[id]'; // Import your product data
-import Style from '@/styles/single.module.css';
+import Link from 'next/link';
 
 const Single = () => {
    const router = useRouter();
@@ -12,10 +12,7 @@ const Single = () => {
    // Find the product with the matching ID
    const product = Products.find((product) => product.id === id);
 
-   // const categories = Products.map((category) => category.category);
-   // console.log(categories);
-
-   if (product) {
+   if (!product) {
       return (
          <>
             <div className="ml-2 mt-28 text-gray-400 w-full bg-green-500 md:bg-red-500 lg:bg-blue-500 ">
@@ -86,12 +83,28 @@ const Single = () => {
 
    // Render the product details
    return (
-      <div>
-         <div className={Style.main}>
+      <div className="mt-20">
+         <Link href="/books">
+            <svg
+               xmlns="http://www.w3.org/2000/svg"
+               fill="none"
+               viewBox="0 0 24 24"
+               strokeWidth={1.5}
+               stroke="currentColor"
+               className="text-white ml-8 w-12 h-12"
+            >
+               <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M6.75 15.75L3 12m0 0l3.75-3.75M3 12h18"
+               />
+            </svg>
+         </Link>
+         <div className="md:flex w-[70%] flex-row m-auto pt-16 justify-around items-center gap-4">
             {product ? (
                <>
                   <img
-                     className=" object-cover rounded-sm"
+                     className="m-auto object-cover rounded-md"
                      src={product.image}
                      width={300}
                      height={200}
@@ -100,14 +113,18 @@ const Single = () => {
 
                   {/* <img class="h-48 w-full object-cover md:h-full md:w-48" src="/img/store.jpg" alt="Man looking at item at a store" /> */}
 
-                  <div className={Style.imgContent}>
+                  <div className="m-4">
                      <h4 className="text-white">{product.title}</h4>
                      <h4 className="text-gray-500">{product.category}</h4>
                      <p className="text-white">{product.description}</p>
 
-                     <div className={Style.priceBuy}>
-                        <span className="text-white">${product.price}</span>
-                        <button className="text-white">Buy Now</button>
+                     <div className="flex flex-col">
+                        <span className="text-gray-500 pb-3 ">
+                           TKC$ {product.price}
+                        </span>
+                        <button className="w-full text-white mt-1 bg-yellow-700 py-1 px-2 rounded-sm hover:bg-yellow-800 focus:outline-none focus:ring-1 focus:ring-yellow-500 focus:ring-opacity-50">
+                           Buy Now
+                        </button>
                      </div>
                   </div>
                </>

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import Style from '@/styles/messages.module.css';
 
 const Messages = () => {
-   const ipfsHash = 'QmfMQiWGrcswgwc3BsjLuprEV95ZQhHQj6a4Ygy1NHhVs9'; // Replace with your IPFS hash
+   const ipfsHash = 'QmfMQiWGrcswgwc3BsjLuprEV95ZQhHQj6a4Ygy1NHhVs9';
    const gatewayUrl = `https://ipfs.io/ipfs/${ipfsHash}`;
    const [imageUrls, setImageUrls] = useState([]);
    const [messages, setMessages] = useState([]);

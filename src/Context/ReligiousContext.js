@@ -78,7 +78,6 @@ export const StateContextProvider = ({ children }) => {
                   const storedData = JSON.parse(
                      localStorage.getItem('responseData')
                   );
-                  console.log(storedData);
                } else {
                   console.error(
                      `API request failed with status code ${res.status}`

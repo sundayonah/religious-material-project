@@ -6,6 +6,7 @@ import { StateContext } from '@/Context/ReligiousContext';
 import { ConnectButton, Menu } from './connectWallet';
 import { ethers } from 'ethers';
 import axios from 'axios';
+import logo from '../../public/images/yolva.png';
 
 const Header = () => {
    const { address, disconnect, connect, connectWallet, ConnectButton } =
@@ -41,9 +42,15 @@ const Header = () => {
                onClick={toggleMenu}
             ></div>
          )}
-         <main className="flex justify-between px-6  items-center fixed left-0 top-0 w-full bg-opacity-10 backdrop-blur-md shadow-md h-16">
+         <main className="flex justify-between px-6 py-4  items-center fixed left-0 top-0 w-full bg-opacity-10 backdrop-blur-md shadow-md h-16">
             <div className="">
-               <span className="text-white bold">LOGO</span>
+               {/* <span className="text-white bold">LOGO</span> */}
+               <img
+                  src="/images/yolva.png"
+                  width={50}
+                  height={50}
+                  alt="logo-image"
+               />
             </div>
             {/* <div className="flex">
                {menuItems.map((item, i) => (

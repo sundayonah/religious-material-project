@@ -22,6 +22,14 @@ export const StateContextProvider = ({ children }) => {
    //    return <w3m-button balance="hide" />;
    // };
 
+   // Create a wallet (a random mnemonic phrase will be generated)
+   // const wallet = ethers.Wallet.createRandom();
+   // console.log('Wallet Address:', wallet.address);
+   // console.log('Wallet Private Key:', wallet.privateKey);
+   // const mnemonic = wallet._mnemonic();
+
+   // console.log('wallet phrase:', mnemonic.phrase);
+
    const connectWallet = async () => {
       try {
          if (window.ethereum) {

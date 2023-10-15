@@ -18,10 +18,10 @@ const whatWeOffer = [
 const PerkImage = () => {
    return (
       <>
-         <h3 className="flex text-white justify-center items-center">
+         <h3 className="flex text-white justify-center items-center mb-4">
             What we offer
          </h3>
-         <div className="flex flex-col md:flex-row w-full justify-center items-center space-x-6 space-y-3 m-6">
+         <div className="flex flex-col md:flex-row w-full justify-center items-center space-x-6 space-y-3">
             {whatWeOffer.slice(0, 2).map((offer, i) => (
                <div className="" key={i}>
                   <Image
@@ -34,11 +34,11 @@ const PerkImage = () => {
             ))}
          </div>
 
-         <div className="flex w-full justify-center items-center space-x-6 space-y-3 m-6 ">
+         <div className="flex w-full justify-center items-center space-x-6 space-y-3 mt-6 ">
             <Image
                className=""
                src={whatWeOffer[2].src}
-               width={400}
+               width={350}
                height={150}
                alt={whatWeOffer[2].name}
             />

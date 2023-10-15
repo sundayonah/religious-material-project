@@ -128,7 +128,7 @@ const Books = () => {
             <div className={Style.productIcons}></div>
             <div className={Style.namePrice}>
                <h5 className={Style.productName}>{title}</h5>
-               <h4 className={Style.productPrice}>${price}</h4>
+               <h4 className={Style.productPrice}>$TKC {price}</h4>
             </div>
          </div>
       ));

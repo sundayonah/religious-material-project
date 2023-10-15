@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useContext, createContext } from 'react';
 import axios from 'axios';
 import { ethers } from 'ethers';
+import { useW3MButton } from 'wagmi'; // Import the custom hook from 'wagmi'
 
 export const StateContext = createContext({});
 
@@ -13,28 +14,18 @@ export const StateContextProvider = ({ children }) => {
    // const address = useAddress();
    // const connect = useMetamask();
    // const disconnect = useDisconnect();
+
    const [accounts, setAccounts] = useState('');
    const [isLoading, setIsLoading] = useState(false);
+   const [isConnected, setIsConnected] = useState(false);
 
-   // console.log(address);
-
-   // const ConnectButton = () => {
-   //    return <w3m-button balance="hide" />;
-   // };
-
-   // Create a wallet (a random mnemonic phrase will be generated)
-   // const wallet = ethers.Wallet.createRandom();
-   // console.log('Wallet Address:', wallet.address);
-   // console.log('Wallet Private Key:', wallet.privateKey);
-   // const mnemonic = wallet._mnemonic();
-
-   // console.log('wallet phrase:', mnemonic.phrase);
-
-   const connectWallet = async () => {
+   const signIn = async () => {
+      setIsConnected(false);
       try {
+         // if (!isConnected) {
          if (window.ethereum) {
-            // Call the ConnectButton component
-            // ConnectButton();
+            // // Call the ConnectButton component
+            // // ConnectButton();
 
             const accounts = await window.ethereum.request({
                method: 'eth_requestAccounts',
@@ -108,13 +99,19 @@ export const StateContextProvider = ({ children }) => {
       }
    };
 
-   const ConnectButton = () => {
-      return (
-         <>
-            <w3m-button balance="hide" />;{connectWallet}
-         </>
-      );
+   const Connect = () => {
+      // <w3m-button balance="hide" />;
+      // setIsConnected(true);
+      // signIn();
+      return <w3m-button balance="hide" />;
    };
+
+   // useEffect(() => {
+   //    // Check if the third-party component is connected when the component mounts
+   //    if (window.ethereum) {
+   //       setIsConnected(true);
+   //    }
+   // }, []);
 
    // const connectWallet = async () => {
    //    try {
@@ -295,7 +292,8 @@ export const StateContextProvider = ({ children }) => {
       <StateContext.Provider
          value={{
             // connectWallet,
-            ConnectButton,
+            signIn,
+            Connect,
          }}
       >
          {children}

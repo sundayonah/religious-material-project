@@ -84,23 +84,28 @@ export default function Home() {
    ////////////////////////////////////////////////////////////////
    const { address, disconnect, connect } = useContext(StateContext);
 
+   // p {
+   //    margin-bottom: 1.5rem;
+   //    max-width: 35em;
+   // }
+
    return (
-      <div className="mt-28">
-         <div className=" flex w-full flex-col md:flex-row space-x-6 justify-evenly items-center m-4">
+      <div className="mt-14 p-4 m-6">
+         <div className=" flex w-full flex-col md:flex-row space-x-6 justify-evenly items-center ">
             <div className="">
-               <h3 className="text-[#DAA851]">
+               <h3 className="text-[#DAA851] mb-5 text-3xl capitalize">
                   Explore a Word of Christian <br /> Literature and Oratory
                </h3>
-               <p className=" text-[#fff]">
+               <p className=" mb-6 max-w-lg text-[#fff]">
                   Dive into our vast collection of Faith-based literature, fuel
                   your spirit with enlightening sermons and music and make
                   seamless downloads using E-Wallet{' '}
                </p>
-               <div className="flex w-[85%] text-[#fff] justify-center items-center  p-1 rounded-sm bg-[#DAA851] mb-7 ">
+               <div className="flex w-[90%] text-[#fff] justify-center items-center  p-1 m-auto rounded-sm bg-[#DAA851] mb-7 cursor-pointer ">
                   <button>Get Stared</button>
                </div>
             </div>
-            <div className="">
+            <div className=" m-auto">
                <Image
                   src="/images/explore2.jpg"
                   width={400}

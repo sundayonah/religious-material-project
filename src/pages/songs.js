@@ -1,12 +1,20 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
+import { StateContext } from '@/Context/ReligiousContext';
+import { useAccount } from 'wagmi';
+
 // import Style from '@/styles/messages.module.css';
 
 const Messages = () => {
+   const { UnStake } = useContext(StateContext);
+
    const ipfsHash = 'QmfMQiWGrcswgwc3BsjLuprEV95ZQhHQj6a4Ygy1NHhVs9';
    const gatewayUrl = `https://ipfs.io/ipfs/${ipfsHash}`;
    const [imageUrls, setImageUrls] = useState([]);
    const [messages, setMessages] = useState([]);
    const [selectedProduct, setSelectedProduct] = useState(null);
+
+   const { address } = useAccount();
+   // console.log(address);
 
    const messagesDetails = [
       {
@@ -99,8 +107,8 @@ const Messages = () => {
 
          // Remove duplicates by converting the array to a Set and then back to an array
          const uniqueUrls = Array.from(new Set(urls));
-
          setImageUrls(uniqueUrls);
+         // console.log(uniqueUrls);
          setMessages(updatedMessages);
       } catch (error) {
          console.error('Error fetching folder content:', error);
@@ -127,9 +135,83 @@ const Messages = () => {
 
    const buyNow = (product) => {
       if (product) {
-         console.log('Buy Now clicked for:', product.price);
+         // UnStake();
+
+         // Find the index of the product in messagesDetails using its id
+         const productIndex = messagesDetails.findIndex(
+            (message) => message.id === product.id
+         );
+
+         if (productIndex !== -1) {
+            // Retrieve the corresponding image URL based on the product's index
+            const imageUrl = imageUrls[productIndex];
+
+            // Store the purchased product with the imageUrl
+            const purchasedProduct = {
+               ...product,
+               imageUrl,
+            };
+
+            // Add the purchased product and associated address to the mapping
+            const purchasedProducts =
+               JSON.parse(localStorage.getItem('purchasedProducts')) || [];
+            purchasedProducts.push({ product: purchasedProduct, address });
+            localStorage.setItem(
+               'purchasedProducts',
+               JSON.stringify(purchasedProducts)
+            );
+         } else {
+            console.error('Product not found in messagesDetails.');
+         }
       }
    };
+
+   // const buyNow = (product) => {
+   //    if (product) {
+   //       // UnStake();
+   //       console.log(product);
+
+   //       // Store the essential information of the purchased product
+   //       const purchasedProduct = {
+   //          id: product.id,
+   //          title: product.title,
+   //          artist: product.artist,
+   //          price: product.price,
+   //          // imageUrl: uniqueUrls,
+   //          // Include any other relevant fields you need
+   //       };
+   //       console.log(purchasedProduct);
+
+   //       // Add the purchased product and associated address to the mapping
+   //       const purchasedProducts =
+   //          JSON.parse(localStorage.getItem('purchasedProducts')) || [];
+   //       purchasedProducts.push({ product: purchasedProduct, address });
+   //       localStorage.setItem(
+   //          'purchasedProducts',
+   //          JSON.stringify(purchasedProducts)
+   //       );
+   //       console.log(purchasedProducts);
+   //       console.log(address);
+   //    }
+   // };
+
+   // const buyNow = (product) => {
+   //    if (product) {
+   //       UnStake();
+
+   //       // Add the purchased product and associated address to the mapping
+   //       const purchasedProducts =
+   //          JSON.parse(localStorage.getItem('purchasedProducts')) || [];
+   //       purchasedProducts.push({ product, address });
+   //       localStorage.setItem(
+   //          'purchasedProducts',
+   //          JSON.stringify(purchasedProducts)
+   //       );
+   //       console.log(purchasedProducts);
+   //       console.log(address);
+   //    }
+   // };
+
    return (
       <>
          <div className="w-[95%] m-auto mt-28 ">

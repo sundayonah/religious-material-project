@@ -24,8 +24,9 @@ const Header = () => {
 
    const [accounts, setAccounts] = useState('');
    const [isLoading, setIsLoading] = useState(false);
-   const [isMenuOpen, setIsMenuOpen] = useState(false); // State to control menu visibility
+   const [isMenuOpen, setIsMenuOpen] = useState(false);
    const [walletConnected, setWalletConnected] = useState(false);
+   const [signInCompleted, setSignInCompleted] = useState(false);
 
    // console.log(address);
 
@@ -59,15 +60,18 @@ const Header = () => {
             // // Call the ConnectButton component
             // // ConnectButton();
 
-            const accounts = await window.ethereum.request({
-               method: 'eth_requestAccounts',
-            });
+            // const accounts = await window.ethereum.request({
+            //    method: 'eth_requestAccounts',
+            // });
 
             const provider = new ethers.providers.Web3Provider(window.ethereum);
             const signer = provider.getSigner();
 
+            console.log(signer);
+
             setIsLoading(true);
 
+            // setSignInCompleted(false);
             const messageHash = ethers.utils.hashMessage(
                'Sign-in to web3 kigdom-coin e-comerce'
             );
@@ -124,6 +128,7 @@ const Header = () => {
                console.error('User signature not found in local storage');
             }
             setIsLoading(false);
+            setSignInCompleted(true);
          } else {
             console.error('MetaMask not installed');
          }
@@ -132,20 +137,35 @@ const Header = () => {
       }
    };
 
-   useEffect(() => {
-      const signInFlag = localStorage.getItem('signInCompleted');
+   // useEffect(() => {
+   //    const signInFlag = localStorage.getItem('signInCompleted');
 
-      if (address && isDisconnected !== true) {
-         if (signInFlag !== 'true' && !walletConnected) {
-            signIn();
-            // Set the signIn flag to indicate that sign-in has been completed
-            localStorage.setItem('signInCompleted', 'true');
+   //    if (address && isDisconnected !== true) {
+   //       if (signInFlag !== 'true' && !walletConnected) {
+   //          signIn();
+   //          // Set the signIn flag to indicate that sign-in has been completed
+   //          localStorage.setItem('signInCompleted', 'true');
 
-            // Set walletConnected to true to prevent multiple sign-ins
-            setWalletConnected(true);
-         }
-      }
-   }, [address, isDisconnected, walletConnected]);
+   //          // Set walletConnected to true to prevent multiple sign-ins
+   //          setWalletConnected(true);
+   //       }
+   //    }
+   // }, [address, isDisconnected, walletConnected]);
+
+   // useEffect(() => {
+   //    // Check if the wallet is disconnected or signInCompleted is false
+   //    // if (isDisconnected === false){
+   //    if (isDisconnected === false) {
+   //       signIn();
+   //    }
+   // }, [address, isDisconnected]);
+
+   // useEffect(() => {
+   //    // Check if the wallet is disconnected or signInCompleted is false
+   //    if (isDisconnected === false && !signInCompleted) {
+   //       signIn();
+   //    }
+   // }, [address, isDisconnected, signInCompleted]);
 
    return (
       <>

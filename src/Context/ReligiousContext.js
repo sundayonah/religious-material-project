@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useContext, createContext } from 'react';
 import axios from 'axios';
 import { ethers } from 'ethers';
-import { useW3MButton } from 'wagmi'; // Import the custom hook from 'wagmi'
+import abi from '../Contract/abi.json';
+import { useAccount } from 'wagmi';
 
 export const StateContext = createContext({});
 
@@ -15,11 +16,22 @@ export const StateContextProvider = ({ children }) => {
    // const connect = useMetamask();
    // const disconnect = useDisconnect();
 
+   const minningTestnetContractAddress =
+      '0x72BC9712BEb034977f5A0830CE1F3E6ff9440486';
+
+   const { address } = useAccount();
+
+   // console.log(address);
+
    const [accounts, setAccounts] = useState('');
    const [isLoading, setIsLoading] = useState(false);
    const [isConnected, setIsConnected] = useState(false);
+   const [dailyRoi, setDailyRoi] = useState(0);
+   // const [walletConnected, setWalletConnected] = useState(false);
 
    const signIn = async () => {
+      // setWalletConnected(true);
+
       setIsConnected(false);
       try {
          // if (!isConnected) {
@@ -99,12 +111,85 @@ export const StateContextProvider = ({ children }) => {
       }
    };
 
-   const Connect = () => {
-      // <w3m-button balance="hide" />;
-      // setIsConnected(true);
-      // signIn();
-      return <w3m-button balance="hide" />;
+   ///// UNSTAKE F(x) ///////////
+   const UnStake = async () => {
+      const provider = new ethers.providers.Web3Provider(window.ethereum);
+
+      const signer = provider.getSigner();
+
+      const contract = new ethers.Contract(
+         minningTestnetContractAddress,
+         abi,
+         signer
+      );
+      // setNoProfitYet(false);
+      // setStakeLoading(true);
+      try {
+         let tx;
+
+         // if (profitPool == 0) {
+         //    setNoProfitYet(true);
+         //    setTimeout(() => {
+         //       setNoProfitYet(false);
+         //    }, 3000);
+         // // } else {
+         //    setNoProfitYet(false);
+         //    setProfitLoading(true);
+         tx = await contract.unStake(0, {
+            gasLimit: 200000,
+            gasPrice: ethers.utils.parseUnits('10.0', 'gwei'),
+         });
+         const receipt = await tx.wait();
+         if (receipt.status == 1) {
+            // setProfitLoading(false);
+            // Reload the page after a successful transaction
+            window.location.reload();
+         } else {
+            // setProfitLoading(false);
+         }
+         // }
+      } catch (err) {
+         console.error(err);
+      }
+      // setStakeLoading(false);
    };
+
+   useEffect(() => {
+      const ROI = async () => {
+         // daily roi
+
+         try {
+            const provider = new ethers.providers.Web3Provider(window.ethereum);
+            // const provider = new ethers.getDefaultProvider(
+            //    'https://bsc-dataseed1.binance.org/'
+            // );
+
+            // const signer = provider.getSigner();
+            const contractInstance = new ethers.Contract(
+               minningTestnetContractAddress,
+               abi,
+               provider
+            );
+
+            const roi = await contractInstance.YEAR_RATE();
+            const dailyRoi = roi.toString();
+            const dailyRoiInEther = ethers.utils.formatUnits(dailyRoi, 'ether');
+            const dailyRoiAmount = (dailyRoiInEther / 60) * 30;
+            console.log(dailyRoiAmount);
+            setDailyRoi(dailyRoiAmount);
+         } catch (err) {
+            console.log(err);
+         }
+      };
+      ROI();
+   }, []);
+
+   // const Connect = () => {
+   //    // <w3m-button balance="hide" />;
+   //    // setIsConnected(true);
+   //    // signIn();
+   //    return <w3m-button balance="hide" />;
+   // };
 
    // useEffect(() => {
    //    // Check if the third-party component is connected when the component mounts
@@ -293,7 +378,9 @@ export const StateContextProvider = ({ children }) => {
          value={{
             // connectWallet,
             signIn,
-            Connect,
+            UnStake,
+            // walletConnected,
+            // Connect,
          }}
       >
          {children}

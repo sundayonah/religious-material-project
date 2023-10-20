@@ -1,8 +1,24 @@
-import React, { useState, useEffect, useContext, createContext } from 'react';
+import React, {
+   useState,
+   useEffect,
+   useRef,
+   useContext,
+   createContext,
+} from 'react';
 import axios from 'axios';
 import { ethers } from 'ethers';
 import abi from '../Contract/abi.json';
 import { useAccount } from 'wagmi';
+
+///////for download//////
+
+import { useDispatch, useSelector } from 'react-redux';
+import {
+   togglePlayback,
+   setActiveSong,
+} from '@/reduxToolkit/slices/audioSlice';
+
+//////////////////////////////
 
 export const StateContext = createContext({});
 
@@ -22,12 +38,58 @@ export const StateContextProvider = ({ children }) => {
    const { address } = useAccount();
 
    // console.log(address);
+   /////////////// for download///////
+
+   const audioRef = useRef(null);
+   const audioRefs = {};
+   // const purchasedSongs = useSelector((state) => state.songs.purchasedSongs);
+
+   const songStates = useSelector((state) => state.audio.songStates);
+   const activeSongId = useSelector((state) => state.audio.activeSongId);
+   const dispatch = useDispatch();
+   //////////////////////////////////
 
    const [accounts, setAccounts] = useState('');
    const [isLoading, setIsLoading] = useState(false);
    const [isConnected, setIsConnected] = useState(false);
    const [dailyRoi, setDailyRoi] = useState(0);
    // const [walletConnected, setWalletConnected] = useState(false);
+
+   const handlePlayClick = (productId) => {
+      const audio = audioRefs[productId];
+
+      if (audio) {
+         if (productId === activeSongId) {
+            // Toggle play/pause state when clicking play button
+            if (audio.paused) {
+               console.log('Playing...');
+               audio.play().catch((error) => {
+                  console.error('Failed to play audio:', error);
+               });
+            } else {
+               console.log('Pausing...');
+               audio.pause();
+            }
+
+            // Toggle the playback state in the Redux store
+            dispatch(togglePlayback(productId));
+         } else {
+            // If a new song is clicked, play it and update the state
+            dispatch(setActiveSong(productId));
+
+            // Pause other songs and update their playback state
+            Object.keys(audioRefs).forEach((songId) => {
+               if (songId !== productId) {
+                  const otherAudio = audioRefs[songId];
+                  if (otherAudio) {
+                     otherAudio.pause();
+                     dispatch(togglePlayback(songId)); // Update the playback state in the Redux store
+                  }
+               }
+            });
+         }
+      }
+   };
 
    const signIn = async () => {
       // setWalletConnected(true);
@@ -379,6 +441,11 @@ export const StateContextProvider = ({ children }) => {
             // connectWallet,
             signIn,
             UnStake,
+            handlePlayClick,
+            songStates,
+            activeSongId,
+            audioRefs,
+
             // walletConnected,
             // Connect,
          }}

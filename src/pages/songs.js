@@ -1,10 +1,15 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { StateContext } from '@/Context/ReligiousContext';
 import { useAccount } from 'wagmi';
+import { useDispatch } from 'react-redux';
+import { addSong } from '../reduxToolkit/slices/songsSlices';
+// import phil from '../../public/phill_thompson.mp3';
 
 // import Style from '@/styles/messages.module.css';
 
 const Messages = () => {
+   const dispatch = useDispatch();
+
    const { UnStake } = useContext(StateContext);
 
    const ipfsHash = 'QmfMQiWGrcswgwc3BsjLuprEV95ZQhHQj6a4Ygy1NHhVs9';
@@ -22,7 +27,8 @@ const Messages = () => {
          title: 'high-back bench',
          artist: 'John Doe',
          category: 'healing',
-         file: 'https',
+         // file: 'https',
+         file: '/phill_thompson.mp3',
          price: 9.99,
          imageUrl: '',
       },
@@ -31,7 +37,7 @@ const Messages = () => {
          title: 'albany table',
          artist: 'John Doe',
          category: 'faith',
-         file: 'https',
+         file: '/Minister_GUC.mp3',
          price: 79.99,
          imageUrl: '',
       },
@@ -152,14 +158,19 @@ const Messages = () => {
                imageUrl,
             };
 
-            // Add the purchased product and associated address to the mapping
+            // Serialize the purchased product before storing it
+            const serializedProduct = JSON.stringify(purchasedProduct);
+
+            // Add the purchased product to localStorage
             const purchasedProducts =
                JSON.parse(localStorage.getItem('purchasedProducts')) || [];
-            purchasedProducts.push({ product: purchasedProduct, address });
+            purchasedProducts.push(serializedProduct);
             localStorage.setItem(
                'purchasedProducts',
                JSON.stringify(purchasedProducts)
             );
+
+            console.log(purchasedProduct);
          } else {
             console.error('Product not found in messagesDetails.');
          }

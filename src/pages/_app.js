@@ -14,6 +14,8 @@ import {
    polygon,
    sepolia,
 } from 'wagmi/chains';
+import { Provider } from 'react-redux';
+import store from '../reduxToolkit/store';
 
 // 1. Get projectId
 const projectId = 'de7693706b2bb6e9b2e049f09e7ebad1';
@@ -37,10 +39,12 @@ export default function App({ Component, pageProps }) {
    return (
       <>
          <WagmiConfig config={wagmiConfig}>
-            <StateContextProvider>
-               <Header />
-               <Component {...pageProps} />
-            </StateContextProvider>
+            <Provider store={store}>
+               <StateContextProvider>
+                  <Header />
+                  <Component {...pageProps} />
+               </StateContextProvider>
+            </Provider>
          </WagmiConfig>
       </>
    );

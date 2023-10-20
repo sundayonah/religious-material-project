@@ -267,3 +267,58 @@ const signIn = async () => {
 // };
 
 // export default Download;
+
+//////////////////////////////////// DOWNLOAD///////////////
+
+// import { useDispatch, useSelector } from 'react-redux';
+// import {
+//    togglePlayback,
+//    setActiveSong,
+// } from '@/reduxToolkit/slices/audioSlice';
+
+//   const audioRef = useRef(null);
+
+//   const dispatch = useDispatch();
+
+// const audioRefs = {};
+// const purchasedSongs = useSelector((state) => state.songs.purchasedSongs);
+
+// const songStates = useSelector((state) => state.audio.songStates);
+// const activeSongId = useSelector((state) => state.audio.activeSongId);
+
+// Function to handle play/pause logic
+// const handlePlayClick = (productId) => {
+//    const audio = audioRefs[productId];
+
+//    if (audio) {
+//       if (productId === activeSongId) {
+//          // Toggle play/pause state when clicking play button
+//          if (audio.paused) {
+//             console.log('Playing...');
+//             audio.play().catch((error) => {
+//                console.error('Failed to play audio:', error);
+//             });
+//          } else {
+//             console.log('Pausing...');
+//             audio.pause();
+//          }
+
+//          // Toggle the playback state in the Redux store
+//          dispatch(togglePlayback(productId));
+//       } else {
+//          // If a new song is clicked, play it and update the state
+//          dispatch(setActiveSong(productId));
+
+//          // Pause other songs and update their playback state
+//          Object.keys(audioRefs).forEach((songId) => {
+//             if (songId !== productId) {
+//                const otherAudio = audioRefs[songId];
+//                if (otherAudio) {
+//                   otherAudio.pause();
+//                   dispatch(togglePlayback(songId)); // Update the playback state in the Redux store
+//                }
+//             }
+//          });
+//       }
+//    }
+// };

@@ -16,6 +16,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import {
    togglePlayback,
    setActiveSong,
+   setCurrentTime,
+   setProgressBarWidth,
+   setDuration,
 } from '@/reduxToolkit/slices/audioSlice';
 
 //////////////////////////////
@@ -46,6 +49,11 @@ export const StateContextProvider = ({ children }) => {
 
    const songStates = useSelector((state) => state.audio.songStates);
    const activeSongId = useSelector((state) => state.audio.activeSongId);
+   const repeat = useSelector((state) => state.audio.repeat);
+   const isPlaying = useSelector(
+      (state) => state.audio.songStates[state.audio.activeSongId]
+   );
+
    const dispatch = useDispatch();
    //////////////////////////////////
 
@@ -53,7 +61,82 @@ export const StateContextProvider = ({ children }) => {
    const [isLoading, setIsLoading] = useState(false);
    const [isConnected, setIsConnected] = useState(false);
    const [dailyRoi, setDailyRoi] = useState(0);
+   const [progressUpdateInterval, setProgressUpdateInterval] = useState(null);
+
    // const [walletConnected, setWalletConnected] = useState(false);
+
+   // const handlePlayClick = (productId) => {
+   //    const audio = audioRefs[productId];
+
+   //    if (audio) {
+   //       if (productId === activeSongId) {
+   //          // Toggle play/pause state when clicking play button
+   //          if (audio.paused) {
+   //             console.log('Playing...');
+   //             audio.play().catch((error) => {
+   //                console.error('Failed to play audio:', error);
+   //             });
+   //             console.log('stop Playing...');
+   //          } else {
+   //             console.log('Pausing...');
+   //             audio.pause();
+   //          }
+   //          if (isPlaying) {
+   //             // If it's playing, pause the audio
+   //             audio.pause();
+   //             clearInterval(progressUpdateInterval); // Stop updating the progress bar
+   //          } else {
+   //             // If it's paused, play the audio
+   //             audio.play().catch((error) => {
+   //                console.error('Failed to play audio:', error);
+   //             });
+
+   //             // Start a new interval to update the progress bar
+   //             const interval = setInterval(() => {
+   //                // Update the progress bar based on the audio's current time
+   //                const currentTime = audio.currentTime;
+   //                console.log(currentTime);
+   //                // console.log(currentTime);
+   //                const totalTime = audio.duration;
+   //                console.log(totalTime);
+   //                if (!isNaN(totalTime)) {
+   //                   const percentage = (currentTime / totalTime) * 100;
+   //                   console.log(percentage);
+   //                   dispatch(setProgressBarWidth(percentage));
+   //                   dispatch(setCurrentTime(currentTime));
+   //                }
+   //             }, 1000); // Update every 1000 milliseconds (1 second)
+   //             setProgressUpdateInterval(interval);
+   //          }
+
+   //          // Toggle the playback state in the Redux store
+   //          dispatch(togglePlayback(productId));
+   //       } else {
+   //          // If a new song is clicked, play it and update the state
+   //          dispatch(setActiveSong(productId));
+
+   //          // Pause other songs and update their playback state
+   //          Object.keys(audioRefs).forEach((songId) => {
+   //             if (songId !== productId) {
+   //                const otherAudio = audioRefs[songId];
+   //                if (otherAudio) {
+   //                   otherAudio.pause();
+   //                   dispatch(togglePlayback(songId));
+   //                }
+   //             }
+   //          });
+
+   //          // Handle song repeat logic
+   //          if (repeat) {
+   //             // Play the same song again
+   //             audio.currentTime = 0;
+   //             audio.play().catch((error) => {
+   //                console.error('Failed to play audio:', error);
+   //             });
+   //          }
+   //       }
+   //    }
+   // };
 
    const handlePlayClick = (productId) => {
       const audio = audioRefs[productId];
@@ -66,9 +149,44 @@ export const StateContextProvider = ({ children }) => {
                audio.play().catch((error) => {
                   console.error('Failed to play audio:', error);
                });
+               console.log('stop Playing...');
             } else {
                console.log('Pausing...');
                audio.pause();
+            }
+
+            // Ensure audio is loaded before attempting to get the duration
+            audio.onloadedmetadata = () => {
+               const newDuration = audio.duration;
+               console.log(newDuration);
+               dispatch(setDuration(newDuration));
+            };
+
+            if (isPlaying) {
+               // If it's playing, pause the audio
+               audio.pause();
+               clearInterval(progressUpdateInterval); // Stop updating the progress bar
+            } else {
+               // If it's paused, play the audio
+               audio.play().catch((error) => {
+                  console.error('Failed to play audio:', error);
+               });
+
+               // Start a new interval to update the progress bar
+               const interval = setInterval(() => {
+                  // Update the progress bar based on the audio's current time
+                  const currentTime = audio.currentTime;
+                  // console.log(currentTime);
+                  const totalTime = audio.duration;
+                  if (!isNaN(totalTime)) {
+                     const percentage = (currentTime / totalTime) * 100;
+                     console.log(percentage);
+                     dispatch(setProgressBarWidth(percentage));
+                     dispatch(setCurrentTime(currentTime));
+                     dispatch(setDuration(totalTime));
+                  }
+               }, 1000); // Update every 1000 milliseconds (1 second)
+               setProgressUpdateInterval(interval);
             }
 
             // Toggle the playback state in the Redux store
@@ -83,13 +201,73 @@ export const StateContextProvider = ({ children }) => {
                   const otherAudio = audioRefs[songId];
                   if (otherAudio) {
                      otherAudio.pause();
-                     dispatch(togglePlayback(songId)); // Update the playback state in the Redux store
+                     dispatch(togglePlayback(songId));
                   }
                }
             });
+
+            // Handle song repeat logic
+            if (repeat) {
+               // Play the same song again
+               audio.currentTime = 0;
+               audio.play().catch((error) => {
+                  console.error('Failed to play audio:', error);
+               });
+            }
          }
       }
    };
+
+   const handleSongEnd = (productId) => {
+      // Check if the song should be repeated, if not, update its state
+      if (!repeat) {
+         dispatch(togglePlayback(productId)); // Update the playback state in the Redux store
+      }
+   };
+
+   // const handlePlayClick = (productId) => {
+   //    const audio = audioRefs[productId];
+
+   //    if (audio) {
+   //       if (productId === activeSongId) {
+   //          // Toggle play/pause state when clicking play button
+   //          if (audio.paused) {
+   //             console.log('Playing...');
+   //             audio.play().catch((error) => {
+   //                console.error('Failed to play audio:', error);
+   //             });
+   //          } else {
+   //             console.log('Pausing...');
+   //             audio.pause();
+   //          }
+
+   //          // Toggle the playback state in the Redux store
+   //          dispatch(togglePlayback(productId));
+   //       } else {
+   //          // If a new song is clicked, play it and update the state
+   //          dispatch(setActiveSong(productId));
+
+   //          // Pause other songs and update their playback state
+   //          Object.keys(audioRefs).forEach((songId) => {
+   //             if (songId !== productId) {
+   //                const otherAudio = audioRefs[songId];
+   //                if (otherAudio) {
+   //                   otherAudio.pause();
+   //                   dispatch(togglePlayback(songId)); // Update the playback state in the Redux store
+   //                }
+   //             }
+   //          });
+   //       }
+   //       // Handle song repeat logic
+   //       if (repeat) {
+   //          // Play the same song again
+   //          audio.currentTime = 0;
+   //          audio.play().catch((error) => {
+   //             console.error('Failed to play audio:', error);
+   //          });
+   //       }
+   //    }
+   // };
 
    const signIn = async () => {
       // setWalletConnected(true);
@@ -445,6 +623,8 @@ export const StateContextProvider = ({ children }) => {
             songStates,
             activeSongId,
             audioRefs,
+            repeat,
+            handleSongEnd,
 
             // walletConnected,
             // Connect,

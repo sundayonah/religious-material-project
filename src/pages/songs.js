@@ -2,15 +2,15 @@ import React, { useEffect, useState, useContext } from 'react';
 import { StateContext } from '@/Context/ReligiousContext';
 import { useAccount } from 'wagmi';
 import { useDispatch } from 'react-redux';
-import { addSong } from '../reduxToolkit/slices/songsSlices';
-// import phil from '../../public/phill_thompson.mp3';
+// import { addSong } from '../reduxToolkit/slices/songsSlices';
 
-// import Style from '@/styles/messages.module.css';
-
-const Messages = () => {
+const Songs = () => {
    const dispatch = useDispatch();
 
    const { UnStake } = useContext(StateContext);
+   // Initialize purchasedSongs and activeSongIndex state variables
+   const [purchasedSongs, setPurchasedSongs] = useState([]);
+   const [activeSongIndex, setActiveSongIndex] = useState(null);
 
    const ipfsHash = 'QmfMQiWGrcswgwc3BsjLuprEV95ZQhHQj6a4Ygy1NHhVs9';
    const gatewayUrl = `https://ipfs.io/ipfs/${ipfsHash}`;
@@ -46,7 +46,7 @@ const Messages = () => {
          title: 'accent chair',
          artist: 'John Doe',
          category: 'faith',
-         file: 'https',
+         file: '/Ludovico Piano.mp3',
          price: 25.99,
          imageUrl: '',
       },
@@ -105,7 +105,7 @@ const Messages = () => {
             (link) => `https://ipfs.io${link.getAttribute('href')}`
          );
 
-         // Set the image URL for each product in the Messages array
+         // Set the image URL for each product in the Songs array
          const updatedMessages = messagesDetails.map((message, index) => ({
             ...message,
             imageUrl: urls[index] || 'hello',
@@ -177,52 +177,6 @@ const Messages = () => {
       }
    };
 
-   // const buyNow = (product) => {
-   //    if (product) {
-   //       // UnStake();
-   //       console.log(product);
-
-   //       // Store the essential information of the purchased product
-   //       const purchasedProduct = {
-   //          id: product.id,
-   //          title: product.title,
-   //          artist: product.artist,
-   //          price: product.price,
-   //          // imageUrl: uniqueUrls,
-   //          // Include any other relevant fields you need
-   //       };
-   //       console.log(purchasedProduct);
-
-   //       // Add the purchased product and associated address to the mapping
-   //       const purchasedProducts =
-   //          JSON.parse(localStorage.getItem('purchasedProducts')) || [];
-   //       purchasedProducts.push({ product: purchasedProduct, address });
-   //       localStorage.setItem(
-   //          'purchasedProducts',
-   //          JSON.stringify(purchasedProducts)
-   //       );
-   //       console.log(purchasedProducts);
-   //       console.log(address);
-   //    }
-   // };
-
-   // const buyNow = (product) => {
-   //    if (product) {
-   //       UnStake();
-
-   //       // Add the purchased product and associated address to the mapping
-   //       const purchasedProducts =
-   //          JSON.parse(localStorage.getItem('purchasedProducts')) || [];
-   //       purchasedProducts.push({ product, address });
-   //       localStorage.setItem(
-   //          'purchasedProducts',
-   //          JSON.stringify(purchasedProducts)
-   //       );
-   //       console.log(purchasedProducts);
-   //       console.log(address);
-   //    }
-   // };
-
    return (
       <>
          <div className="w-[95%] m-auto mt-28 ">
@@ -284,13 +238,4 @@ const Messages = () => {
    );
 };
 
-export default Messages;
-
-// .messagesDetails {
-//    display: flex;
-//    padding: 1rem;
-//    border-radius: 0.5rem;
-//    box-shadow: 0.4rem 0.4rem 1rem #111, -0.4rem -0.4rem 1rem #333;
-//    box-shadow-index: 0.4rem 0.4rem 1rem #111 inset,
-//       -0.4rem -0.4rem 1rem #333 inset;
-// }
+export default Songs;

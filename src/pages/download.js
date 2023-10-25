@@ -1,24 +1,31 @@
-import React, { useContext, useEffect, useRef, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { useAccount } from 'wagmi';
 import { StateContext } from '@/Context/ReligiousContext';
 import AudioControl from '@/components/audioControl';
 import { PlayIcon, PauseIcon } from '@/components/icons';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+   setActiveSong,
+   setCurrentTime,
+   setDuration,
+   setProgressBarWidth,
+   togglePlayback,
+} from '@/reduxToolkit/slices/audioSlice';
 
 const Download = () => {
-   const songStates = useSelector((state) => state.audio.songStates);
+   const { handlePlayClick, audioRefs, handleSongEnd } =
+      useContext(StateContext);
    const activeSongId = useSelector((state) => state.audio.activeSongId);
-   const {
-      handlePlayClick,
-      // songStates,
-      // activeSongId,
-      audioRefs,
-      handleSongEnd,
-   } = useContext(StateContext);
+   const isPlaying = useSelector(
+      (state) => state.audio.songStates[state.audio.activeSongId]
+   );
+   const repeat = useSelector((state) => state.audio.repeat);
 
    const [purchasedProducts, setPurchasedProducts] = useState([]);
+   const [progressUpdateInterval, setProgressUpdateInterval] = useState(null);
 
    const { address } = useAccount();
+   const dispatch = useDispatch();
 
    useEffect(() => {
       // Retrieve the list of purchased products from local storage
@@ -32,6 +39,9 @@ const Download = () => {
       console.log(userPurchasedProducts.length);
       setPurchasedProducts(userPurchasedProducts);
    }, [address]);
+
+   // State to track the hover state of items
+   const [hoveredItemId, setHoveredItemId] = useState(null);
 
    if (purchasedProducts.length === 0) {
       return (
@@ -50,17 +60,19 @@ const Download = () => {
                      <div
                         key={id}
                         className="flex justify-between items-center mx-1 px-3 py-3 space-x-5 rounded-md bg-gray-500"
+                        onMouseEnter={() => setHoveredItemId(id)}
+                        onMouseLeave={() => setHoveredItemId(null)}
                      >
                         <div className="text-gray-700 relative">
                            <audio
-                              controls
+                              preload="auto"
+                              controls={false}
                               style={{ display: 'none' }}
                               ref={(ref) => (audioRefs[id] = ref)}
                               onEnded={() => handleSongEnd(id)}
                            >
                               <source src={file} type="audio/mpeg" />
                            </audio>
-
                            <img
                               src={imageUrl}
                               alt={`Image ${title}`}
@@ -70,17 +82,30 @@ const Download = () => {
                               onClick={() => handlePlayClick(id)}
                            />
 
-                           {activeSongId === id && (
+                           {activeSongId === id || hoveredItemId === id ? (
                               <div className="flex justify-center items-center p-1 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-white">
-                                 <button onClick={() => handlePlayClick(id)}>
-                                    {songStates[id] ? (
-                                       <PlayIcon />
+                                 <button
+                                    onClick={() =>
+                                       handlePlayClick(
+                                          id,
+                                          title,
+                                          artist,
+                                          imageUrl
+                                       )
+                                    }
+                                 >
+                                    {activeSongId === id ? (
+                                       isPlaying ? (
+                                          <PauseIcon />
+                                       ) : (
+                                          <PlayIcon />
+                                       )
                                     ) : (
-                                       <PauseIcon />
+                                       <PlayIcon />
                                     )}
                                  </button>
                               </div>
-                           )}
+                           ) : null}
                         </div>
                         <div className="">
                            <span className="text-white">{title}</span>
@@ -91,7 +116,7 @@ const Download = () => {
                )}
             </div>
          </div>
-         <AudioControl />
+         {isPlaying || activeSongId ? <AudioControl /> : null}
       </>
    );
 };

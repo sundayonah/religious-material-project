@@ -25,6 +25,7 @@ import {
    setCurrentTime,
    setProgressBarWidth,
    setDuration,
+   setImageUrl,
    handleControls, // New action for handling prev/next
 } from '@/reduxToolkit/slices/audioSlice';
 import { StateContext } from '@/Context/ReligiousContext';
@@ -63,13 +64,74 @@ const AudioPlayer = () => {
    const songDetails = useSelector((state) => state.audio.songDetails);
    // console.log(songDetails);
 
-   // const currentTime = useSelector((state) => state.audio.currentTime);
+   const imageUrl = useSelector((state) => state.audio.imageUrl);
    const volume = useSelector((state) => state.audio.volume);
 
    const purchasedProducts =
       JSON.parse(localStorage.getItem('purchasedProducts')) || [];
 
    // console.log('Active Song ID:', activeSongId);
+
+   const startProgressUpdateInterval = (audio) => {
+      const interval = setInterval(() => {
+         const currentTime = audio.currentTime;
+         const totalTime = audio.duration;
+         const image = audio.imageUrl;
+         console.log(image);
+         if (!isNaN(totalTime)) {
+            const percentage = (currentTime / totalTime) * 100;
+            dispatch(setProgressBarWidth(percentage));
+            dispatch(setCurrentTime(currentTime));
+            dispatch(setDuration(totalTime));
+            dispatch(setImageUrl(image));
+         }
+      }, 1000); // Update every 1000 milliseconds (1 second)
+      return interval;
+   };
+
+   // Define the progress update function.
+   const handleProgressUpdate = () => {
+      const audio = audioRefs[activeSongId];
+      if (audio && audio.duration) {
+         const currentTime = audio.currentTime;
+         const totalTime = audio.duration;
+         const percentage = (currentTime / totalTime) * 100;
+         dispatch(setProgressBarWidth(percentage));
+         dispatch(setCurrentTime(currentTime));
+         dispatch(setDuration(totalTime));
+         // dispatch(setImageUrl(image));
+      }
+   };
+
+   useEffect(() => {
+      // Set up a progress update interval when the component mounts
+      const audio = audioRefs[activeSongId];
+      if (audio && isPlaying) {
+         const interval = setInterval(handleProgressUpdate, 1000);
+         setProgressUpdateInterval(interval);
+
+         // Clear the interval when the component unmounts
+         return () => clearInterval(interval);
+      }
+   }, [activeSongId, isPlaying, audioRefs]);
+
+   const handlePlayPause = () => {
+      const audio = audioRefs[activeSongId];
+      if (audio) {
+         if (isPlaying) {
+            audio.pause();
+            clearInterval(progressUpdateInterval); // Clear the existing interval
+         } else {
+            audio.play().catch((error) => {
+               console.error('Failed to play audio:', error);
+            });
+            // Start the progress update interval and set it in state
+            const interval = setInterval(handleProgressUpdate);
+            setProgressUpdateInterval(interval);
+         }
+         dispatch(togglePlayback(activeSongId));
+      }
+   };
 
    const playNextSong = () => {
       const productIds = purchasedProducts.map((product) => {
@@ -93,63 +155,28 @@ const AudioPlayer = () => {
             const nextSongDetails = JSON.parse(
                purchasedProducts[nextSongIndex]
             );
-            console.log(nextSongDetails);
 
             // Retrieve the audio element for the current and next songs
             const currentAudio = audioRefs[activeSongId];
             const nextAudio = audioRefs[nextSongId];
-
             if (currentAudio && nextAudio) {
-               // Pause the current song and reset its currentTime to 0
                currentAudio.pause();
                currentAudio.currentTime = 0;
 
-               // Play the next song
-               nextAudio.play();
+               nextAudio.play().then(() => {
+                  // Update the active song in the Redux store after the audio has started playing
+                  dispatch(setActiveSong(nextSongId));
+                  dispatch(updateSongDetails(nextSongDetails));
 
-               // Update the active song in the Redux store
-               dispatch(setActiveSong(nextSongId));
-               dispatch(updateSongDetails(nextSongDetails));
-               // dispatch(setDuration(nextSongDetails.duration));
-            }
-         }
-      }
-   };
+                  nextAudio.addEventListener('loadedmetadata', () => {
+                     // Update the duration and progress bar width when the new audio is ready
+                     const newDuration = nextAudio.duration;
+                     dispatch(setDuration(newDuration));
 
-   const handlePlayPause = () => {
-      // Ensure there's an active song
-      if (activeSongId) {
-         // Toggle the play/pause state in the Redux store
-         dispatch(togglePlayback(activeSongId));
-
-         const audio = audioRefs[activeSongId];
-         // Retrieve the audio element for the active song
-
-         if (audio) {
-            if (isPlaying) {
-               // If it's playing, pause the audio
-               audio.pause();
-               clearInterval(progressUpdateInterval); // Stop updating the progress bar
-            } else {
-               // If it's paused, play the audio
-               audio.play().catch((error) => {
-                  console.error('Failed to play audio:', error);
+                     const interval = startProgressUpdateInterval(nextAudio);
+                     setProgressUpdateInterval(interval);
+                  });
                });
-
-               // Start a new interval to update the progress bar
-               const interval = setInterval(() => {
-                  // Update the progress bar based on the audio's current time
-                  const currentTime = audio.currentTime;
-                  // console.log(currentTime);
-                  const totalTime = audio.duration;
-                  // console.log(totalTime);
-                  if (!isNaN(totalTime)) {
-                     const percentage = (currentTime / totalTime) * 100;
-                     dispatch(setProgressBarWidth(percentage));
-                     dispatch(setCurrentTime(currentTime));
-                  }
-               }, 1000); // Update every 1000 milliseconds (1 second)
-               setProgressUpdateInterval(interval);
             }
          }
       }
@@ -187,18 +214,27 @@ const AudioPlayer = () => {
                currentAudio.pause();
                currentAudio.currentTime = 0;
 
-               // Play the previous song
-               previousAudio.play();
+               previousAudio.play().then(() => {
+                  // Update the active song in the Redux store after the audio has started playing
+                  dispatch(setActiveSong(previousSongId));
+                  dispatch(updateSongDetails(previousSongDetails));
 
-               // Update the active song in the Redux store
-               dispatch(setActiveSong(previousSongId));
-               dispatch(updateSongDetails(previousSongDetails));
+                  previousAudio.addEventListener('loadedmetadata', () => {
+                     // Update the duration and progress bar width when the new audio is ready
+                     const newDuration = previousAudio.duration;
+                     dispatch(setDuration(newDuration));
+
+                     // Clear the existing progress update interval before starting a new one
+                     clearInterval(progressUpdateInterval);
+
+                     const interval = setInterval(handleProgressUpdate, 1000);
+                     setProgressUpdateInterval(interval);
+                  });
+               });
             }
          }
       }
    };
-
-   // console the currentTime and duration
 
    // Define a function to format time (for example, to display in MM:SS format)
    const formatTime = (time) => {
@@ -238,48 +274,36 @@ const AudioPlayer = () => {
 
    // useEffect(() => {
    //    if (currentTime < 1) return;
-   //    const totalTime = ref.current?.duration;
-   //    console.log(currentTime.toFixed());
-   //    console.log(totalTime);
-   //    const percentage = ((currentTime / Math.floor(totalTime)) * 100).toFixed(
-   //       8
-   //    );
-   //    dispatch(setProgressBarWidth(percentage));
+
+   //    const audio = ref.current;
+
+   //    if (audio) {
+   //       audio.addEventListener('loadedmetadata', () => {
+   //          // The 'loadedmetadata' event is triggered when the duration becomes available
+   //          const totalTime = audio.duration;
+   //          console.log(totalTime);
+   //          const percentage = (currentTime / totalTime) * 100;
+   //          dispatch(setDuration(totalTime));
+   //          dispatch(setProgressBarWidth(percentage));
+   //       });
+
+   //       return () => {
+   //          // Clean up the event listener when the component unmounts
+   //          audio.removeEventListener('loadedmetadata');
+   //       };
+   //    }
    // }, [currentTime, dispatch]);
 
-   useEffect(() => {
-      if (currentTime < 1) return;
-
-      const audio = ref.current;
-
-      if (audio) {
-         audio.addEventListener('loadedmetadata', () => {
-            // The 'loadedmetadata' event is triggered when the duration becomes available
-            const totalTime = audio.duration;
-            console.log(totalTime);
-            const percentage = (currentTime / totalTime) * 100;
-            dispatch(setDuration(totalTime));
-            dispatch(setProgressBarWidth(percentage));
-         });
-
-         return () => {
-            // Clean up the event listener when the component unmounts
-            audio.removeEventListener('loadedmetadata');
-         };
-      }
-   }, [currentTime, dispatch]);
-
-   useEffect(() => {
-      const audio = audioRefs[activeSongId];
-      console.log(audio);
-      if (audio) {
-         audio.onloadedmetadata = () => {
-            const newDuration = audio.duration;
-            console.log(newDuration);
-            dispatch(setDuration(newDuration));
-         };
-      }
-   }, [activeSongId]);
+   // useEffect(() => {
+   //    const audio = audioRefs[activeSongId];
+   //    if (audio) {
+   //       audio.onloadedmetadata = () => {
+   //          const newDuration = audio.duration;
+   //          console.log(newDuration);
+   //          dispatch(setDuration(newDuration));
+   //       };
+   //    }
+   // }, [activeSongId]);
 
    const handleMouseDown = (e, flag) => {
       if (flag && !e.target.classList.contains('progress')) return;
@@ -315,12 +339,7 @@ const AudioPlayer = () => {
                <div
                   style={{ width: `${progressBarWidth}%` }}
                   className="relative -top-1 border-t-[5px] border-t-red-500"
-               >
-                  {/* <span
-                     className="absolute -top-2.5 -right-3 w-4 h-4 hover:scale-110 rounded-full bg-red-800 "
-                     onMouseUp={() => setMouseDown(false)}
-                  ></span> */}
-               </div>
+               ></div>
             </div>
             <div className="flex justify-between items-center">
                <div className=" flex justify-center items-center">
@@ -334,7 +353,7 @@ const AudioPlayer = () => {
                      className="text-white"
                      onClick={() => handlePlayPause()}
                   >
-                     {activeSongId && isPlaying ? <PlayIcon /> : <PauseIcon />}
+                     {activeSongId && isPlaying ? <PauseIcon /> : <PlayIcon />}
                   </button>
                   <button onClick={playNextSong} className="text-white px-2">
                      <NextIcon />
@@ -345,14 +364,11 @@ const AudioPlayer = () => {
                         {formatTime(currentTime)} / {formatTime(duration)}
                      </span>
                   </div>
-
-                  {/* <span className="text-gray-500 text-xs px-3">
-                     4:44 / 7:16
-                  </span> */}
                </div>
                <div className="flex justify-center items-center">
                   <img
-                     src="/images/explore2.jpg"
+                     // src="/images/explore2.jpg"
+                     src={songDetails.imageUrl}
                      alt={`Image`}
                      className="rounded-md cursor-pointer object-contain"
                      width={30}
@@ -360,21 +376,11 @@ const AudioPlayer = () => {
                      //  onClick={() => handlePlayClick(id)}
                   />
                   <div className="flex flex-col text-xs px-2">
-                     {/* <span className="text-white">Song Title</span>
-                     <span className=" text-gray-500">Artist Name</span> */}
                      <span className="text-white">{songDetails.title}</span>
                      <span className="text-gray-500">{songDetails.artist}</span>
                   </div>
                </div>
                <div className="flex justify-center items-center">
-                  {/* <input
-                     type="range"
-                     value={volume}
-                     onChange={handleVolumeChange}
-                     min="0"
-                     max="1"
-                     step="0.01"
-                  /> */}
                   <Volume
                      handleVolume={handleVolume}
                      handleVolumeChange={handleVolumeChange}
@@ -390,3 +396,55 @@ const AudioPlayer = () => {
 };
 
 export default AudioPlayer;
+
+// how do i achieve the same in handlePlayPause at audioControl.js
+
+//    const handlePlayPause = () => {
+//       const audio = audioRefs[activeSongId];
+//       if (audio) {
+//          if (isPlaying) {
+//             audio.pause();
+//             clearInterval(progressUpdateInterval); // Clear the existing interval
+//          } else {
+//             audio.play().catch((error) => {
+//                console.error('Failed to play audio:', error);
+//             });
+//             // Start the progress update interval and set it in state
+//             const interval = setInterval(handleProgressUpdate);
+//             setProgressUpdateInterval(interval);
+//          }
+//          dispatch(togglePlayback(activeSongId));
+//       }
+//    };
+
+//    <button
+//                      className="text-white"
+//                      onClick={() => handlePlayPause()}
+//                   >
+//                      {activeSongId && isPlaying ? <PauseIcon /> : <PlayIcon />}
+//                   </button>
+//                   <button onClick={playNextSong} className="text-white px-2">
+//                      <NextIcon />
+//                   </button>
+
+//                   <div className="flex items-center justify-between">
+//                      <span className="text-gray-500 text-xs px-3">
+//                         {formatTime(currentTime)} / {formatTime(duration)}
+//                      </span>
+//                   </div>
+//                </div>
+//                <div className="flex justify-center items-center">
+//                   <img
+//                      // src="/images/explore2.jpg"
+//                      src={songDetails.imageUrl}
+//                      alt={`Image`}
+//                      className="rounded-md cursor-pointer object-contain"
+//                      width={30}
+//                      height={30}
+//                      //  onClick={() => handlePlayClick(id)}
+//                   />
+//                   <div className="flex flex-col text-xs px-2">
+//                      <span className="text-white">{songDetails.title}</span>
+//                      <span className="text-gray-500">{songDetails.artist}</span>
+//                   </div>
+//                </div>

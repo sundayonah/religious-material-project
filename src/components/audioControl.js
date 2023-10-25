@@ -13,6 +13,8 @@ import {
    PlayIcon,
    RepeatIcon,
    SpeakerIcon,
+   ThumbsUp,
+   ThumbsDown,
 } from '@/components/icons';
 import {
    togglePlayback,
@@ -44,12 +46,15 @@ const AudioPlayer = () => {
    } = useContext(StateContext);
    const [mousedown, setMouseDown] = useState(false);
    const [progressUpdateInterval, setProgressUpdateInterval] = useState(null);
+   const [isLiked, setIsLiked] = useState(false);
+   const [isDisliked, setIsDisliked] = useState(false);
 
    // const [currentTime, setCurrentTime] = useState(0);
    // const [duration, setDuration] = useState(0);
 
    const songStates = useSelector((state) => state.audio.songStates);
    const activeSongId = useSelector((state) => state.audio.activeSongId);
+   const repeat = useSelector((state) => state.audio.repeat);
 
    const isPlaying = useSelector(
       (state) => state.audio.songStates[state.audio.activeSongId]
@@ -131,6 +136,41 @@ const AudioPlayer = () => {
          }
          dispatch(togglePlayback(activeSongId));
       }
+      console.log('ytfjhgv');
+   };
+
+   // const handlePlayPause = () => {
+   //    const audio = audioRefs[activeSongId];
+   //    if (audio) {
+   //       if (isPlaying) {
+   //          audio.pause();
+   //          clearInterval(progressUpdateInterval); // Clear the existing interval
+   //       } else {
+   //          if (repeat) {
+   //             // If repeat is enabled, reset current time and play
+   //             audio.currentTime = 0;
+   //          }
+   //          audio.play().catch((error) => {
+   //             console.error('Failed to play audio:', error);
+   //          });
+   //          // Start the progress update interval and set it in state
+   //          const interval = setInterval(handleProgressUpdate);
+   //          setProgressUpdateInterval(interval);
+   //       }
+   //       dispatch(togglePlayback(activeSongId));
+   //    }
+   // };
+
+   const handleLikes = () => {
+      setIsLiked(true);
+      setIsDisliked(false);
+      // Any other logic related to handling likes.
+   };
+
+   const handleDislikes = () => {
+      setIsLiked(false);
+      setIsDisliked(true);
+      // Any other logic related to handling dislikes.
    };
 
    const playNextSong = () => {
@@ -322,7 +362,7 @@ const AudioPlayer = () => {
 
    return (
       <>
-         <div className="fixed bottom-0 w-full bg-black  p-5">
+         <div className="fixed bottom-0 w-full">
             <div
                onClick={(e) => {
                   handleMouseDown(e, true);
@@ -334,14 +374,15 @@ const AudioPlayer = () => {
                }}
                onMouseDown={() => setMouseDown(true)}
                onMouseLeave={() => setMouseDown(false)}
-               className="w-full progress border-t-[5px] border-red-300 relative mx-auto"
+               className="w-full  progress border-t-[1px] border-[#828282] relative  pb-3"
             >
                <div
                   style={{ width: `${progressBarWidth}%` }}
-                  className="relative -top-1 border-t-[5px] border-t-red-500"
+                  className="relative -top-0 border-t-[2px] border-[#DAA851]"
                ></div>
             </div>
-            <div className="flex justify-between items-center">
+
+            <div className="flex justify-between items-center p-2">
                <div className=" flex justify-center items-center">
                   <button
                      onClick={playPreviousSong}
@@ -379,6 +420,52 @@ const AudioPlayer = () => {
                      <span className="text-white">{songDetails.title}</span>
                      <span className="text-gray-500">{songDetails.artist}</span>
                   </div>
+                  {/* <div className="flex justify-center items-center mx-4">
+                     <button
+                        onClick={handleLikes}
+                        className="px-3 text-white relative group"
+                     >
+                        <ThumbsUp />
+                        <div className="hidden group-hover:inline-block bg-black text-white text-xs absolute p-2 -mt-16 -ml-4 rounded whitespace-no-wrap">
+                           Like
+                        </div>
+                     </button>
+                     <button
+                        onClick={handleDisLikes}
+                        className="px-3 text-white relative group"
+                     >
+                        <ThumbsDown />
+                        <div className="hidden group-hover:inline-block bg-black text-white text-xs absolute p-2 -mt-16 -ml-4 rounded whitespace-no-wrap">
+                           Dislike
+                        </div>
+                     </button>
+                  </div> */}
+
+                  <div className="flex justify-center items-center mx-4">
+                     <button
+                        onClick={handleLikes}
+                        className={`px-3 text-white relative group `}
+                     >
+                        <ThumbsUp />
+
+                        <div className="hidden group-hover:inline-block bg-black text-white text-xs absolute p-2 -mt-16 -ml-4 rounded whitespace-no-wrap">
+                           Like
+                        </div>
+                     </button>
+                     <button
+                        onClick={handleDislikes}
+                        className={`px-3 text-white relative group `}
+                     >
+                        {isDisliked ? (
+                           <ThumbsDown color="#DAA851" />
+                        ) : (
+                           <ThumbsDown color="white" />
+                        )}
+                        <div className="hidden group-hover:inline-block bg-black text-white text-xs absolute p-2 -mt-16 -ml-4 rounded whitespace-no-wrap">
+                           Dislike
+                        </div>
+                     </button>
+                  </div>
                </div>
                <div className="flex justify-center items-center">
                   <Volume
@@ -396,55 +483,3 @@ const AudioPlayer = () => {
 };
 
 export default AudioPlayer;
-
-// how do i achieve the same in handlePlayPause at audioControl.js
-
-//    const handlePlayPause = () => {
-//       const audio = audioRefs[activeSongId];
-//       if (audio) {
-//          if (isPlaying) {
-//             audio.pause();
-//             clearInterval(progressUpdateInterval); // Clear the existing interval
-//          } else {
-//             audio.play().catch((error) => {
-//                console.error('Failed to play audio:', error);
-//             });
-//             // Start the progress update interval and set it in state
-//             const interval = setInterval(handleProgressUpdate);
-//             setProgressUpdateInterval(interval);
-//          }
-//          dispatch(togglePlayback(activeSongId));
-//       }
-//    };
-
-//    <button
-//                      className="text-white"
-//                      onClick={() => handlePlayPause()}
-//                   >
-//                      {activeSongId && isPlaying ? <PauseIcon /> : <PlayIcon />}
-//                   </button>
-//                   <button onClick={playNextSong} className="text-white px-2">
-//                      <NextIcon />
-//                   </button>
-
-//                   <div className="flex items-center justify-between">
-//                      <span className="text-gray-500 text-xs px-3">
-//                         {formatTime(currentTime)} / {formatTime(duration)}
-//                      </span>
-//                   </div>
-//                </div>
-//                <div className="flex justify-center items-center">
-//                   <img
-//                      // src="/images/explore2.jpg"
-//                      src={songDetails.imageUrl}
-//                      alt={`Image`}
-//                      className="rounded-md cursor-pointer object-contain"
-//                      width={30}
-//                      height={30}
-//                      //  onClick={() => handlePlayClick(id)}
-//                   />
-//                   <div className="flex flex-col text-xs px-2">
-//                      <span className="text-white">{songDetails.title}</span>
-//                      <span className="text-gray-500">{songDetails.artist}</span>
-//                   </div>
-//                </div>

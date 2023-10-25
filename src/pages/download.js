@@ -59,7 +59,7 @@ const Download = () => {
                   ({ id, file, imageUrl, title, artist }) => (
                      <div
                         key={id}
-                        className="flex justify-between items-center mx-1 px-3 py-3 space-x-5 rounded-md bg-gray-500"
+                        className="flex justify-between items-center mx-1 px-7 py-3 space-x-5 rounded-md bg-white"
                         onMouseEnter={() => setHoveredItemId(id)}
                         onMouseLeave={() => setHoveredItemId(null)}
                      >
@@ -67,12 +67,14 @@ const Download = () => {
                            <audio
                               preload="auto"
                               controls={false}
+                              loop
                               style={{ display: 'none' }}
                               ref={(ref) => (audioRefs[id] = ref)}
                               onEnded={() => handleSongEnd(id)}
                            >
                               <source src={file} type="audio/mpeg" />
                            </audio>
+
                            <img
                               src={imageUrl}
                               alt={`Image ${title}`}
@@ -107,8 +109,9 @@ const Download = () => {
                               </div>
                            ) : null}
                         </div>
-                        <div className="">
-                           <span className="text-white">{title}</span>
+                        <div className="flex justify-between items-center">
+                           <span className="text-black text-sm">{title}</span>
+                           <span className="border bg-[#DAA851] rounded-lg p-1 mx-2"></span>
                            <span className="text-gray-600">{artist}</span>
                         </div>
                      </div>

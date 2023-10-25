@@ -26,7 +26,7 @@ const Volume = ({ handleVolume, handleVolumeChange }) => {
                   max="1"
                   step="0.05"
                   value={volume}
-                  className="h-7 input"
+                  className="h-5 input"
                   onChange={handleVolumeChange}
                />
             </div>

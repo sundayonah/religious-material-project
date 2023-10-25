@@ -101,6 +101,7 @@ export const StateContextProvider = ({ children }) => {
    //    }, 1000); // Update every 1000 milliseconds (1 second)
    //    return interval;
    // };
+
    const handlePlayClick = (productId, title, artist, imageUrl) => {
       const audio = audioRefs[productId];
 
@@ -126,13 +127,6 @@ export const StateContextProvider = ({ children }) => {
                   }
                }
             });
-
-            if (repeat) {
-               audio.currentTime = 0;
-               audio.play().catch((error) => {
-                  console.error('Failed to play audio:', error);
-               });
-            }
          }
          dispatch(togglePlayback(productId));
       }

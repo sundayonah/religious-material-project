@@ -9,6 +9,8 @@ import axios from 'axios';
 import logo from '../../public/images/yolva.png';
 import { useWeb3Modal } from '@web3modal/wagmi/react';
 import { useAccount } from 'wagmi';
+import { useRouter } from 'next/router';
+import { CloseIcon } from './icons';
 
 const Header = () => {
    const {
@@ -21,6 +23,7 @@ const Header = () => {
       isConnected,
       Connect,
    } = useContext(StateContext);
+   const router = useRouter();
 
    const [accounts, setAccounts] = useState('');
    const [isLoading, setIsLoading] = useState(false);
@@ -239,34 +242,38 @@ const Header = () => {
                         onClick={closeMenu}
                         className="text-white border rounded-md md:hidden"
                      >
-                        <svg
-                           xmlns="http://www.w3.org/2000/svg"
-                           fill="none"
-                           viewBox="0 0 24 24"
-                           strokeWidth={1.5}
-                           stroke="currentColor"
-                           className="w-6 h-6"
-                        >
-                           <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              d="M6 18L18 6M6 6l12 12"
-                           />
-                        </svg>
+                        <CloseIcon />
                      </button>
                   )}
                </div>
-               {menuItems.map((item, i) => (
+               {menuItems.map((menu, i) => (
                   <ul key={i + 1} className={isMenuOpen ? 'pt-3' : ''}>
-                     <Link onClick={closeMenu} className="pr-5" href={item.url}>
-                        <span className="text-[#ffffff]">{item.name}</span>
-                     </Link>
+                     <div
+                        className={
+                           router.pathname === menu.url
+                              ? 'active-link'
+                              : 'text-white'
+                        }
+                     >
+                        <Link
+                           onClick={closeMenu}
+                           href={menu.url}
+                           className="pr-5"
+                        >
+                           {menu.name}
+                        </Link>
+                     </div>
                   </ul>
                ))}
                <div className="">
                   <w3m-button balance="hide" />
                </div>
             </div>
+            <style jsx>{`
+               .active-link {
+                  color: #bf9221;
+               }
+            `}</style>
          </main>
       </>
    );

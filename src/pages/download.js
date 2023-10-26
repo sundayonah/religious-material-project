@@ -2,13 +2,14 @@ import React, { useContext, useEffect, useState } from 'react';
 import { useAccount } from 'wagmi';
 import { StateContext } from '@/Context/ReligiousContext';
 import AudioControl from '@/components/audioControl';
-import { PlayIcon, PauseIcon } from '@/components/icons';
+import { PlayIcon, PauseIcon, ThumbsUp, ThumbsDown } from '@/components/icons';
 import { useDispatch, useSelector } from 'react-redux';
 import {
    setActiveSong,
    setCurrentTime,
    setDuration,
    setProgressBarWidth,
+   setSongDuration,
    togglePlayback,
 } from '@/reduxToolkit/slices/audioSlice';
 
@@ -19,10 +20,14 @@ const Download = () => {
    const isPlaying = useSelector(
       (state) => state.audio.songStates[state.audio.activeSongId]
    );
-   const repeat = useSelector((state) => state.audio.repeat);
 
    const [purchasedProducts, setPurchasedProducts] = useState([]);
    const [progressUpdateInterval, setProgressUpdateInterval] = useState(null);
+   const [isLiked, setIsLiked] = useState(false);
+   const [isDisliked, setIsDisliked] = useState(false);
+   const [hoveredItemId, setHoveredItemId] = useState(null);
+   const [durationsUpdated, setDurationsUpdated] = useState(null);
+   const [songDurations, setSongDurations] = useState({});
 
    const { address } = useAccount();
    const dispatch = useDispatch();
@@ -36,12 +41,57 @@ const Download = () => {
       const userPurchasedProducts = storedPurchasedProducts
          .map((serializedProduct) => JSON.parse(serializedProduct))
          .filter((item) => item.address === address);
-      console.log(userPurchasedProducts.length);
       setPurchasedProducts(userPurchasedProducts);
-   }, [address]);
+   }, [address, dispatch]);
 
-   // State to track the hover state of items
-   const [hoveredItemId, setHoveredItemId] = useState(null);
+   const formatTime = (time) => {
+      const minutes = Math.floor(time / 60);
+      // console.log(minutes);
+      const seconds = Math.floor(time % 60);
+      return `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(
+         2,
+         '0'
+      )}`;
+   };
+   const handleLikes = () => {
+      setIsLiked(true);
+      setIsDisliked(false);
+      console.log('likes');
+      // Any other logic related to handling likes.
+   };
+
+   const handleDislikes = () => {
+      setIsLiked(false);
+      setIsDisliked(true);
+      console.log('dislike');
+      // Any other logic related to handling dislikes.
+   };
+
+   useEffect(() => {
+      const fetchSongDurations = async () => {
+         const newDurations = {};
+
+         for (const { id, file } of purchasedProducts) {
+            const audio = new Audio(file);
+
+            // Use the promise-based approach to get duration
+            const duration = await new Promise((resolve) => {
+               audio.addEventListener('loadedmetadata', () => {
+                  resolve(audio.duration);
+               });
+               audio.load();
+            });
+
+            newDurations[id] = duration;
+         }
+
+         setSongDurations(newDurations);
+      };
+
+      if (purchasedProducts.length > 0) {
+         fetchSongDurations();
+      }
+   }, [purchasedProducts]);
 
    if (purchasedProducts.length === 0) {
       return (
@@ -54,12 +104,12 @@ const Download = () => {
    return (
       <>
          <div className="w-[80%] m-auto mt-28">
-            <div className="flex flex-wrap gap-3 p-2 justify-center items-center">
+            <div className="flex flex-col gap-3 p-2">
                {purchasedProducts.map(
                   ({ id, file, imageUrl, title, artist }) => (
                      <div
                         key={id}
-                        className="flex justify-between items-center mx-1 px-7 py-3 space-x-5 rounded-md bg-white"
+                        className="flex justify-between items-center py-2 bg-transparent border-t-[1px] border-gray-700"
                         onMouseEnter={() => setHoveredItemId(id)}
                         onMouseLeave={() => setHoveredItemId(null)}
                      >
@@ -79,8 +129,8 @@ const Download = () => {
                               src={imageUrl}
                               alt={`Image ${title}`}
                               className="rounded-md cursor-pointer"
-                              width={80}
-                              height={80}
+                              width={50}
+                              height={50}
                               onClick={() => handlePlayClick(id)}
                            />
 
@@ -109,16 +159,42 @@ const Download = () => {
                               </div>
                            ) : null}
                         </div>
-                        <div className="flex justify-between items-center">
-                           <span className="text-black text-sm">{title}</span>
-                           <span className="border bg-[#DAA851] rounded-lg p-1 mx-2"></span>
-                           <span className="text-gray-600">{artist}</span>
+                        <span className="w-[150px] text-white text-sm overflow-hidden whitespace-nowrap">
+                           {title.length > 20
+                              ? `${title.slice(0, 20)}...`
+                              : title}
+                        </span>
+                        <span className="w-[150px] text-gray-600 text-sm overflow-hidden whitespace-nowrap">
+                           {artist.length > 20
+                              ? `${artist.slice(0, 20)}...`
+                              : artist}
+                        </span>{' '}
+                        <div className="w-[50px] flex items-center space-x-4">
+                           {hoveredItemId === id && (
+                              <>
+                                 <button
+                                    onClick={handleLikes}
+                                    className="text-white"
+                                 >
+                                    <ThumbsUp />
+                                 </button>
+                                 <button onClick={handleDislikes}>
+                                    <ThumbsDown color="white" />
+                                 </button>
+                              </>
+                           )}
                         </div>
+                        <span className="text-gray-600">
+                           {songDurations[id]
+                              ? formatTime(songDurations[id])
+                              : '0'}
+                        </span>
                      </div>
                   )
                )}
             </div>
          </div>
+
          {isPlaying || activeSongId ? <AudioControl /> : null}
       </>
    );

@@ -43,7 +43,7 @@ const Songs = () => {
       },
       {
          id: 'rec8kkCmSiMkbkiko',
-         title: 'accent chair',
+         title: 'accent chair traditional',
          artist: 'John Doe',
          category: 'faith',
          file: '/Ludovico Piano.mp3',

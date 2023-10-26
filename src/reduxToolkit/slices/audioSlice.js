@@ -14,6 +14,7 @@ const audioSlice = createSlice({
       currentTime: 0,
       duration: 0,
       progressBarWidth: 0,
+      songDurations: {}, // New state property to store song durations
       songDetails: {
          title: '',
          artist: '',
@@ -90,6 +91,10 @@ const audioSlice = createSlice({
       setVolumeBar: (state, { payload }) => {
          state.volumeBar = payload;
       },
+      setSongDuration: (state, action) => {
+         const { songId, duration } = action.payload;
+         state.songDurations[songId] = duration;
+      },
    },
 });
 
@@ -107,5 +112,6 @@ export const {
    setVolumeBar,
    setDuration,
    setImageUrl,
+   setSongDuration,
 } = audioSlice.actions;
 export default audioSlice.reducer;

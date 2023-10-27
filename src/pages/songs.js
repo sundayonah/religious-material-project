@@ -169,8 +169,6 @@ const Songs = () => {
                'purchasedProducts',
                JSON.stringify(purchasedProducts)
             );
-
-            console.log(purchasedProduct);
          } else {
             console.error('Product not found in messagesDetails.');
          }
@@ -209,8 +207,13 @@ const Songs = () => {
                      </div>
 
                      <div className="flex flex-col ml-6 text-sm">
-                        <span className="text-white text-small pt-1 pb-1">
+                        {/* <span className="text-white text-small pt-1 pb-1">
                            {message.title}
+                        </span> */}
+                        <span className=" text-white text-small pt-1 pb-1 overflow-hidden whitespace-nowrap">
+                           {message.title.length > 15
+                              ? `${message.title.slice(0, 15)}...`
+                              : message.title}
                         </span>
                         <span className="text-white text-sm">
                            {message.artist}

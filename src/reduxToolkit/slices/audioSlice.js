@@ -16,11 +16,14 @@ const audioSlice = createSlice({
       progressBarWidth: 0,
       songDurations: {}, // New state property to store song durations
       songDetails: {
+         id: '',
          title: '',
          artist: '',
          duration: 0, // You can include other details you need
          imageUrl: '',
       },
+      likedSongs: {}, // New state property to store liked songs
+      dislikedSongs: {}, // New state property to store disliked songs
    },
    reducers: {
       // setActiveSong: (state, action) => {
@@ -95,6 +98,47 @@ const audioSlice = createSlice({
          const { songId, duration } = action.payload;
          state.songDurations[songId] = duration;
       },
+      // // Function to toggle liking a song
+      // toggleLike: (state, action) => {
+      //    const { songId, isLiked } = action.payload;
+      //    state.likedSongs[songId] = isLiked;
+      //    state.dislikedSongs[songId] = false; // Reset dislike status
+      // },
+      // // Function to toggle disliking a song
+      // toggleDislike: (state, action) => {
+      //    const { songId, isDisliked } = action.payload;
+      //    state.dislikedSongs[songId] = isDisliked;
+      //    state.likedSongs[songId] = false; // Reset like status
+      // },
+
+      toggleLike: (state, action) => {
+         const { songId, isLiked } = action.payload;
+         state.likedSongs[songId] = isLiked;
+         state.dislikedSongs[songId] = false;
+      },
+      toggleDislike: (state, action) => {
+         const { songId, isDisliked } = action.payload;
+         state.dislikedSongs[songId] = isDisliked;
+         state.likedSongs[songId] = false;
+      },
+
+      // // Function to toggle disliking a song
+      // toggleDislike: (state, action) => {
+      //    const { songId, isDisliked } = action.payload;
+      //    if (isDisliked) {
+      //       state.dislikedSongs[songId] = true; // Mark the song as disliked
+      //       state.likedSongs[songId] = false; // Reset like status
+      //    } else {
+      //       state.dislikedSongs[songId] = false; // Remove the dislike
+      //    }
+
+      //    // Save likedSongs and dislikedSongs in localStorage
+      //    localStorage.setItem('likedSongs', JSON.stringify(state.likedSongs));
+      //    localStorage.setItem(
+      //       'dislikedSongs',
+      //       JSON.stringify(state.dislikedSongs)
+      //    );
+      // },
    },
 });
 
@@ -113,5 +157,7 @@ export const {
    setDuration,
    setImageUrl,
    setSongDuration,
+   toggleLike,
+   toggleDislike,
 } = audioSlice.actions;
 export default audioSlice.reducer;

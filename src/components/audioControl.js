@@ -28,6 +28,8 @@ import {
    setProgressBarWidth,
    setDuration,
    setImageUrl,
+   toggleLike,
+   toggleDislike,
    handleControls, // New action for handling prev/next
 } from '@/reduxToolkit/slices/audioSlice';
 import { StateContext } from '@/Context/ReligiousContext';
@@ -46,8 +48,8 @@ const AudioPlayer = () => {
    } = useContext(StateContext);
    const [mousedown, setMouseDown] = useState(false);
    const [progressUpdateInterval, setProgressUpdateInterval] = useState(null);
-   const [isLiked, setIsLiked] = useState(false);
-   const [isDisliked, setIsDisliked] = useState(false);
+   // const [isLiked, setIsLiked] = useState(false);
+   // const [isDisliked, setIsDisliked] = useState(false);
 
    // const [currentTime, setCurrentTime] = useState(0);
    // const [duration, setDuration] = useState(0);
@@ -64,6 +66,14 @@ const AudioPlayer = () => {
    const duration = useSelector((state) => state.audio.duration);
    const progressBarWidth = useSelector(
       (state) => state.audio.progressBarWidth
+   );
+
+   // const likedSongs = useSelector((state) => state.audio.likedSongs);
+   // const dislikedSongs = useSelector((state) => state.audio.dislikedSongs);
+
+   const isLiked = useSelector((state) => state.audio.likedSongs[activeSongId]);
+   const isDisliked = useSelector(
+      (state) => state.audio.dislikedSongs[activeSongId]
    );
 
    const songDetails = useSelector((state) => state.audio.songDetails);
@@ -139,38 +149,24 @@ const AudioPlayer = () => {
       console.log('ytfjhgv');
    };
 
-   // const handlePlayPause = () => {
-   //    const audio = audioRefs[activeSongId];
-   //    if (audio) {
-   //       if (isPlaying) {
-   //          audio.pause();
-   //          clearInterval(progressUpdateInterval); // Clear the existing interval
-   //       } else {
-   //          if (repeat) {
-   //             // If repeat is enabled, reset current time and play
-   //             audio.currentTime = 0;
-   //          }
-   //          audio.play().catch((error) => {
-   //             console.error('Failed to play audio:', error);
-   //          });
-   //          // Start the progress update interval and set it in state
-   //          const interval = setInterval(handleProgressUpdate);
-   //          setProgressUpdateInterval(interval);
-   //       }
-   //       dispatch(togglePlayback(activeSongId));
-   //    }
-   // };
-
    const handleLikes = () => {
-      setIsLiked(true);
-      setIsDisliked(false);
-      // Any other logic related to handling likes.
+      if (isLiked) {
+         // If already liked, remove like
+         dispatch(toggleLike({ songId: activeSongId, isLiked: false }));
+      } else {
+         // If not liked, add like
+         dispatch(toggleLike({ songId: activeSongId, isLiked: true }));
+      }
    };
 
    const handleDislikes = () => {
-      setIsLiked(false);
-      setIsDisliked(true);
-      // Any other logic related to handling dislikes.
+      if (isDisliked) {
+         // If already disliked, remove dislike
+         dispatch(toggleDislike({ songId: activeSongId, isDisliked: false }));
+      } else {
+         // If not disliked, add dislike
+         dispatch(toggleDislike({ songId: activeSongId, isDisliked: true }));
+      }
    };
 
    const playNextSong = () => {
@@ -360,6 +356,9 @@ const AudioPlayer = () => {
       dispatch(setProgressBarWidth(percentage));
    };
 
+   // console.log(songDetails);
+   // console.log(activeSongId);
+
    return (
       <>
          <div className="fixed bottom-0 w-full">
@@ -420,31 +419,13 @@ const AudioPlayer = () => {
                      <span className="text-white">{songDetails.title}</span>
                      <span className="text-gray-500">{songDetails.artist}</span>
                   </div>
-                  {/* <div className="flex justify-center items-center mx-4">
-                     <button
-                        onClick={handleLikes}
-                        className="px-3 text-white relative group"
-                     >
-                        <ThumbsUp />
-                        <div className="hidden group-hover:inline-block bg-black text-white text-xs absolute p-2 -mt-16 -ml-4 rounded whitespace-no-wrap">
-                           Like
-                        </div>
-                     </button>
-                     <button
-                        onClick={handleDisLikes}
-                        className="px-3 text-white relative group"
-                     >
-                        <ThumbsDown />
-                        <div className="hidden group-hover:inline-block bg-black text-white text-xs absolute p-2 -mt-16 -ml-4 rounded whitespace-no-wrap">
-                           Dislike
-                        </div>
-                     </button>
-                  </div> */}
 
                   <div className="flex justify-center items-center mx-4">
                      <button
                         onClick={handleLikes}
-                        className={`px-3 text-white relative group `}
+                        className={`px-3 relative group ${
+                           isLiked ? 'text-likeColor' : ' text-white'
+                        } `}
                      >
                         <ThumbsUp />
 
@@ -456,11 +437,7 @@ const AudioPlayer = () => {
                         onClick={handleDislikes}
                         className={`px-3 text-white relative group `}
                      >
-                        {isDisliked ? (
-                           <ThumbsDown color="#DAA851" />
-                        ) : (
-                           <ThumbsDown color="white" />
-                        )}
+                        <ThumbsDown color="white" />
                         <div className="hidden group-hover:inline-block bg-black text-white text-xs absolute p-2 -mt-16 -ml-4 rounded whitespace-no-wrap">
                            Dislike
                         </div>

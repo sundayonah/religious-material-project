@@ -11,7 +11,10 @@ import {
    setProgressBarWidth,
    setSongDuration,
    togglePlayback,
+   toggleLike,
+   toggleDislike,
 } from '@/reduxToolkit/slices/audioSlice';
+import DownloadSidebar from '@/components/downloadSidebar';
 
 const Download = () => {
    const { handlePlayClick, audioRefs, handleSongEnd } =
@@ -20,11 +23,15 @@ const Download = () => {
    const isPlaying = useSelector(
       (state) => state.audio.songStates[state.audio.activeSongId]
    );
+   const likedSongs = useSelector((state) => state.audio.likedSongs);
+   const dislikedSongs = useSelector((state) => state.audio.dislikedSongs);
 
    const [purchasedProducts, setPurchasedProducts] = useState([]);
    const [progressUpdateInterval, setProgressUpdateInterval] = useState(null);
-   const [isLiked, setIsLiked] = useState(false);
-   const [isDisliked, setIsDisliked] = useState(false);
+   // const [isLiked, setIsLiked] = useState(false);
+   // const [isLiked, setIsLiked] = useState({});
+
+   // const [isDisliked, setIsDisliked] = useState(false);
    const [hoveredItemId, setHoveredItemId] = useState(null);
    const [durationsUpdated, setDurationsUpdated] = useState(null);
    const [songDurations, setSongDurations] = useState({});
@@ -53,19 +60,6 @@ const Download = () => {
          '0'
       )}`;
    };
-   const handleLikes = () => {
-      setIsLiked(true);
-      setIsDisliked(false);
-      console.log('likes');
-      // Any other logic related to handling likes.
-   };
-
-   const handleDislikes = () => {
-      setIsLiked(false);
-      setIsDisliked(true);
-      console.log('dislike');
-      // Any other logic related to handling dislikes.
-   };
 
    useEffect(() => {
       const fetchSongDurations = async () => {
@@ -81,10 +75,8 @@ const Download = () => {
                });
                audio.load();
             });
-
             newDurations[id] = duration;
          }
-
          setSongDurations(newDurations);
       };
 
@@ -92,6 +84,68 @@ const Download = () => {
          fetchSongDurations();
       }
    }, [purchasedProducts]);
+
+   const storedLikedSongs =
+      typeof window !== 'undefined'
+         ? JSON.parse(localStorage.getItem('likedSongs')) || {}
+         : {};
+
+   const storedDislikedSongs =
+      typeof window !== 'undefined'
+         ? JSON.parse(localStorage.getItem('dislikedSongs')) || {}
+         : {};
+
+   // Function to check if a song is liked
+   const isSongLiked = (id) => storedLikedSongs[id] === true;
+
+   // Function to check if a song is disliked
+   const isSongDisliked = (id) => storedDislikedSongs[id] === true;
+
+   // // Function to toggle like for a song
+   // const handleToggleLike = (id) => {
+   //    if (isSongLiked(id)) {
+   //       // If the song is liked, toggle dislike
+   //       dispatch(toggleDislike({ songId: id, isDisliked: true }));
+   //    } else {
+   //       // If the song is not liked, toggle like
+   //       dispatch(toggleLike({ songId: id, isLiked: true }));
+   //    }
+   // };
+
+   // // Function to toggle dislike for a song
+   // const handleToggleDislike = (id) => {
+   //    if (isSongDisliked(id)) {
+   //       // If the song is disliked, toggle like
+   //       dispatch(toggleLike({ songId: id, isLiked: true }));
+   //    } else {
+   //       // If the song is not disliked, toggle dislike
+   //       dispatch(toggleDislike({ songId: id, isDisliked: true }));
+   //    }
+   // };
+
+   // const handleToggleLike = (id) => {
+   //    // Dispatch the action to toggle like for the song
+   //    dispatch(toggleLike({ songId: id, isLiked: !isLiked[id] }));
+   // };
+   const handleToggleLike = (id) => {
+      if (likedSongs[id]) {
+         dispatch(toggleDislike({ songId: id, isDisliked: true }));
+      } else {
+         dispatch(toggleLike({ songId: id, isLiked: true }));
+      }
+   };
+   const handleToggleDislike = (id) => {
+      if (dislikedSongs[id]) {
+         dispatch(toggleLike({ songId: id, isLiked: true }));
+      } else {
+         dispatch(toggleDislike({ songId: id, isDisliked: true }));
+      }
+   };
+
+   // const handleToggleDislike = (id) => {
+   //    // Dispatch the action to toggle dislike for the song
+   //    dispatch(toggleDislike({ songId: id, isDisliked: !isDisliked[id] }));
+   // };
 
    if (purchasedProducts.length === 0) {
       return (
@@ -103,8 +157,9 @@ const Download = () => {
 
    return (
       <>
-         <div className="w-[80%] m-auto mt-28">
-            <div className="flex flex-col gap-3 p-2">
+         <div className="w-[80%] flex m-auto mt-28">
+            <DownloadSidebar />
+            <div className="w-full flex flex-col gap-3 p-2">
                {purchasedProducts.map(
                   ({ id, file, imageUrl, title, artist }) => (
                      <div
@@ -124,7 +179,6 @@ const Download = () => {
                            >
                               <source src={file} type="audio/mpeg" />
                            </audio>
-
                            <img
                               src={imageUrl}
                               alt={`Image ${title}`}
@@ -168,18 +222,57 @@ const Download = () => {
                            {artist.length > 20
                               ? `${artist.slice(0, 20)}...`
                               : artist}
-                        </span>{' '}
+                        </span>
                         <div className="w-[50px] flex items-center space-x-4">
-                           {hoveredItemId === id && (
+                           {/* {hoveredItemId === id ? (
                               <>
                                  <button
-                                    onClick={handleLikes}
-                                    className="text-white"
+                                    onClick={() => toggleLike(id)}
+                                    // className={`text-white `}
+                                    className={`text-white ${
+                                       isSongLiked(id) ? 'text-red-600' : ''
+                                    }`}
                                  >
                                     <ThumbsUp />
                                  </button>
-                                 <button onClick={handleDislikes}>
-                                    <ThumbsDown color="white" />
+                                 <button
+                                    className="text-white"
+                                    onClick={handleDislikes}
+                                 >
+                                    <ThumbsDown />
+                                 </button>
+                              </>
+                           ) : (
+                              <>
+                                 <button className="text-red-600">
+                                    {isSongLiked(id) === true && <ThumbsUp />}
+                                 </button>
+                              </>
+                           )} */}
+
+                           {hoveredItemId === id ? (
+                              <>
+                                 <button
+                                    onClick={() => handleToggleLike(id)}
+                                    className={`${
+                                       likedSongs[id]
+                                          ? 'text-likeColor'
+                                          : 'text-white'
+                                    }`}
+                                 >
+                                    <ThumbsUp />
+                                 </button>
+                                 <button
+                                    className="text-white"
+                                    onClick={() => handleToggleDislike(id)}
+                                 >
+                                    <ThumbsDown />
+                                 </button>
+                              </>
+                           ) : (
+                              <>
+                                 <button className="text-likeColor">
+                                    {likedSongs[id] === true && <ThumbsUp />}
                                  </button>
                               </>
                            )}

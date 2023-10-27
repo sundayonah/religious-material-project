@@ -17,6 +17,10 @@ module.exports = {
             'custom-inset':
                '0.4rem 0.4rem 1rem #111 inset, -0.4rem -0.4rem 1rem #333 inset',
          },
+         textColor: {
+            likeColor: '#DAA851',
+         },
+
          // boxShadow: {
          //    custom: '0.4rem 0.4rem 1rem #111, -0.4rem -0.4rem 1rem #333',
          // },

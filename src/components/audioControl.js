@@ -34,6 +34,7 @@ import {
 } from '@/reduxToolkit/slices/audioSlice';
 import { StateContext } from '@/Context/ReligiousContext';
 import Volume from './Volume';
+import { saveLikesAndDislikesToLocalStorage } from './local-storage';
 
 const AudioPlayer = () => {
    const ref = useRef(null);
@@ -68,8 +69,8 @@ const AudioPlayer = () => {
       (state) => state.audio.progressBarWidth
    );
 
-   // const likedSongs = useSelector((state) => state.audio.likedSongs);
-   // const dislikedSongs = useSelector((state) => state.audio.dislikedSongs);
+   const likedSongs = useSelector((state) => state.audio.likedSongs);
+   const dislikedSongs = useSelector((state) => state.audio.dislikedSongs);
 
    const isLiked = useSelector((state) => state.audio.likedSongs[activeSongId]);
    const isDisliked = useSelector(
@@ -157,6 +158,7 @@ const AudioPlayer = () => {
          // If not liked, add like
          dispatch(toggleLike({ songId: activeSongId, isLiked: true }));
       }
+      saveLikesAndDislikesToLocalStorage(likedSongs, dislikedSongs);
    };
 
    const handleDislikes = () => {
@@ -167,6 +169,7 @@ const AudioPlayer = () => {
          // If not disliked, add dislike
          dispatch(toggleDislike({ songId: activeSongId, isDisliked: true }));
       }
+      saveLikesAndDislikesToLocalStorage(likedSongs, dislikedSongs);
    };
 
    const playNextSong = () => {
@@ -424,18 +427,20 @@ const AudioPlayer = () => {
                      <button
                         onClick={handleLikes}
                         className={`px-3 relative group ${
-                           isLiked ? 'text-likeColor' : ' text-white'
+                           isLiked ? 'text-likeColor' : 'text-white'
                         } `}
                      >
                         <ThumbsUp />
-
                         <div className="hidden group-hover:inline-block bg-black text-white text-xs absolute p-2 -mt-16 -ml-4 rounded whitespace-no-wrap">
                            Like
                         </div>
                      </button>
                      <button
                         onClick={handleDislikes}
-                        className={`px-3 text-white relative group `}
+                        // className="text-white"
+                        className={`px-3 relative group ${
+                           isDisliked ? 'text-likeColor' : ' text-white'
+                        } `}
                      >
                         <ThumbsDown color="white" />
                         <div className="hidden group-hover:inline-block bg-black text-white text-xs absolute p-2 -mt-16 -ml-4 rounded whitespace-no-wrap">

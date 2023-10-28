@@ -1,4 +1,8 @@
 // audioSlice.js
+import {
+   getLikesAndDislikesFromLocalStorage,
+   saveLikesAndDislikesToLocalStorage,
+} from '@/components/local-storage';
 import { createSlice } from '@reduxjs/toolkit';
 
 const audioSlice = createSlice({
@@ -22,8 +26,10 @@ const audioSlice = createSlice({
          duration: 0, // You can include other details you need
          imageUrl: '',
       },
-      likedSongs: {}, // New state property to store liked songs
-      dislikedSongs: {}, // New state property to store disliked songs
+      // likedSongs: {}, // New state property to store liked songs
+      // dislikedSongs: {}, // New state property to store disliked songs
+      likedSongs: getLikesAndDislikesFromLocalStorage().likedSongs,
+      dislikedSongs: getLikesAndDislikesFromLocalStorage().dislikedSongs,
    },
    reducers: {
       // setActiveSong: (state, action) => {
@@ -110,18 +116,24 @@ const audioSlice = createSlice({
       //    state.dislikedSongs[songId] = isDisliked;
       //    state.likedSongs[songId] = false; // Reset like status
       // },
-
       toggleLike: (state, action) => {
          const { songId, isLiked } = action.payload;
          state.likedSongs[songId] = isLiked;
          state.dislikedSongs[songId] = false;
+         saveLikesAndDislikesToLocalStorage(
+            state.likedSongs,
+            state.dislikedSongs
+         );
       },
       toggleDislike: (state, action) => {
          const { songId, isDisliked } = action.payload;
          state.dislikedSongs[songId] = isDisliked;
          state.likedSongs[songId] = false;
+         saveLikesAndDislikesToLocalStorage(
+            state.likedSongs,
+            state.dislikedSongs
+         );
       },
-
       // // Function to toggle disliking a song
       // toggleDislike: (state, action) => {
       //    const { songId, isDisliked } = action.payload;

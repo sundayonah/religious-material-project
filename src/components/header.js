@@ -10,7 +10,7 @@ import logo from '../../public/images/yolva.png';
 import { useWeb3Modal } from '@web3modal/wagmi/react';
 import { useAccount } from 'wagmi';
 import { useRouter } from 'next/router';
-import { CloseIcon } from './icons';
+import { CloseIcon, OpenIcon } from './icons';
 
 const Header = () => {
    const {
@@ -189,42 +189,11 @@ const Header = () => {
                {isMenuOpen ? (
                   ''
                ) : (
-                  // <div className="md:hidden">
-                  //    <button onClick={toggleMenu} className="text-white">
-                  //       <svg
-                  //          xmlns="http://www.w3.org/2000/svg"
-                  //          fill="none"
-                  //          viewBox="0 0 24 24"
-                  //          strokeWidth={1.5}
-                  //          stroke="currentColor"
-                  //          className="w-6 h-6"
-                  //       >
-                  //          <path
-                  //             strokeLinecap="round"
-                  //             strokeLinejoin="round"
-                  //             d="M6 18L18 6M6 6l12 12"
-                  //          />
-                  //       </svg>
-                  //    </button>
-                  // </div>
                   <button
                      onClick={toggleMenu}
                      className="text-white border rounded-md"
                   >
-                     <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        strokeWidth={1.5}
-                        stroke="currentColor"
-                        className="w-6 h-6"
-                     >
-                        <path
-                           strokeLinecap="round"
-                           strokeLinejoin="round"
-                           d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"
-                        />
-                     </svg>
+                     <OpenIcon />
                   </button>
                )}
             </div>
@@ -234,7 +203,7 @@ const Header = () => {
                   isMenuOpen
                      ? 'block px-5 py-4 shadow-custom bg-transparent'
                      : 'hidden'
-               } md:flex  absolute right-0  justify-center items-center top-0 w-[50%] md:static md:space-x-4  md:w-auto`}
+               } md:flex  absolute right-0 justify-center items-center top-0 w-[50%] md:static md:space-x-4  md:w-auto`}
             >
                <div className="flex justify-end">
                   {isMenuOpen && (

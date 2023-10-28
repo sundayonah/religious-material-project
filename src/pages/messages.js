@@ -14,7 +14,8 @@ const Messages = () => {
          title: 'high-back bench',
          artist: 'John Doe',
          category: 'healing',
-         file: 'https',
+         // file: 'https',
+         file: '/phill_thompson.mp3',
          price: 9.99,
          imageUrl: '',
       },
@@ -23,16 +24,16 @@ const Messages = () => {
          title: 'albany table',
          artist: 'John Doe',
          category: 'faith',
-         file: 'https',
+         file: '/Minister_GUC.mp3',
          price: 79.99,
          imageUrl: '',
       },
       {
          id: 'rec8kkCmSiMkbkiko',
-         title: 'accent chair',
+         title: 'accent chair traditional',
          artist: 'John Doe',
          category: 'faith',
-         file: 'https',
+         file: '/Ludovico Piano.mp3',
          price: 25.99,
          imageUrl: '',
       },
@@ -161,9 +162,47 @@ const Messages = () => {
       fetchImageUrls();
    }, [gatewayUrl]);
 
+   // const buyNow = (product) => {
+   //    if (product) {
+   //       console.log('Buy Now clicked for:', product.price);
+   //    }
+   // };
+
    const buyNow = (product) => {
       if (product) {
-         console.log('Buy Now clicked for:', product.price);
+         // UnStake();
+
+         // Find the index of the product in songDetails using its id
+         const productIndex = messagesDetails.findIndex(
+            (message) => message.id === product.id
+         );
+
+         if (productIndex !== -1) {
+            // Retrieve the corresponding image URL based on the product's index
+            const imageUrl = imageUrls[productIndex];
+
+            // Store the purchased product with the imageUrl
+            const purchasedMessage = {
+               ...product,
+               imageUrl,
+            };
+            console.log(purchasedMessage);
+
+            // Serialize the purchased product before storing it
+            const serializedProduct = JSON.stringify(purchasedMessage);
+            console.log(serializedProduct);
+
+            // // Add the purchased product to localStorage
+            // const purchasedMessages =
+            //    JSON.parse(localStorage.getItem('purchasedMessages')) || [];
+            // purchasedMessages.push(serializedProduct);
+            // localStorage.setItem(
+            //    'purchasedMessages',
+            //    JSON.stringify(purchasedMessages)
+            // );
+         } else {
+            console.error('Product not found in songDetails.');
+         }
       }
    };
 
@@ -226,12 +265,3 @@ const Messages = () => {
 };
 
 export default Messages;
-
-// .messagesDetails {
-//    display: flex;
-//    padding: 1rem;
-//    border-radius: 0.5rem;
-//    box-shadow: 0.4rem 0.4rem 1rem #111, -0.4rem -0.4rem 1rem #333;
-//    box-shadow-index: 0.4rem 0.4rem 1rem #111 inset,
-//       -0.4rem -0.4rem 1rem #333 inset;
-// }

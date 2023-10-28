@@ -21,7 +21,7 @@ const Songs = () => {
    const { address } = useAccount();
    // console.log(address);
 
-   const messagesDetails = [
+   const songDetails = [
       {
          id: 'rec43w3ipXvP28vog',
          title: 'high-back bench',
@@ -106,8 +106,8 @@ const Songs = () => {
          );
 
          // Set the image URL for each product in the Songs array
-         const updatedMessages = messagesDetails.map((message, index) => ({
-            ...message,
+         const updatedMessages = songDetails.map((song, index) => ({
+            ...song,
             imageUrl: urls[index] || 'hello',
          }));
 
@@ -122,17 +122,17 @@ const Songs = () => {
    };
 
    const [searchInput, setSearchInput] = useState('');
-   const [filteredMessages, setFilteredMessages] = useState(messages);
+   const [filteredSongs, setFilteredSongs] = useState(messages);
 
    useEffect(() => {
       // Filter the messages based on the search input
-      const filtered = messagesDetails.filter(
-         (message) =>
-            message.artist.toLowerCase().includes(searchInput.toLowerCase()) ||
-            message.title.toLowerCase().includes(searchInput.toLowerCase())
+      const filtered = songDetails.filter(
+         (song) =>
+            song.artist.toLowerCase().includes(searchInput.toLowerCase()) ||
+            song.title.toLowerCase().includes(searchInput.toLowerCase())
       );
 
-      setFilteredMessages(filtered);
+      setFilteredSongs(filtered);
    }, [searchInput]);
 
    useEffect(() => {
@@ -143,9 +143,9 @@ const Songs = () => {
       if (product) {
          // UnStake();
 
-         // Find the index of the product in messagesDetails using its id
-         const productIndex = messagesDetails.findIndex(
-            (message) => message.id === product.id
+         // Find the index of the product in songDetails using its id
+         const productIndex = songDetails.findIndex(
+            (song) => song.id === product.id
          );
 
          if (productIndex !== -1) {
@@ -170,7 +170,7 @@ const Songs = () => {
                JSON.stringify(purchasedProducts)
             );
          } else {
-            console.error('Product not found in messagesDetails.');
+            console.error('Product not found in songDetails.');
          }
       }
    };
@@ -190,9 +190,9 @@ const Songs = () => {
                </form>
             </div>
             <div className="flex flex-wrap gap-3 p-2 justify-center items-center">
-               {filteredMessages.map((message, index) => (
+               {filteredSongs.map((song, index) => (
                   <div
-                     key={message.id}
+                     key={song.id}
                      className="flex justify-between items-center mx-1  px-2 py-3  rounded-md  shadow-custom"
                      // className="flex flex-col w-[calc(50% - 1rem)] md:w-[calc(33.33% - 1rem)] lg:w-[calc(25% - 1rem)] 2xl:w-[calc(20% - 1rem)] mb-3 p-2 rounded-md  shadow-custom"
                   >
@@ -208,24 +208,22 @@ const Songs = () => {
 
                      <div className="flex flex-col ml-6 text-sm">
                         {/* <span className="text-white text-small pt-1 pb-1">
-                           {message.title}
+                           {song.title}
                         </span> */}
                         <span className=" text-white text-small pt-1 pb-1 overflow-hidden whitespace-nowrap">
-                           {message.title.length > 15
-                              ? `${message.title.slice(0, 15)}...`
-                              : message.title}
+                           {song.title.length > 15
+                              ? `${song.title.slice(0, 15)}...`
+                              : song.title}
                         </span>
                         <span className="text-white text-sm">
-                           {message.artist}
+                           {song.artist}
                         </span>
-                        <span className="text-gray-400">
-                           $TKC {message.price}
-                        </span>
+                        <span className="text-gray-400">$TKC {song.price}</span>
                         <div>
                            <button
                               onClick={() => {
-                                 setSelectedProduct(message);
-                                 buyNow(message);
+                                 setSelectedProduct(song);
+                                 buyNow(song);
                               }}
                               className="text-white mt-1 bg-yellow-700 py-1 px-2 rounded-sm hover:bg-yellow-800 focus:outline-none focus:ring-1 focus:ring-yellow-500 focus:ring-opacity-50"
                            >

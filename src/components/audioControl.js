@@ -83,8 +83,16 @@ const AudioPlayer = () => {
    const imageUrl = useSelector((state) => state.audio.imageUrl);
    const volume = useSelector((state) => state.audio.volume);
 
-   const purchasedProducts =
+   const purchasedSongs =
       JSON.parse(localStorage.getItem('purchasedProducts')) || [];
+
+   const purchasedMessages =
+      JSON.parse(localStorage.getItem('purchasedMessages')) || [];
+
+   // Merge the purchasedSongs and purchasedMessages arrays
+   const mergedPurchases = [...purchasedSongs, ...purchasedMessages];
+
+   // console.log(purchasedMessages);
 
    // console.log('Active Song ID:', activeSongId);
 
@@ -173,7 +181,7 @@ const AudioPlayer = () => {
    };
 
    const playNextSong = () => {
-      const productIds = purchasedProducts.map((product) => {
+      const productIds = mergedPurchases.map((product) => {
          const parsedProduct = JSON.parse(product);
          return parsedProduct.id;
       });
@@ -183,17 +191,15 @@ const AudioPlayer = () => {
       if (currentIndex !== -1 && currentIndex < productIds.length - 1) {
          const nextSongId = productIds[currentIndex + 1];
 
-         // Find the index of the next song in purchasedProducts
-         const nextSongIndex = purchasedProducts.findIndex((product) => {
+         // Find the index of the next song in mergedPurchases
+         const nextSongIndex = mergedPurchases.findIndex((product) => {
             const parsedProduct = JSON.parse(product);
             return parsedProduct.id === nextSongId;
          });
 
          if (nextSongIndex !== -1) {
             // Get the next song's details (title, artist, duration, etc.)
-            const nextSongDetails = JSON.parse(
-               purchasedProducts[nextSongIndex]
-            );
+            const nextSongDetails = JSON.parse(mergedPurchases[nextSongIndex]);
 
             // Retrieve the audio element for the current and next songs
             const currentAudio = audioRefs[activeSongId];
@@ -222,7 +228,7 @@ const AudioPlayer = () => {
    };
 
    const playPreviousSong = () => {
-      const productIds = purchasedProducts.map((product) => {
+      const productIds = mergedPurchases.map((product) => {
          const parsedProduct = JSON.parse(product);
          return parsedProduct.id;
       });
@@ -232,8 +238,8 @@ const AudioPlayer = () => {
       if (currentIndex > 0) {
          const previousSongId = productIds[currentIndex - 1];
 
-         // Find the index of the previous song in purchasedProducts
-         const previousSongIndex = purchasedProducts.findIndex((product) => {
+         // Find the index of the previous song in mergedPurchases
+         const previousSongIndex = mergedPurchases.findIndex((product) => {
             const parsedProduct = JSON.parse(product);
             return parsedProduct.id === previousSongId;
          });
@@ -241,7 +247,7 @@ const AudioPlayer = () => {
          if (previousSongIndex !== -1) {
             // Get the previous song's details (title, artist, duration, etc.)
             const previousSongDetails = JSON.parse(
-               purchasedProducts[previousSongIndex]
+               mergedPurchases[previousSongIndex]
             );
 
             // Retrieve the audio element for the current and previous songs
@@ -361,10 +367,10 @@ const AudioPlayer = () => {
 
    // console.log(songDetails);
    // console.log(activeSongId);
-
+   // Watching Tailwind Tutorials Is A Waste Of Time
    return (
       <>
-         <div className="fixed bottom-0 w-full">
+         <div className="fixed bottom-0 w-full bg-[#2c2518]">
             <div
                onClick={(e) => {
                   handleMouseDown(e, true);
@@ -376,7 +382,7 @@ const AudioPlayer = () => {
                }}
                onMouseDown={() => setMouseDown(true)}
                onMouseLeave={() => setMouseDown(false)}
-               className="w-full  progress border-t-[1px] border-[#828282] relative  pb-3"
+               className="w-full  progress border-t-[1px] border-[#828282] relative pb-3"
             >
                <div
                   style={{ width: `${progressBarWidth}%` }}

@@ -469,51 +469,6 @@ const AudioPlayer = () => {
 
    // console.log('Active Song ID:', activeSongId);
 
-   const playNextSong = () => {
-      const productIds = purchasedProducts.map((product) => {
-         const parsedProduct = JSON.parse(product);
-         return parsedProduct.id;
-      });
-
-      const currentIndex = productIds.indexOf(activeSongId);
-
-      if (currentIndex !== -1 && currentIndex < productIds.length - 1) {
-         const nextSongId = productIds[currentIndex + 1];
-
-         // Find the index of the next song in purchasedProducts
-         const nextSongIndex = purchasedProducts.findIndex((product) => {
-            const parsedProduct = JSON.parse(product);
-            return parsedProduct.id === nextSongId;
-         });
-
-         if (nextSongIndex !== -1) {
-            // Get the next song's details (title, artist, duration, etc.)
-            const nextSongDetails = JSON.parse(
-               purchasedProducts[nextSongIndex]
-            );
-            console.log(nextSongDetails);
-
-            // Retrieve the audio element for the current and next songs
-            const currentAudio = audioRefs[activeSongId];
-            const nextAudio = audioRefs[nextSongId];
-
-            if (currentAudio && nextAudio) {
-               // Pause the current song and reset its currentTime to 0
-               currentAudio.pause();
-               currentAudio.currentTime = 0;
-
-               // Play the next song
-               nextAudio.play();
-
-               // Update the active song in the Redux store
-               dispatch(setActiveSong(nextSongId));
-               dispatch(updateSongDetails(nextSongDetails));
-               // dispatch(setDuration(nextSongDetails.duration));
-            }
-         }
-      }
-   };
-
    const handlePlayPause = () => {
       handleAudioPlayPause();
    };
@@ -568,48 +523,106 @@ const AudioPlayer = () => {
    //    }
    // };
 
-   const playPreviousSong = () => {
-      const productIds = purchasedProducts.map((product) => {
-         const parsedProduct = JSON.parse(product);
-         return parsedProduct.id;
-      });
+   // const playNextSong = () => {
+   //    const productIds = purchasedSongs.map((product) => {
+   //       const parsedProduct = JSON.parse(product);
+   //       return parsedProduct.id;
+   //    });
 
-      const currentIndex = productIds.indexOf(activeSongId);
+   //    const currentIndex = productIds.indexOf(activeSongId);
 
-      if (currentIndex > 0) {
-         const previousSongId = productIds[currentIndex - 1];
+   //    if (currentIndex !== -1 && currentIndex < productIds.length - 1) {
+   //       const nextSongId = productIds[currentIndex + 1];
 
-         // Find the index of the previous song in purchasedProducts
-         const previousSongIndex = purchasedProducts.findIndex((product) => {
-            const parsedProduct = JSON.parse(product);
-            return parsedProduct.id === previousSongId;
-         });
+   //       // Find the index of the next song in purchasedSongs
+   //       const nextSongIndex = purchasedSongs.findIndex((product) => {
+   //          const parsedProduct = JSON.parse(product);
+   //          return parsedProduct.id === nextSongId;
+   //       });
 
-         if (previousSongIndex !== -1) {
-            // Get the previous song's details (title, artist, duration, etc.)
-            const previousSongDetails = JSON.parse(
-               purchasedProducts[previousSongIndex]
-            );
+   //       if (nextSongIndex !== -1) {
+   //          // Get the next song's details (title, artist, duration, etc.)
+   //          const nextSongDetails = JSON.parse(purchasedSongs[nextSongIndex]);
 
-            // Retrieve the audio element for the current and previous songs
-            const currentAudio = audioRefs[activeSongId];
-            const previousAudio = audioRefs[previousSongId];
+   //          // Retrieve the audio element for the current and next songs
+   //          const currentAudio = audioRefs[activeSongId];
+   //          const nextAudio = audioRefs[nextSongId];
+   //          if (currentAudio && nextAudio) {
+   //             currentAudio.pause();
+   //             currentAudio.currentTime = 0;
 
-            if (currentAudio && previousAudio) {
-               // Pause the current song and reset its currentTime to 0
-               currentAudio.pause();
-               currentAudio.currentTime = 0;
+   //             nextAudio.play().then(() => {
+   //                // Update the active song in the Redux store after the audio has started playing
+   //                dispatch(setActiveSong(nextSongId));
+   //                dispatch(updateSongDetails(nextSongDetails));
 
-               // Play the previous song
-               previousAudio.play();
+   //                nextAudio.addEventListener('loadedmetadata', () => {
+   //                   // Update the duration and progress bar width when the new audio is ready
+   //                   const newDuration = nextAudio.duration;
+   //                   dispatch(setDuration(newDuration));
 
-               // Update the active song in the Redux store
-               dispatch(setActiveSong(previousSongId));
-               dispatch(updateSongDetails(previousSongDetails));
-            }
-         }
-      }
-   };
+   //                   const interval = startProgressUpdateInterval(nextAudio);
+   //                   setProgressUpdateInterval(interval);
+   //                });
+   //             });
+   //          }
+   //       }
+   //    }
+   // };
+
+   // const playPreviousSong = () => {
+   //    const productIds = purchasedSongs.map((product) => {
+   //       const parsedProduct = JSON.parse(product);
+   //       return parsedProduct.id;
+   //    });
+
+   //    const currentIndex = productIds.indexOf(activeSongId);
+
+   //    if (currentIndex > 0) {
+   //       const previousSongId = productIds[currentIndex - 1];
+
+   //       // Find the index of the previous song in purchasedSongs
+   //       const previousSongIndex = purchasedSongs.findIndex((product) => {
+   //          const parsedProduct = JSON.parse(product);
+   //          return parsedProduct.id === previousSongId;
+   //       });
+
+   //       if (previousSongIndex !== -1) {
+   //          // Get the previous song's details (title, artist, duration, etc.)
+   //          const previousSongDetails = JSON.parse(
+   //             purchasedSongs[previousSongIndex]
+   //          );
+
+   //          // Retrieve the audio element for the current and previous songs
+   //          const currentAudio = audioRefs[activeSongId];
+   //          const previousAudio = audioRefs[previousSongId];
+
+   //          if (currentAudio && previousAudio) {
+   //             // Pause the current song and reset its currentTime to 0
+   //             currentAudio.pause();
+   //             currentAudio.currentTime = 0;
+
+   //             previousAudio.play().then(() => {
+   //                // Update the active song in the Redux store after the audio has started playing
+   //                dispatch(setActiveSong(previousSongId));
+   //                dispatch(updateSongDetails(previousSongDetails));
+
+   //                previousAudio.addEventListener('loadedmetadata', () => {
+   //                   // Update the duration and progress bar width when the new audio is ready
+   //                   const newDuration = previousAudio.duration;
+   //                   dispatch(setDuration(newDuration));
+
+   //                   // Clear the existing progress update interval before starting a new one
+   //                   clearInterval(progressUpdateInterval);
+
+   //                   const interval = setInterval(handleProgressUpdate, 1000);
+   //                   setProgressUpdateInterval(interval);
+   //                });
+   //             });
+   //          }
+   //       }
+   //    }
+   // };
 
    // console the currentTime and duration
 

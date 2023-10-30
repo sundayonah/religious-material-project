@@ -32,7 +32,6 @@ export const StateContextProvider = ({ children }) => {
    //       '0x46525740483e6cf321313372F8eCa8bBb625a57B'
    //    );
 
-   // const address = useAddress();
    // const connect = useMetamask();
    // const disconnect = useDisconnect();
 
@@ -41,7 +40,7 @@ export const StateContextProvider = ({ children }) => {
 
    const { address } = useAccount();
 
-   // console.log(address);
+   console.log(address);
    /////////////// for download///////
 
    const audioRef = useRef(null);

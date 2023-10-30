@@ -10,26 +10,26 @@ const Messages = () => {
 
    const messagesDetails = [
       {
-         id: 'rec43w3ipXvP28vog',
+         id: 're1c43w3ipXvP28vog',
          title: 'high-back bench',
-         artist: 'John Doe',
+         artist: 'peter jury',
          category: 'healing',
          // file: 'https',
-         file: '/phill_thompson.mp3',
+         file: '/Ludovico Gonzales-Soft.mp3',
          price: 9.99,
          imageUrl: '',
       },
       {
-         id: 'rec4f2RIftFCb7aHh',
+         id: 're1c4f2RIftFCb7aHh',
          title: 'albany table',
-         artist: 'John Doe',
+         artist: 'peter jury',
          category: 'faith',
-         file: '/Minister_GUC.mp3',
+         file: '/Ludovico Gonzales.mp3',
          price: 79.99,
          imageUrl: '',
       },
       {
-         id: 'rec8kkCmSiMkbkiko',
+         id: 're1c8kkCmSiMkbkiko',
          title: 'accent chair traditional',
          artist: 'John Doe',
          category: 'faith',
@@ -38,7 +38,7 @@ const Messages = () => {
          imageUrl: '',
       },
       {
-         id: 'recBohCqQsot4Q4II',
+         id: 're1cBohCqQsot4Q4II',
          title: 'wooden table',
          artist: 'John Doe',
          category: 'faith',
@@ -47,7 +47,7 @@ const Messages = () => {
          imageUrl: '',
       },
       {
-         id: 'recDG1JRZnbpRHpoy',
+         id: 're1cDG1JRZnbpRHpoy',
          title: 'dining table',
          artist: 'John Doe',
          category: 'faith',
@@ -56,7 +56,7 @@ const Messages = () => {
          imageUrl: '',
       },
       {
-         id: 'recNWGyP7kjFhSqw3',
+         id: 're1cNWGyP7kjFhSqw3',
          title: 'sofa set',
          artist: 'John Doe',
          category: 'supernatural',
@@ -65,41 +65,6 @@ const Messages = () => {
          imageUrl: '',
       },
    ];
-
-   // const fetchImageUrls = async () => {
-   //    try {
-   //       // Fetch the list of files and directories in the IPFS folder
-   //       const response = await fetch(gatewayUrl);
-   //       if (!response.ok) {
-   //          throw new Error('Failed to fetch folder content');
-   //       }
-
-   //       // Assuming the response is HTML containing links to files
-   //       const html = await response.text();
-
-   //       // Parse the HTML to extract links to image files
-   //       const parser = new DOMParser();
-   //       const doc = parser.parseFromString(html, 'text/html');
-   //       const links = Array.from(doc.querySelectorAll('a'));
-
-   //       // Filter links to include only image files ending with "/img.png"
-   //       const imageLinks = links.filter((link) =>
-   //          link.getAttribute('href').includes('/img')
-   //       );
-
-   //       // Create image URLs from the links
-   //       const urls = imageLinks.map(
-   //          (link) => `https://ipfs.io${link.getAttribute('href')}`
-   //       );
-
-   //       // Remove duplicates by converting the array to a Set and then back to an array
-   //       const uniqueUrls = Array.from(new Set(urls));
-
-   //       setImageUrls(uniqueUrls);
-   //    } catch (error) {
-   //       console.error('Error fetching folder content:', error);
-   //    }
-   // };
 
    const fetchImageUrls = async () => {
       try {
@@ -162,12 +127,6 @@ const Messages = () => {
       fetchImageUrls();
    }, [gatewayUrl]);
 
-   // const buyNow = (product) => {
-   //    if (product) {
-   //       console.log('Buy Now clicked for:', product.price);
-   //    }
-   // };
-
    const buyNow = (product) => {
       if (product) {
          // UnStake();
@@ -193,13 +152,13 @@ const Messages = () => {
             console.log(serializedProduct);
 
             // // Add the purchased product to localStorage
-            // const purchasedMessages =
-            //    JSON.parse(localStorage.getItem('purchasedMessages')) || [];
-            // purchasedMessages.push(serializedProduct);
-            // localStorage.setItem(
-            //    'purchasedMessages',
-            //    JSON.stringify(purchasedMessages)
-            // );
+            const purchasedMessages =
+               JSON.parse(localStorage.getItem('purchasedMessages')) || [];
+            purchasedMessages.push(serializedProduct);
+            localStorage.setItem(
+               'purchasedMessages',
+               JSON.stringify(purchasedMessages)
+            );
          } else {
             console.error('Product not found in songDetails.');
          }

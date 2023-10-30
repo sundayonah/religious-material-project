@@ -1,15 +1,15 @@
-// audioSlice.js
+// messageSlice.js
 import {
    getLikesAndDislikesFromLocalStorage,
    saveLikesAndDislikesToLocalStorage,
 } from '@/components/local-storage';
 import { createSlice } from '@reduxjs/toolkit';
 
-const audioSlice = createSlice({
-   name: 'audio',
+const messageSlice = createSlice({
+   name: 'message',
    initialState: {
-      activeSongId: null,
-      songStates: {}, // Object to store the playing state of each song
+      activeMessageId: null,
+      messageStates: {}, // Object to store the playing state of each song
       repeat: false, // Add a repeat state
       volume: 1,
       volumeBar: false,
@@ -18,30 +18,30 @@ const audioSlice = createSlice({
       currentTime: 0,
       duration: 0,
       progressBarWidth: 0,
-      songDurations: {}, // New state property to store song durations
-      songDetails: {
+      messageDurations: {}, // New state property to store song durations
+      messageDetails: {
          id: '',
          title: '',
          artist: '',
          duration: 0, // You can include other details you need
          imageUrl: '',
       },
-      likedSongs: getLikesAndDislikesFromLocalStorage().likedSongs,
-      dislikedSongs: getLikesAndDislikesFromLocalStorage().dislikedSongs,
+      likedMessage: getLikesAndDislikesFromLocalStorage().likedMessage,
+      dislikedMessage: getLikesAndDislikesFromLocalStorage().dislikedMessage,
    },
    reducers: {
-      setActiveSong: (state, action) => {
-         state.activeSongId = action.payload;
-         state.songStates[action.payload] = true; // Start playing the new song.
+      setActiveMessage: (state, action) => {
+         state.activeMessageId = action.payload;
+         state.messageStates[action.payload] = true; // Start playing the new song.
          state.currentTime = 0; // Reset currentTime when a new song is selected.
          state.duration = 0; // Reset duration when a new song is selected.
          state.imageUrl = null; // Reset imageUrl when a new song is selected
       },
 
       togglePlayback: (state, action) => {
-         const songId = action.payload;
-         if (songId === state.activeSongId) {
-            state.songStates[songId] = !state.songStates[songId]; // Toggle play/pause state of the active song.
+         const messageId = action.payload;
+         if (messageId === state.activeMessageId) {
+            state.messageStates[messageId] = !state.messageStates[messageId]; // Toggle play/pause state of the active song.
          }
       },
       toggleRepeat: (state) => {
@@ -50,30 +50,30 @@ const audioSlice = createSlice({
       setVolume: (state, action) => {
          state.volume = action.payload;
       },
-      setNextSong: (state, action) => {
+      setNextMessage: (state, action) => {
          state.next = action.payload;
          console.log(state, action);
       },
-      setPreviousSong: (state, action) => {
+      setPreviousMessage: (state, action) => {
          state.prev = action.payload;
       },
       handleControls: (state, { payload }) => {
          if (payload === 'prev') {
             if (state.prev !== null) {
-               state.next = state.activeSongId;
-               state.activeSongId = state.prev;
+               state.next = state.activeMessageId;
+               state.activeMessageId = state.prev;
                state.prev = null;
             }
          } else if (payload === 'next') {
             if (state.next !== null) {
-               state.prev = state.activeSongId;
-               state.activeSongId = state.next;
+               state.prev = state.activeMessageId;
+               state.activeMessageId = state.next;
                state.next = null;
             }
          }
       },
-      updateSongDetails: (state, action) => {
-         state.songDetails = action.payload;
+      updateMessageDetails: (state, action) => {
+         state.messageDetails = action.payload;
       },
       setCurrentTime: (state, { payload }) => {
          state.currentTime = payload;
@@ -94,27 +94,27 @@ const audioSlice = createSlice({
       setVolumeBar: (state, { payload }) => {
          state.volumeBar = payload;
       },
-      setSongDuration: (state, action) => {
-         const { songId, duration } = action.payload;
-         state.songDurations[songId] = duration;
+      setMessageDuration: (state, action) => {
+         const { messageId, duration } = action.payload;
+         state.messageDurations[messageId] = duration;
       },
 
       toggleLike: (state, action) => {
-         const { songId, isLiked } = action.payload;
-         state.likedSongs[songId] = isLiked;
-         state.dislikedSongs[songId] = false;
+         const { messageId, isLiked } = action.payload;
+         state.likedMessage[messageId] = isLiked;
+         state.dislikedMessage[messageId] = false;
          saveLikesAndDislikesToLocalStorage(
-            state.likedSongs,
-            state.dislikedSongs
+            state.likedMessage,
+            state.dislikedMessage
          );
       },
       toggleDislike: (state, action) => {
-         const { songId, isDisliked } = action.payload;
-         state.dislikedSongs[songId] = isDisliked;
-         state.likedSongs[songId] = false;
+         const { messageId, isDisliked } = action.payload;
+         state.dislikedMessage[messageId] = isDisliked;
+         state.likedMessage[messageId] = false;
          saveLikesAndDislikesToLocalStorage(
-            state.likedSongs,
-            state.dislikedSongs
+            state.likedMessage,
+            state.dislikedMessage
          );
       },
    },
@@ -122,20 +122,20 @@ const audioSlice = createSlice({
 
 export const {
    togglePlayback,
-   setActiveSong,
+   setActiveMessage,
    toggleRepeat,
    setVolume,
-   setNextSong,
-   setPreviousSong,
+   setNextMessage,
+   setPreviousMessage,
    handleControls,
-   updateSongDetails,
+   updateMessageDetails,
    setCurrentTime,
    setProgressBarWidth,
    setVolumeBar,
    setDuration,
    setImageUrl,
-   setSongDuration,
+   setMessageDuration,
    toggleLike,
    toggleDislike,
-} = audioSlice.actions;
-export default audioSlice.reducer;
+} = messageSlice.actions;
+export default messageSlice.reducer;

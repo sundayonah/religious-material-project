@@ -1,0 +1,733 @@
+[
+   { "inputs": [], "stateMutability": "nonpayable", "type": "constructor" },
+   {
+      "anonymous": false,
+      "inputs": [
+         {
+            "indexed": false,
+            "internalType": "address",
+            "name": "previousAdmin",
+            "type": "address"
+         },
+         {
+            "indexed": false,
+            "internalType": "address",
+            "name": "newAdmin",
+            "type": "address"
+         }
+      ],
+      "name": "AdminChanged",
+      "type": "event"
+   },
+   {
+      "anonymous": false,
+      "inputs": [
+         {
+            "indexed": true,
+            "internalType": "address",
+            "name": "account",
+            "type": "address"
+         },
+         {
+            "indexed": true,
+            "internalType": "address",
+            "name": "operator",
+            "type": "address"
+         },
+         {
+            "indexed": false,
+            "internalType": "bool",
+            "name": "approved",
+            "type": "bool"
+         }
+      ],
+      "name": "ApprovalForAll",
+      "type": "event"
+   },
+   {
+      "anonymous": false,
+      "inputs": [
+         {
+            "indexed": true,
+            "internalType": "address",
+            "name": "beacon",
+            "type": "address"
+         }
+      ],
+      "name": "BeaconUpgraded",
+      "type": "event"
+   },
+   {
+      "anonymous": false,
+      "inputs": [
+         {
+            "indexed": true,
+            "internalType": "uint256",
+            "name": "contentId",
+            "type": "uint256"
+         },
+         {
+            "indexed": true,
+            "internalType": "uint256",
+            "name": "purchasePrice",
+            "type": "uint256"
+         },
+         {
+            "indexed": true,
+            "internalType": "string",
+            "name": "metadataURI",
+            "type": "string"
+         }
+      ],
+      "name": "ContentAdded",
+      "type": "event"
+   },
+   {
+      "anonymous": false,
+      "inputs": [
+         {
+            "indexed": true,
+            "internalType": "uint256",
+            "name": "contentId",
+            "type": "uint256"
+         },
+         {
+            "indexed": true,
+            "internalType": "uint256",
+            "name": "purchasePrice",
+            "type": "uint256"
+         }
+      ],
+      "name": "ContentUpdated",
+      "type": "event"
+   },
+   {
+      "anonymous": false,
+      "inputs": [
+         {
+            "indexed": true,
+            "internalType": "uint256",
+            "name": "devFee",
+            "type": "uint256"
+         },
+         {
+            "indexed": true,
+            "internalType": "address",
+            "name": "devFeeRecipient",
+            "type": "address"
+         }
+      ],
+      "name": "DevFeeChanged",
+      "type": "event"
+   },
+   {
+      "anonymous": false,
+      "inputs": [
+         {
+            "indexed": false,
+            "internalType": "uint8",
+            "name": "version",
+            "type": "uint8"
+         }
+      ],
+      "name": "Initialized",
+      "type": "event"
+   },
+   {
+      "anonymous": false,
+      "inputs": [
+         {
+            "indexed": true,
+            "internalType": "uint256",
+            "name": "protocolFee",
+            "type": "uint256"
+         },
+         {
+            "indexed": true,
+            "internalType": "address",
+            "name": "protocolFeeRecipient",
+            "type": "address"
+         }
+      ],
+      "name": "ProtocolFeeChanged",
+      "type": "event"
+   },
+   {
+      "anonymous": false,
+      "inputs": [
+         {
+            "indexed": true,
+            "internalType": "address",
+            "name": "buyer",
+            "type": "address"
+         },
+         {
+            "indexed": true,
+            "internalType": "uint256",
+            "name": "contentId",
+            "type": "uint256"
+         },
+         {
+            "indexed": true,
+            "internalType": "uint256",
+            "name": "price",
+            "type": "uint256"
+         }
+      ],
+      "name": "Purchased",
+      "type": "event"
+   },
+   {
+      "anonymous": false,
+      "inputs": [
+         {
+            "indexed": true,
+            "internalType": "bytes32",
+            "name": "role",
+            "type": "bytes32"
+         },
+         {
+            "indexed": true,
+            "internalType": "bytes32",
+            "name": "previousAdminRole",
+            "type": "bytes32"
+         },
+         {
+            "indexed": true,
+            "internalType": "bytes32",
+            "name": "newAdminRole",
+            "type": "bytes32"
+         }
+      ],
+      "name": "RoleAdminChanged",
+      "type": "event"
+   },
+   {
+      "anonymous": false,
+      "inputs": [
+         {
+            "indexed": true,
+            "internalType": "bytes32",
+            "name": "role",
+            "type": "bytes32"
+         },
+         {
+            "indexed": true,
+            "internalType": "address",
+            "name": "account",
+            "type": "address"
+         },
+         {
+            "indexed": true,
+            "internalType": "address",
+            "name": "sender",
+            "type": "address"
+         }
+      ],
+      "name": "RoleGranted",
+      "type": "event"
+   },
+   {
+      "anonymous": false,
+      "inputs": [
+         {
+            "indexed": true,
+            "internalType": "bytes32",
+            "name": "role",
+            "type": "bytes32"
+         },
+         {
+            "indexed": true,
+            "internalType": "address",
+            "name": "account",
+            "type": "address"
+         },
+         {
+            "indexed": true,
+            "internalType": "address",
+            "name": "sender",
+            "type": "address"
+         }
+      ],
+      "name": "RoleRevoked",
+      "type": "event"
+   },
+   {
+      "anonymous": false,
+      "inputs": [
+         {
+            "indexed": true,
+            "internalType": "address",
+            "name": "token",
+            "type": "address"
+         },
+         {
+            "indexed": true,
+            "internalType": "bool",
+            "name": "isSupported",
+            "type": "bool"
+         }
+      ],
+      "name": "SupportedTokens",
+      "type": "event"
+   },
+   {
+      "anonymous": false,
+      "inputs": [
+         {
+            "indexed": true,
+            "internalType": "address",
+            "name": "operator",
+            "type": "address"
+         },
+         {
+            "indexed": true,
+            "internalType": "address",
+            "name": "from",
+            "type": "address"
+         },
+         {
+            "indexed": true,
+            "internalType": "address",
+            "name": "to",
+            "type": "address"
+         },
+         {
+            "indexed": false,
+            "internalType": "uint256[]",
+            "name": "ids",
+            "type": "uint256[]"
+         },
+         {
+            "indexed": false,
+            "internalType": "uint256[]",
+            "name": "values",
+            "type": "uint256[]"
+         }
+      ],
+      "name": "TransferBatch",
+      "type": "event"
+   },
+   {
+      "anonymous": false,
+      "inputs": [
+         {
+            "indexed": true,
+            "internalType": "address",
+            "name": "operator",
+            "type": "address"
+         },
+         {
+            "indexed": true,
+            "internalType": "address",
+            "name": "from",
+            "type": "address"
+         },
+         {
+            "indexed": true,
+            "internalType": "address",
+            "name": "to",
+            "type": "address"
+         },
+         {
+            "indexed": false,
+            "internalType": "uint256",
+            "name": "id",
+            "type": "uint256"
+         },
+         {
+            "indexed": false,
+            "internalType": "uint256",
+            "name": "value",
+            "type": "uint256"
+         }
+      ],
+      "name": "TransferSingle",
+      "type": "event"
+   },
+   {
+      "anonymous": false,
+      "inputs": [
+         {
+            "indexed": false,
+            "internalType": "string",
+            "name": "value",
+            "type": "string"
+         },
+         {
+            "indexed": true,
+            "internalType": "uint256",
+            "name": "id",
+            "type": "uint256"
+         }
+      ],
+      "name": "URI",
+      "type": "event"
+   },
+   {
+      "anonymous": false,
+      "inputs": [
+         {
+            "indexed": true,
+            "internalType": "address",
+            "name": "implementation",
+            "type": "address"
+         }
+      ],
+      "name": "Upgraded",
+      "type": "event"
+   },
+   {
+      "inputs": [],
+      "name": "DEFAULT_ADMIN_ROLE",
+      "outputs": [{ "internalType": "bytes32", "name": "", "type": "bytes32" }],
+      "stateMutability": "view",
+      "type": "function"
+   },
+   {
+      "inputs": [],
+      "name": "MAX_BPS",
+      "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+      "stateMutability": "view",
+      "type": "function"
+   },
+   {
+      "inputs": [],
+      "name": "MINTER_ROLE",
+      "outputs": [{ "internalType": "bytes32", "name": "", "type": "bytes32" }],
+      "stateMutability": "view",
+      "type": "function"
+   },
+   {
+      "inputs": [],
+      "name": "UPGRADER_ROLE",
+      "outputs": [{ "internalType": "bytes32", "name": "", "type": "bytes32" }],
+      "stateMutability": "view",
+      "type": "function"
+   },
+   {
+      "inputs": [
+         {
+            "internalType": "uint256",
+            "name": "_purchasePrice",
+            "type": "uint256"
+         },
+         { "internalType": "string", "name": "_metadataURI", "type": "string" },
+         { "internalType": "bytes", "name": "data", "type": "bytes" }
+      ],
+      "name": "addContent",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+   },
+   {
+      "inputs": [
+         { "internalType": "address", "name": "account", "type": "address" },
+         { "internalType": "uint256", "name": "id", "type": "uint256" }
+      ],
+      "name": "balanceOf",
+      "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+      "stateMutability": "view",
+      "type": "function"
+   },
+   {
+      "inputs": [
+         {
+            "internalType": "address[]",
+            "name": "accounts",
+            "type": "address[]"
+         },
+         { "internalType": "uint256[]", "name": "ids", "type": "uint256[]" }
+      ],
+      "name": "balanceOfBatch",
+      "outputs": [
+         { "internalType": "uint256[]", "name": "", "type": "uint256[]" }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+   },
+   {
+      "inputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+      "name": "content",
+      "outputs": [
+         { "internalType": "uint256", "name": "contentId", "type": "uint256" },
+         {
+            "internalType": "uint256",
+            "name": "purchasePrice",
+            "type": "uint256"
+         },
+         { "internalType": "string", "name": "metadataURI", "type": "string" },
+         { "internalType": "address", "name": "creator", "type": "address" }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+   },
+   {
+      "inputs": [],
+      "name": "counter",
+      "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+      "stateMutability": "view",
+      "type": "function"
+   },
+   {
+      "inputs": [],
+      "name": "devFee",
+      "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+      "stateMutability": "view",
+      "type": "function"
+   },
+   {
+      "inputs": [],
+      "name": "devFeeRecipient",
+      "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
+      "stateMutability": "view",
+      "type": "function"
+   },
+   {
+      "inputs": [
+         { "internalType": "bytes32", "name": "role", "type": "bytes32" }
+      ],
+      "name": "getRoleAdmin",
+      "outputs": [{ "internalType": "bytes32", "name": "", "type": "bytes32" }],
+      "stateMutability": "view",
+      "type": "function"
+   },
+   {
+      "inputs": [
+         { "internalType": "bytes32", "name": "role", "type": "bytes32" },
+         { "internalType": "address", "name": "account", "type": "address" }
+      ],
+      "name": "grantRole",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+   },
+   {
+      "inputs": [
+         { "internalType": "bytes32", "name": "role", "type": "bytes32" },
+         { "internalType": "address", "name": "account", "type": "address" }
+      ],
+      "name": "hasRole",
+      "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }],
+      "stateMutability": "view",
+      "type": "function"
+   },
+   {
+      "inputs": [
+         { "internalType": "address", "name": "_token", "type": "address" }
+      ],
+      "name": "initialize",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+   },
+   {
+      "inputs": [
+         { "internalType": "address", "name": "account", "type": "address" },
+         { "internalType": "address", "name": "operator", "type": "address" }
+      ],
+      "name": "isApprovedForAll",
+      "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }],
+      "stateMutability": "view",
+      "type": "function"
+   },
+   {
+      "inputs": [],
+      "name": "protocolFee",
+      "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+      "stateMutability": "view",
+      "type": "function"
+   },
+   {
+      "inputs": [],
+      "name": "protocolFeeRecipient",
+      "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
+      "stateMutability": "view",
+      "type": "function"
+   },
+   {
+      "inputs": [],
+      "name": "proxiableUUID",
+      "outputs": [{ "internalType": "bytes32", "name": "", "type": "bytes32" }],
+      "stateMutability": "view",
+      "type": "function"
+   },
+   {
+      "inputs": [
+         { "internalType": "uint256", "name": "contentId", "type": "uint256" },
+         { "internalType": "address", "name": "token", "type": "address" }
+      ],
+      "name": "purchase",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+   },
+   {
+      "inputs": [
+         { "internalType": "bytes32", "name": "role", "type": "bytes32" },
+         { "internalType": "address", "name": "account", "type": "address" }
+      ],
+      "name": "renounceRole",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+   },
+   {
+      "inputs": [
+         { "internalType": "bytes32", "name": "role", "type": "bytes32" },
+         { "internalType": "address", "name": "account", "type": "address" }
+      ],
+      "name": "revokeRole",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+   },
+   {
+      "inputs": [
+         { "internalType": "address", "name": "from", "type": "address" },
+         { "internalType": "address", "name": "to", "type": "address" },
+         { "internalType": "uint256[]", "name": "ids", "type": "uint256[]" },
+         {
+            "internalType": "uint256[]",
+            "name": "amounts",
+            "type": "uint256[]"
+         },
+         { "internalType": "bytes", "name": "data", "type": "bytes" }
+      ],
+      "name": "safeBatchTransferFrom",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+   },
+   {
+      "inputs": [
+         { "internalType": "address", "name": "from", "type": "address" },
+         { "internalType": "address", "name": "to", "type": "address" },
+         { "internalType": "uint256", "name": "id", "type": "uint256" },
+         { "internalType": "uint256", "name": "amount", "type": "uint256" },
+         { "internalType": "bytes", "name": "data", "type": "bytes" }
+      ],
+      "name": "safeTransferFrom",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+   },
+   {
+      "inputs": [
+         { "internalType": "address", "name": "operator", "type": "address" },
+         { "internalType": "bool", "name": "approved", "type": "bool" }
+      ],
+      "name": "setApprovalForAll",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+   },
+   {
+      "inputs": [
+         { "internalType": "uint256", "name": "_devFee", "type": "uint256" },
+         {
+            "internalType": "address",
+            "name": "_devFeeReceiver",
+            "type": "address"
+         }
+      ],
+      "name": "setDevFee",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+   },
+   {
+      "inputs": [
+         {
+            "internalType": "uint256",
+            "name": "_protocolFee",
+            "type": "uint256"
+         },
+         {
+            "internalType": "address",
+            "name": "_protocolFeeReceiver",
+            "type": "address"
+         }
+      ],
+      "name": "setProtocolFee",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+   },
+   {
+      "inputs": [
+         { "internalType": "address", "name": "_token", "type": "address" },
+         { "internalType": "bool", "name": "_isSupported", "type": "bool" }
+      ],
+      "name": "setSupportedToken",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+   },
+   {
+      "inputs": [{ "internalType": "address", "name": "", "type": "address" }],
+      "name": "supportedTokens",
+      "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }],
+      "stateMutability": "view",
+      "type": "function"
+   },
+   {
+      "inputs": [
+         { "internalType": "bytes4", "name": "interfaceId", "type": "bytes4" }
+      ],
+      "name": "supportsInterface",
+      "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }],
+      "stateMutability": "view",
+      "type": "function"
+   },
+   {
+      "inputs": [
+         { "internalType": "uint256", "name": "_contentId", "type": "uint256" },
+         {
+            "internalType": "uint256",
+            "name": "_purchasePrice",
+            "type": "uint256"
+         }
+      ],
+      "name": "updateContent",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+   },
+   {
+      "inputs": [
+         {
+            "internalType": "address",
+            "name": "newImplementation",
+            "type": "address"
+         }
+      ],
+      "name": "upgradeTo",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+   },
+   {
+      "inputs": [
+         {
+            "internalType": "address",
+            "name": "newImplementation",
+            "type": "address"
+         },
+         { "internalType": "bytes", "name": "data", "type": "bytes" }
+      ],
+      "name": "upgradeToAndCall",
+      "outputs": [],
+      "stateMutability": "payable",
+      "type": "function"
+   },
+   {
+      "inputs": [
+         { "internalType": "uint256", "name": "_id", "type": "uint256" }
+      ],
+      "name": "uri",
+      "outputs": [{ "internalType": "string", "name": "", "type": "string" }],
+      "stateMutability": "view",
+      "type": "function"
+   }
+]

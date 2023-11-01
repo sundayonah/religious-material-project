@@ -5,6 +5,7 @@ const Products = [
       category: 'healing',
       image: 'https://imgs.search.brave.com/2ssloejy0HTozm630hIPr2hxYHvtpBVwHIogZ-eHL9M/rs:fit:860:0:0/g:ce/aHR0cHM6Ly9tLm1l/ZGlhLWFtYXpvbi5j/b20vaW1hZ2VzL0kv/NTFseVMtTllvZ0wu/anBn',
       price: 9.99,
+      file: '/pdfFiles/test-1.pdf',
       description: `Describe the technical challenges you encountered during the project. 
                      Be specific and provide examples. For instance, 
                      you might mention issues related to data synchronization 
@@ -17,6 +18,7 @@ const Products = [
       category: 'faith',
       image: 'https://imgs.search.brave.com/trzC8mS6mF5EutPRIS5zBa2HOx5p_M4zoWE2IdxRSag/rs:fit:860:0:0/g:ce/aHR0cHM6Ly9tLm1l/ZGlhLWFtYXpvbi5j/b20vaW1hZ2VzL0kv/NzE2V2pXR1hqV0wu/anBn',
       price: 79.99,
+      file: '/pdfFiles/test-2.pdf',
       description: `Describe the technical challenges you encountered during the project. 
                      Be specific and provide examples. For instance, 
                      you might mention issues related to data synchronization 

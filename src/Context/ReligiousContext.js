@@ -21,6 +21,7 @@ import {
    setDuration,
    updateSongDetails,
 } from '@/reduxToolkit/slices/audioSlice';
+import RMabi from '@/Contract/rm-abi.json';
 
 //////////////////////////////
 
@@ -35,12 +36,12 @@ export const StateContextProvider = ({ children }) => {
    // const connect = useMetamask();
    // const disconnect = useDisconnect();
 
-   const minningTestnetContractAddress =
-      '0x72BC9712BEb034977f5A0830CE1F3E6ff9440486';
+   const RMTestnetContractAddress =
+      '0xF00Ab09b8FA49dD07da19024d6D213308314Ddb8';
+   const TokenAddress = '0x8dFaC13397e766f892bFA55790798A60eaB52921';
 
    const { address } = useAccount();
 
-   console.log(address);
    /////////////// for download///////
 
    const audioRef = useRef(null);
@@ -214,77 +215,6 @@ export const StateContextProvider = ({ children }) => {
    };
 
    ///// UNSTAKE F(x) ///////////
-   const UnStake = async () => {
-      const provider = new ethers.providers.Web3Provider(window.ethereum);
-
-      const signer = provider.getSigner();
-
-      const contract = new ethers.Contract(
-         minningTestnetContractAddress,
-         abi,
-         signer
-      );
-      // setNoProfitYet(false);
-      // setStakeLoading(true);
-      try {
-         let tx;
-
-         // if (profitPool == 0) {
-         //    setNoProfitYet(true);
-         //    setTimeout(() => {
-         //       setNoProfitYet(false);
-         //    }, 3000);
-         // // } else {
-         //    setNoProfitYet(false);
-         //    setProfitLoading(true);
-         tx = await contract.unStake(0, {
-            gasLimit: 200000,
-            gasPrice: ethers.utils.parseUnits('10.0', 'gwei'),
-         });
-         const receipt = await tx.wait();
-         if (receipt.status == 1) {
-            // setProfitLoading(false);
-            // Reload the page after a successful transaction
-            window.location.reload();
-         } else {
-            // setProfitLoading(false);
-         }
-         // }
-      } catch (err) {
-         console.error(err);
-      }
-      // setStakeLoading(false);
-   };
-
-   useEffect(() => {
-      const ROI = async () => {
-         // daily roi
-
-         try {
-            const provider = new ethers.providers.Web3Provider(window.ethereum);
-            // const provider = new ethers.getDefaultProvider(
-            //    'https://bsc-dataseed1.binance.org/'
-            // );
-
-            // const signer = provider.getSigner();
-            const contractInstance = new ethers.Contract(
-               minningTestnetContractAddress,
-               abi,
-               provider
-            );
-
-            const roi = await contractInstance.YEAR_RATE();
-            const dailyRoi = roi.toString();
-            const dailyRoiInEther = ethers.utils.formatUnits(dailyRoi, 'ether');
-            const dailyRoiAmount = (dailyRoiInEther / 60) * 30;
-            console.log(dailyRoiAmount);
-            setDailyRoi(dailyRoiAmount);
-         } catch (err) {
-            console.log(err);
-         }
-      };
-      ROI();
-   }, []);
 
    // const Connect = () => {
    //    // <w3m-button balance="hide" />;
@@ -300,187 +230,126 @@ export const StateContextProvider = ({ children }) => {
    //    }
    // }, []);
 
-   // const connectWallet = async () => {
-   //    try {
-   //       if (window.ethereum) {
-   //          const accounts = await window.ethereum.request({
-   //             method: 'eth_requestAccounts',
-   //          });
+   const Connect = async () => {
+      try {
+         if (window.ethereum) {
+            const accounts = await window.ethereum.request({
+               method: 'eth_requestAccounts',
+            });
 
-   //          const provider = new ethers.providers.Web3Provider(window.ethereum);
-   //          const signer = provider.getSigner();
+            const provider = new ethers.providers.Web3Provider(window.ethereum);
+            const signer = provider.getSigner();
 
-   //          setIsLoading(true);
+            console.log(accounts);
 
-   //          const messageHash = ethers.utils.hashMessage(
-   //             'Sign-in to web3 kigdom-coin e-commerce'
-   //          );
-   //          const signature = await signer.signMessage(messageHash);
+            setIsLoading(true);
 
-   //          // Save the signature in local storage
-   //          localStorage.setItem('userSignature', signature);
+            const messageHash = ethers.utils.hashMessage(
+               'Sign-in to web3 kigdom-coin e-commerce'
+            );
+            const signature = await signer.signMessage(messageHash);
 
-   //          console.log(signature);
+            // Save the signature in local storage
+            localStorage.setItem('userSignature', signature);
 
-   //          const userSignature = localStorage.getItem('userSignature');
+            console.log(signature);
 
-   //          console.log(userSignature);
+            const userSignature = localStorage.getItem('userSignature');
 
-   //          if (userSignature) {
-   //             // Make a POST request to authenticate the user
-   //             const res = await axios.post(
-   //                'http://kingdomcoin-001-site1.ctempurl.com/api/Account/AuthenticateUser',
-   //                {
-   //                   address: accounts[0], // Use the user's address
-   //                   signature: userSignature, // Use the user's signature
-   //                },
-   //                {
-   //                   headers: {
-   //                      'Content-Type': 'application/json',
-   //                   },
-   //                }
-   //             );
+            console.log(userSignature);
 
-   //             console.log(res);
+            if (userSignature) {
+               // Make a POST request to authenticate the user
+               const res = await axios.post(
+                  'http://kingdomcoin-001-site1.ctempurl.com/api/Account/AuthenticateUser',
+                  {
+                     address: accounts[0], // Use the user's address
+                     signature: userSignature, // Use the user's signature
+                  },
+                  {
+                     headers: {
+                        'Content-Type': 'application/json',
+                     },
+                  }
+               );
+               console.log(accounts[0]);
+               console.log(res);
 
-   //             if (res.status === 200) {
-   //                const responseData = res.data.data;
+               if (res.status === 200) {
+                  const responseData = res.data.data;
 
-   //                // Store responseData in localStorage
-   //                localStorage.setItem(
-   //                   'responseData',
-   //                   JSON.stringify(responseData)
-   //                );
+                  // Store responseData in localStorage
+                  localStorage.setItem(
+                     'responseData',
+                     JSON.stringify(responseData)
+                  );
 
-   //                // Now you can access it later by parsing it back
-   //                const storedData = JSON.parse(
-   //                   localStorage.getItem('responseData')
-   //                );
+                  // Now you can access it later by parsing it back
+                  const storedData = JSON.parse(
+                     localStorage.getItem('responseData')
+                  );
 
-   //                console.log(responseData);
+                  console.log(responseData);
 
-   //                // You can use storedData as needed in your application
-   //             } else {
-   //                console.error(
-   //                   `Authentication request failed with status code ${res.status}`
-   //                );
-   //                if (res.status === 401) {
-   //                   console.error(
-   //                      'Unauthorized: Check your authorization token.'
-   //                   );
-   //                }
-   //             }
-   //          } else {
-   //             console.error('User signature not found in local storage');
-   //          }
-   //          setIsLoading(false);
-   //       } else {
-   //          console.error('MetaMask not installed');
-   //       }
-   //    } catch (error) {
-   //       console.error('Error signing in with message hash:', error);
-   //    }
-   // };
+                  // You can use storedData as needed in your application
+               } else {
+                  console.error(
+                     `Authentication request failed with status code ${res.status}`
+                  );
+                  if (res.status === 401) {
+                     console.error(
+                        'Unauthorized: Check your authorization token.'
+                     );
+                  }
+               }
+            } else {
+               console.error('User signature not found in local storage');
+            }
+            setIsLoading(false);
+         } else {
+            console.error('MetaMask not installed');
+         }
+      } catch (error) {
+         console.error('Error signing in with message hash:', error);
+      }
+   };
 
-   // const connectWallet = async () => {
-   //    try {
-   //       if (window.ethereum) {
-   //          const accounts = await window.ethereum.request({
-   //             method: 'eth_requestAccounts',
-   //          });
+   const Purchase = async () => {
+      const provider = new ethers.providers.Web3Provider(window.ethereum);
 
-   //          const provider = new ethers.providers.Web3Provider(window.ethereum);
-   //          const signer = provider.getSigner();
+      const signer = provider.getSigner();
 
-   //          setIsLoading(true);
+      const contract = new ethers.Contract(
+         RMTestnetContractAddress,
+         RMabi,
+         signer
+      );
 
-   //          const messageHash = ethers.utils.hashMessage(
-   //             'Sign-in to web3 kigdom-coin e-comerce'
-   //          );
-   //          const signature = await signer.signMessage(messageHash);
+      try {
+         let tx;
 
-   //          // Save the signature in local storage
-   //          localStorage.setItem('userSignature', signature);
-
-   //          const userSignature = localStorage.getItem('userSignature');
-
-   //          if (userSignature) {
-   //             // Include the signature in the request header
-
-   //             const authURL =
-   //                'http://kingdomcoin-001-site1.ctempurl.com/api/Account/AuthenticateUser';
-
-   //             const res = await axios.post(
-   //                authURL,
-   //                {
-   //                   address: accounts[0], // Use the user's address
-   //                   signature: userSignature, // Use the user's signature
-   //                },
-   //                {
-   //                   headers: {
-   //                      'Content-Type': 'application/json',
-   //                   },
-   //                }
-   //             );
-
-   //             if (res.data.statusCode === 200) {
-   //                // Store responseData in localStorage
-   //                const responseData = res.data.data;
-   //                localStorage.setItem(
-   //                   'responseData',
-   //                   JSON.stringify(responseData)
-   //                );
-   //                // Now you can access it later by parsing it back
-   //                const storedData = JSON.parse(
-   //                   localStorage.getItem('responseData')
-   //                );
-   //             } else {
-   //                console.error(
-   //                   `API request failed with status code ${res.status}`
-   //                );
-   //                if (res.status === 401) {
-   //                   console.error(
-   //                      'Unauthorized: Check your authorization token.'
-   //                   );
-   //                }
-   //             }
-   //          } else {
-   //             console.error('User signature not found in local storage');
-   //          }
-   //          setIsLoading(false);
-   //       } else {
-   //          console.error('MetaMask not installed');
-   //       }
-   //    } catch (error) {
-   //       console.error('Error signing in with message hash:', error);
-   //    }
-   // };
-
-   // const [{ wallet, connecting }, connect, disconnect] = useConnectWallet();
-   // console.log(wallet);
-   // if (wallet) {
-   //    if (wallet[0]) {
-   //       const ethersProvider = new ethers.providers.Web3Provider(
-   //          wallet[0].provider,
-   //          'any'
-   //       );
-
-   //       const signer = ethersProvider.getSigner();
-
-   //       console.log(signer);
-   //    } else {
-   //       console.log(
-   //          "Wallet is not connected yet or doesn't have a selected address."
-   //       );
-   //    }
-   // }
+         tx = await contract.purchase(contentId, TokenAddress, {
+            gasLimit: 200000,
+            gasPrice: ethers.utils.parseUnits('10.0', 'gwei'),
+         });
+         console.log(tx);
+         const receipt = await tx.wait();
+         console.log(receipt);
+         if (receipt.status == 1) {
+            window.location.reload();
+         } else {
+         }
+      } catch (err) {
+         console.error(err);
+      }
+   };
 
    return (
       <StateContext.Provider
          value={{
             // connectWallet,
+            Purchase,
             signIn,
-            UnStake,
             handlePlayClick,
             songStates,
             activeSongId,
@@ -489,7 +358,7 @@ export const StateContextProvider = ({ children }) => {
             handleSongEnd,
 
             // walletConnected,
-            // Connect,
+            Connect,
          }}
       >
          {children}

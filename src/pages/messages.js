@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Style from '@/styles/messages.module.css';
+import { useAccount } from 'wagmi';
 
 const Messages = () => {
    const ipfsHash = 'QmfMQiWGrcswgwc3BsjLuprEV95ZQhHQj6a4Ygy1NHhVs9';
@@ -7,6 +8,7 @@ const Messages = () => {
    const [imageUrls, setImageUrls] = useState([]);
    const [messages, setMessages] = useState([]);
    const [selectedProduct, setSelectedProduct] = useState(null);
+   const { address } = useAccount();
 
    const messagesDetails = [
       {
@@ -127,10 +129,8 @@ const Messages = () => {
       fetchImageUrls();
    }, [gatewayUrl]);
 
-   const buyNow = (product) => {
-      if (product) {
-         // UnStake();
-
+   const buyNow = (product, userAddress) => {
+      if (product && userAddress) {
          // Find the index of the product in songDetails using its id
          const productIndex = messagesDetails.findIndex(
             (message) => message.id === product.id
@@ -140,20 +140,21 @@ const Messages = () => {
             // Retrieve the corresponding image URL based on the product's index
             const imageUrl = imageUrls[productIndex];
 
-            // Store the purchased product with the imageUrl
-            const purchasedMessage = {
+            // Store the purchased product with the imageUrl and user address
+            const purchasedProduct = {
                ...product,
                imageUrl,
+               address: userAddress, // Include the user's address
             };
-            console.log(purchasedMessage);
 
             // Serialize the purchased product before storing it
-            const serializedProduct = JSON.stringify(purchasedMessage);
-            console.log(serializedProduct);
+            const serializedProduct = JSON.stringify(purchasedProduct);
 
-            // // Add the purchased product to localStorage
+            // Retrieve the existing purchased products or initialize an empty array
             const purchasedMessages =
                JSON.parse(localStorage.getItem('purchasedMessages')) || [];
+
+            // Add the purchased product to the array
             purchasedMessages.push(serializedProduct);
             localStorage.setItem(
                'purchasedMessages',
@@ -164,6 +165,44 @@ const Messages = () => {
          }
       }
    };
+
+   // const buyNow = (product) => {
+   //    if (product) {
+   //       // UnStake();
+
+   //       // Find the index of the product in songDetails using its id
+   //       const productIndex = messagesDetails.findIndex(
+   //          (message) => message.id === product.id
+   //       );
+
+   //       if (productIndex !== -1) {
+   //          // Retrieve the corresponding image URL based on the product's index
+   //          const imageUrl = imageUrls[productIndex];
+
+   //          // Store the purchased product with the imageUrl
+   //          const purchasedMessage = {
+   //             ...product,
+   //             imageUrl,
+   //          };
+   //          console.log(purchasedMessage);
+
+   //          // Serialize the purchased product before storing it
+   //          const serializedProduct = JSON.stringify(purchasedMessage);
+   //          console.log(serializedProduct);
+
+   //          // // Add the purchased product to localStorage
+   //          const purchasedMessages =
+   //             JSON.parse(localStorage.getItem('purchasedMessages')) || [];
+   //          purchasedMessages.push(serializedProduct);
+   //          localStorage.setItem(
+   //             'purchasedMessages',
+   //             JSON.stringify(purchasedMessages)
+   //          );
+   //       } else {
+   //          console.error('Product not found in songDetails.');
+   //       }
+   //    }
+   // };
 
    return (
       <div className="w-[95%] m-auto mt-28 ">
@@ -209,7 +248,7 @@ const Messages = () => {
                      <button
                         onClick={() => {
                            setSelectedProduct(message);
-                           buyNow(message);
+                           buyNow(message, address); // Pass the user's address
                         }}
                         className="w-full text-white mt-1 bg-yellow-700 py-1 px-2 rounded-sm hover:bg-yellow-800 focus:outline-none focus:ring-1 focus:ring-yellow-500 focus:ring-opacity-50"
                      >

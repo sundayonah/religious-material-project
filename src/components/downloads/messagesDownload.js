@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { toggleDislike, toggleLike } from '@/reduxToolkit/slices/audioSlice';
 import { saveLikesAndDislikesToLocalStorage } from '../local-storage';
 
-export const MessagesDownload = () => {
+export const MessagesDownload = ({ selectedFilter }) => {
    const { address } = useAccount();
    const dispatch = useDispatch();
 
@@ -30,15 +30,13 @@ export const MessagesDownload = () => {
       // Retrieve the list of purchased products from local storage
       const storedPurchasedProducts =
          JSON.parse(localStorage.getItem('purchasedMessages')) || [];
-      console.log(storedPurchasedProducts);
 
       // Deserialize the stored products and filter them based on the current user's address
       const userPurchasedProducts = storedPurchasedProducts
          .map((serializedProduct) => JSON.parse(serializedProduct))
          .filter((item) => item.address === address);
-      console.log(userPurchasedProducts);
       setPurchasedProducts(userPurchasedProducts);
-   }, []);
+   }, [address]);
 
    const formatTime = (time) => {
       const minutes = Math.floor(time / 60);
@@ -93,6 +91,27 @@ export const MessagesDownload = () => {
       // Update local storage after dispatching actions
       saveLikesAndDislikesToLocalStorage(likedSongs, dislikedSongs);
    };
+
+   // Filter the purchased products based on the selected filter
+   purchasedProducts.filter((product) => {
+      if (selectedFilter === 'All') {
+         return true; // Show all products
+      } else if (selectedFilter === 'Messages') {
+         return /* your condition to filter songs */;
+      }
+      // Handle other cases for Messages, etc.
+      return /* your condition for Messages */;
+   });
+
+   //    console.log(filteredProducts);
+
+   if (purchasedProducts.length === 0) {
+      return (
+         <div className="mt-28 text-gray-500 pl-5">
+            <h1>Connect your wallet to see all your messages</h1>
+         </div>
+      );
+   }
 
    return (
       <>

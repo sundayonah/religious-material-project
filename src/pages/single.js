@@ -4,10 +4,12 @@ import React from 'react';
 import { useRouter } from 'next/router';
 import Products from './api/[id]'; // Import your product data
 import Link from 'next/link';
+import { useAccount } from 'wagmi';
 
 const Single = () => {
    const router = useRouter();
    const { id } = router.query; // Get the product ID from the query parameter
+   const { address } = useAccount();
 
    // Find the product with the matching ID
    const product = Products.find((product) => product.id === id);
@@ -81,6 +83,96 @@ const Single = () => {
       );
    }
 
+   const buyNows = (product, userAddress) => {
+      if (product && userAddress) {
+         // Find the index of the product in songDetails using its id
+         const productIndex = messagesDetails.findIndex(
+            (message) => message.id === product.id
+         );
+
+         if (productIndex !== -1) {
+            // Retrieve the corresponding image URL based on the product's index
+            const imageUrl = imageUrls[productIndex];
+
+            // Store the purchased product with the imageUrl and user address
+            const purchasedProduct = {
+               ...product,
+               imageUrl,
+               address: userAddress, // Include the user's address
+            };
+
+            // Serialize the purchased product before storing it
+            const serializedProduct = JSON.stringify(purchasedProduct);
+
+            // Retrieve the existing purchased products or initialize an empty array
+            const purchasedMessages =
+               JSON.parse(localStorage.getItem('purchasedMessages')) || [];
+
+            // Add the purchased product to the array
+            purchasedMessages.push(serializedProduct);
+            localStorage.setItem(
+               'purchasedMessages',
+               JSON.stringify(purchasedMessages)
+            );
+         } else {
+            console.error('Product not found in songDetails.');
+         }
+      }
+   };
+
+   const buyNow = (product, userAddress) => {
+      if (product && userAddress) {
+         // Retrieve the existing purchased books from localStorage
+         const storedPurchasedBooks =
+            JSON.parse(localStorage.getItem('purchasedBooks')) || [];
+
+         // Create a product details object
+         const purchasedBook = {
+            title: product.title,
+            image: product.image,
+            file: product.file,
+            address: userAddress, // Store the user's address with the purchased book
+         };
+
+         // Add the new purchased book to the existing array
+         storedPurchasedBooks.push(purchasedBook);
+
+         // Save the updated array in localStorage
+         localStorage.setItem(
+            'purchasedBooks',
+            JSON.stringify(storedPurchasedBooks)
+         );
+
+         // Perform any other actions here if needed
+      }
+   };
+
+   // const buyNow = (product) => {
+   //    if (product) {
+   //       // Retrieve the existing purchased books from localStorage
+   //       const storedPurchasedBooks =
+   //          JSON.parse(localStorage.getItem('purchasedBooks')) || [];
+
+   //       // Create a product details object
+   //       const purchasedBook = {
+   //          title: product.title,
+   //          image: product.image,
+   //          file: product.file,
+   //       };
+
+   //       // Add the new purchased book to the existing array
+   //       storedPurchasedBooks.push(purchasedBook);
+
+   //       // Save the updated array in localStorage
+   //       localStorage.setItem(
+   //          'purchasedBooks',
+   //          JSON.stringify(storedPurchasedBooks)
+   //       );
+
+   //       // Perform any other actions here if needed
+   //    }
+   // };
+
    // Render the product details
    return (
       <div className="mt-20">
@@ -122,7 +214,10 @@ const Single = () => {
                         <span className="text-gray-500 pb-3 ">
                            TKC$ {product.price}
                         </span>
-                        <button className="w-full text-white mt-1 bg-yellow-700 py-1 px-2 rounded-sm hover:bg-yellow-800 focus:outline-none focus:ring-1 focus:ring-yellow-500 focus:ring-opacity-50">
+                        <button
+                           onClick={() => buyNow(product, address)}
+                           className="w-full text-white mt-1 bg-yellow-700 py-1 px-2 rounded-sm hover:bg-yellow-800 focus:outline-none focus:ring-1 focus:ring-yellow-500 focus:ring-opacity-50"
+                        >
                            Buy Now
                         </button>
                      </div>
@@ -137,6 +232,8 @@ const Single = () => {
 };
 
 export default Single;
+
+// a0f1
 
 // 'use client';
 

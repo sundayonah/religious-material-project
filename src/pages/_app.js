@@ -19,7 +19,6 @@ import store from '../reduxToolkit/store';
 
 // 1. Get projectId
 const projectId = 'de7693706b2bb6e9b2e049f09e7ebad1';
-// const projectId = 'de7693706b2bb6e9b2e049f09e7ebad1';
 
 // 2. Create wagmiConfig
 const metadata = {

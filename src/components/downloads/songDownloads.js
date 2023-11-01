@@ -11,7 +11,7 @@ import {
 import { toggleLike, toggleDislike } from '@/reduxToolkit/slices/audioSlice';
 import { MessagesDownload } from './messagesDownload';
 
-const SongDownloads = () => {
+const SongDownloads = ({ selectedFilter }) => {
    const { handlePlayClick, audioRefs, handleSongEnd } =
       useContext(StateContext);
    const activeSongId = useSelector((state) => state.audio.activeSongId);
@@ -38,8 +38,9 @@ const SongDownloads = () => {
       // Deserialize the stored products and filter them based on the current user's address
       const userPurchasedProducts = storedPurchasedProducts
          .map((serializedProduct) => JSON.parse(serializedProduct))
-         .filter((item) => item.address === address);
+         .filter((item) => item.address === address); // Filter based on user's address
       setPurchasedProducts(userPurchasedProducts);
+      console.log(userPurchasedProducts);
    }, [address, dispatch]);
 
    const formatTime = (time) => {
@@ -96,14 +97,24 @@ const SongDownloads = () => {
       saveLikesAndDislikesToLocalStorage(likedSongs, dislikedSongs);
    };
 
+   // Filter the purchased products based on the selected filter
+   purchasedProducts.filter((product) => {
+      if (selectedFilter === 'All') {
+         return true; // Show all products
+      } else if (selectedFilter === 'Songs') {
+         return /* your condition to filter songs */;
+      }
+      // Handle other cases for Messages, etc.
+      return /* your condition for Messages */;
+   });
+
    if (purchasedProducts.length === 0) {
       return (
          <div className="mt-28 text-gray-500 pl-5">
-            <h1>Connect your wallet to see all your products</h1>
+            <h1>Connect your wallet to see all your songs</h1>
          </div>
       );
    }
-
    return (
       <div className="w-full flex flex-col gap-3 ">
          {purchasedProducts.map(({ id, file, imageUrl, title, artist }) => (
@@ -195,7 +206,7 @@ const SongDownloads = () => {
                </span>
             </div>
          ))}
-         <MessagesDownload />
+         {/* <MessagesDownload /> */}
       </div>
    );
 };

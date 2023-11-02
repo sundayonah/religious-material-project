@@ -7,6 +7,7 @@ import PDFViewer from './pdfViewer'; // Import the PDFViewer component
 import { CloseIcon, ThumbsDown, ThumbsUp } from '../icons';
 import { toggleDislike, toggleLike } from '@/reduxToolkit/slices/bookSlice';
 import { useDispatch, useSelector } from 'react-redux';
+import toast, { Toaster } from 'react-hot-toast';
 
 export const BooksDownload = () => {
    const { address } = useAccount();
@@ -18,19 +19,33 @@ export const BooksDownload = () => {
    const [purchasedBooks, setPurchasedBooks] = useState([]);
    const [selectedBook, setSelectedBook] = useState(null);
 
+   // useEffect(() => {
+   //    // Retrieve the list of purchased books from local storage
+   //    const storedPurchasedBooks =
+   //       JSON.parse(localStorage.getItem('purchasedBooks')) || [];
+   //    //   console.log(storedPurchasedBooks);
+
+   //    // Filter purchased books based on the current user's address
+   //    const userPurchasedBooks = storedPurchasedBooks.filter(
+   //       (book) => book.address === address
+   //    );
+   //    console.log(userPurchasedBooks);
+
+   //    setPurchasedBooks(userPurchasedBooks);
+   // }, [address]);
+
    useEffect(() => {
-      // Retrieve the list of purchased books from local storage
-      const storedPurchasedBooks =
+      // Retrieve the list of purchased products from local storage
+      const storedPurchasedProducts =
          JSON.parse(localStorage.getItem('purchasedBooks')) || [];
-      //   console.log(storedPurchasedBooks);
 
-      // Filter purchased books based on the current user's address
-      const userPurchasedBooks = storedPurchasedBooks.filter(
-         (book) => book.address === address
-      );
-
-      setPurchasedBooks(userPurchasedBooks);
-   }, [address]);
+      // Deserialize the stored products and filter them based on the current user's address
+      const userPurchasedProducts = storedPurchasedProducts
+         .map((serializedProduct) => JSON.parse(serializedProduct))
+         .filter((item) => item.address === address);
+      console.log(userPurchasedProducts);
+      setPurchasedBooks(userPurchasedProducts);
+   }, [address, dispatch]);
 
    const handleBookSelect = (book) => {
       setSelectedBook(book);
@@ -42,7 +57,6 @@ export const BooksDownload = () => {
 
    const handleToggleLike = (id) => {
       if (likedBook[id]) {
-         console.log('hello');
          dispatch(toggleDislike({ bookId: id, isDisliked: false }));
       } else {
          dispatch(toggleLike({ bookId: id, isLiked: true }));
@@ -51,7 +65,6 @@ export const BooksDownload = () => {
 
    const handleToggleDislike = (id) => {
       if (dislikedBook[id]) {
-         console.log('hello');
          dispatch(toggleDislike({ bookId: id, isLiked: false }));
       } else {
          dispatch(toggleDislike({ bookId: id, isDisliked: true }));

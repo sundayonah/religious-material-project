@@ -40,7 +40,6 @@ const SongDownloads = ({ selectedFilter }) => {
          .map((serializedProduct) => JSON.parse(serializedProduct))
          .filter((item) => item.address === address); // Filter based on user's address
       setPurchasedProducts(userPurchasedProducts);
-      console.log(userPurchasedProducts);
    }, [address, dispatch]);
 
    const formatTime = (time) => {

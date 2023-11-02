@@ -4,6 +4,7 @@ import { useAccount } from 'wagmi';
 import { useDispatch } from 'react-redux';
 import RMabi from '@/Contract/rm-abi.json';
 import { ethers } from 'ethers';
+import toast, { Toaster } from 'react-hot-toast';
 // import { addSong } from '../reduxToolkit/slices/songsSlices';
 
 const Songs = () => {
@@ -19,6 +20,7 @@ const Songs = () => {
    const [imageUrls, setImageUrls] = useState([]);
    const [messages, setMessages] = useState([]);
    const [selectedProduct, setSelectedProduct] = useState(null);
+   const [songLoadingStates, setSongLoadingStates] = useState({});
 
    const { address } = useAccount();
    // console.log(address);
@@ -45,7 +47,7 @@ const Songs = () => {
          imageUrl: '',
       },
       {
-         id: 'rec8kkCmSiMkbkiko',
+         id: '56987545',
          title: 'accent chair traditional',
          artist: 'John Doe',
          category: 'faith',
@@ -164,97 +166,6 @@ const Songs = () => {
       });
    };
 
-   const buyNow = async (product) => {
-      try {
-         if (product) {
-            // Check if the user is connected to a Web3 provider
-            if (window.ethereum) {
-               const provider = new ethers.providers.Web3Provider(
-                  window.ethereum
-               );
-               const signer = provider.getSigner();
-
-               // Check if the user is authenticated and obtain the user's address
-               const userAddress = await signer.getAddress();
-
-               // Find the index of the product in songDetails using its id
-               const productIndex = songDetails.findIndex(
-                  (song) => song.id === product.id
-               );
-
-               console.log(productIndex);
-
-               if (productIndex !== -1) {
-                  // Retrieve the corresponding image URL based on the product's index
-                  const imageUrl = imageUrls[productIndex];
-
-                  // Convert the product's price to Wei (assuming it's in Ether)
-                  const priceInEther = product.price.toString();
-
-                  console.log(priceInEther);
-                  // const priceInWei = ethers.utils.parseEther(priceInEther);
-
-                  // Initialize the contract instance
-                  const contract = new ethers.Contract(
-                     RMTestnetContractAddress,
-                     RMabi,
-                     signer
-                  );
-
-                  const contentId = parseInt(product.id);
-                  console.log(contentId);
-                  const token = TokenAddress;
-
-                  // const valueInWei = ethers.utils.parseEther(
-                  //    product.price.toString()
-                  // ); // Convert the product price to Wei
-
-                  // Call the smart contract's purchase function
-                  let tx;
-                  tx = await contract.purchase(contentId, token, {
-                     // value: valueInWei, // Send the price as value in Wei
-                     gasLimit: 200000, // Adjust the gas limit as needed
-                     gasPrice: ethers.utils.parseUnits('10.0', 'gwei'), // Adjust the gas price as needed
-                  });
-
-                  const receipt = await tx.wait();
-
-                  // If the purchase is successful, store the purchased product in local storage
-
-                  if (receipt.status === 1) {
-                     console.log('bingo');
-                     const purchasedProduct = {
-                        ...product,
-                        imageUrl,
-                        address: userAddress,
-                     };
-
-                     // Store purchased products in localStorage
-                     const serializedProduct = JSON.stringify(purchasedProduct);
-                     const storedPurchasedProducts =
-                        JSON.parse(localStorage.getItem('purchasedProducts')) ||
-                        [];
-                     storedPurchasedProducts.push(serializedProduct);
-                     localStorage.setItem(
-                        'purchasedProducts',
-                        JSON.stringify(storedPurchasedProducts)
-                     );
-                  } else {
-                     console.error('Transaction Not Successful');
-                  }
-               } else {
-                  console.error('Product not found in songDetails.');
-               }
-            } else {
-               console.error('User is not connected to a Web3 provider.');
-            }
-         }
-      } catch (err) {
-         console.error('Purchase failed:', err);
-      }
-   };
-
-   //working without checking duplicate
    // const buyNow = async (product) => {
    //    try {
    //       if (product) {
@@ -273,8 +184,6 @@ const Songs = () => {
    //                (song) => song.id === product.id
    //             );
 
-   //             console.log(productIndex);
-
    //             if (productIndex !== -1) {
    //                // Retrieve the corresponding image URL based on the product's index
    //                const imageUrl = imageUrls[productIndex];
@@ -283,8 +192,8 @@ const Songs = () => {
    //                const priceInEther = product.price.toString();
 
    //                console.log(priceInEther);
-   //                const priceInWei = ethers.utils.parseEther(priceInEther);
-   //                console.log(priceInWei);
+   //                // const priceInWei = ethers.utils.parseEther(priceInEther);
+
    //                // Initialize the contract instance
    //                const contract = new ethers.Contract(
    //                   RMTestnetContractAddress,
@@ -292,21 +201,20 @@ const Songs = () => {
    //                   signer
    //                );
 
-   //                // Make the purchase through the smart contract
-   //                const contentId = parseInt(product.id); // Convert the product.id to uint256
-   //                const token = TokenAddress; // Use the token address from your configuration
-   //                const valueInWei = ethers.utils.parseEther(
-   //                   product.price.toString()
-   //                ); // Convert the product price to Wei
+   //                const contentId = parseInt(product.id);
+   //                const token = TokenAddress;
+
+   //                // const valueInWei = ethers.utils.parseEther(
+   //                //    product.price.toString()
+   //                // ); // Convert the product price to Wei
 
    //                // Call the smart contract's purchase function
    //                let tx;
-   //                tx = await contract.purchase1(contentId, token, {
+   //                tx = await contract.purchase(contentId, token, {
    //                   // value: valueInWei, // Send the price as value in Wei
    //                   gasLimit: 200000, // Adjust the gas limit as needed
    //                   gasPrice: ethers.utils.parseUnits('10.0', 'gwei'), // Adjust the gas price as needed
    //                });
-   //                console.log('Purchase successful. Transaction:', tx);
 
    //                const receipt = await tx.wait();
 
@@ -319,7 +227,6 @@ const Songs = () => {
    //                      imageUrl,
    //                      address: userAddress,
    //                   };
-   //                   console.log(purchasedProduct);
 
    //                   // Store purchased products in localStorage
    //                   const serializedProduct = JSON.stringify(purchasedProduct);
@@ -346,9 +253,128 @@ const Songs = () => {
    //    }
    // };
 
+   const buyNow = async (product) => {
+      try {
+         if (product) {
+            // Check if the user is connected to a Web3 provider
+            if (window.ethereum) {
+               const provider = new ethers.providers.Web3Provider(
+                  window.ethereum
+               );
+               const signer = provider.getSigner();
+
+               if (address === undefined) {
+                  console.log('connect MetMask');
+                  return;
+               }
+
+               // Check if the user is authenticated and obtain the user's address
+
+               // Find the index of the product in songDetails using its id
+               const productIndex = songDetails.findIndex(
+                  (song) => song.id === product.id
+               );
+               setSongLoadingStates((prevStates) => ({
+                  ...prevStates,
+                  [product.id]: true,
+               }));
+
+               if (productIndex !== -1) {
+                  // Retrieve the corresponding image URL based on the product's index
+                  const imageUrl = imageUrls[productIndex];
+
+                  // Convert the product's price to Wei (assuming it's in Ether)
+                  // const priceInEther = product.price.toString();
+
+                  // console.log(priceInEther);
+                  // const priceInWei = ethers.utils.parseEther(priceInEther);
+                  // console.log(priceInWei);
+                  // Initialize the contract instance
+                  const contract = new ethers.Contract(
+                     RMTestnetContractAddress,
+                     RMabi,
+                     signer
+                  );
+
+                  // Make the purchase through the smart contract
+                  const contentId = parseInt(product.id); // Convert the product.id to uint256
+                  const token = TokenAddress; // Use the token address from your configuration
+                  // const valueInWei = ethers.utils.parseEther(
+                  //    product.price.toString()
+                  // ); // Convert the product price to Wei
+
+                  // Call the smart contract's purchase function
+                  let tx;
+                  tx = await contract.purchase(contentId, token, {
+                     // value: valueInWei, // Send the price as value in Wei
+                     gasLimit: 200000, // Adjust the gas limit as needed
+                     gasPrice: ethers.utils.parseUnits('10.0', 'gwei'), // Adjust the gas price as needed
+                  });
+                  console.log('Purchase successful. Transaction:', tx);
+
+                  const receipt = await tx.wait();
+
+                  // If the purchase is successful, store the purchased product in local storage
+
+                  if (receipt.status === 1) {
+                     console.log('bingo');
+                     const purchasedProduct = {
+                        ...product,
+                        imageUrl,
+                        address: address,
+                     };
+                     console.log(address);
+                     console.log(purchasedProduct);
+
+                     // Store purchased products in localStorage
+                     const serializedProduct = JSON.stringify(purchasedProduct);
+                     const storedPurchasedProducts =
+                        JSON.parse(localStorage.getItem('purchasedProducts')) ||
+                        [];
+                     storedPurchasedProducts.push(serializedProduct);
+                     localStorage.setItem(
+                        'purchasedProducts',
+                        JSON.stringify(storedPurchasedProducts)
+                     );
+
+                     const purchasedSongTitle = purchasedProduct.title;
+
+                     // Display a success toast notification
+                     toast.success(
+                        `${purchasedSongTitle}, Purchase successful`,
+                        {
+                           duration: 4000,
+                           position: 'bottom-right',
+                           icon: '✅',
+                        }
+                     );
+                     setSongLoadingStates((prevStates) => ({
+                        ...prevStates,
+                        [product.id]: false,
+                     }));
+                  } else {
+                     console.error('Transaction Not Successful');
+                  }
+               } else {
+                  console.error('Product not found in songDetails.');
+               }
+            } else {
+               console.error('User is not connected to a Web3 provider.');
+            }
+         }
+      } catch (err) {
+         console.error('Purchase failed:', err);
+         setSongLoadingStates((prevStates) => ({
+            ...prevStates,
+            [product.id]: false,
+         }));
+      }
+   };
+
    return (
       <>
          <div className="w-[95%] m-auto mt-28 ">
+            <Toaster />
             <div>
                <form className="flex mb-8 justify-center items-center">
                   <input
@@ -403,7 +429,18 @@ const Songs = () => {
                                  }}
                                  className="text-white mt-1 bg-yellow-700 py-1 px-2 rounded-sm hover-bg-yellow-800 focus:outline-none focus:ring-1 focus:ring-yellow-500 focus:ring-opacity-50"
                               >
-                                 Buy Now
+                                 {songLoadingStates[song.id] ? (
+                                    <div class="flex items-center justify-center  px-4 ">
+                                       <div class="flex items-center justify-center  w-6 h-6">
+                                          <div class="w-2 h-2 mr-1 bg-white rounded-full animate-ping delay-100"></div>
+                                          <div class="w-2 h-4 mr-1 bg-white rounded-full animate-pulse delay-500"></div>
+                                          <div class="w-2 h-2 mr-1 bg-white rounded-full animate-ping delay-700"></div>
+                                          <div class="w-2 h-4 bg-white rounded-full animate-pulse delay-1000"></div>
+                                       </div>
+                                    </div>
+                                 ) : (
+                                    'Buy Now'
+                                 )}
                               </button>
                            )}
                         </div>

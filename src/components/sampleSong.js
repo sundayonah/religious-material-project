@@ -4,7 +4,6 @@ import { useAccount } from 'wagmi';
 import { StateContext } from '@/Context/ReligiousContext';
 import { ethers } from 'ethers';
 import RMabi from '@/Contract/rm-abi.json';
-import toast, { Toaster } from 'react-hot-toast';
 
 const Messages = () => {
    const { UnStake } = useContext(StateContext);
@@ -199,10 +198,7 @@ const Messages = () => {
                   window.ethereum
                );
                const signer = provider.getSigner();
-               if (address === undefined) {
-                  console.log('connect MetMask');
-                  return;
-               }
+
                // Check if the user is authenticated and obtain the user's address
 
                // Find the index of the product in songDetails using its id
@@ -259,6 +255,8 @@ const Messages = () => {
                         imageUrl,
                         address: address,
                      };
+                     console.log(purchasedMessage);
+                     console.log(address);
 
                      // Store purchased products in localStorage
                      const serializedProduct = JSON.stringify(purchasedMessage);
@@ -269,18 +267,6 @@ const Messages = () => {
                      localStorage.setItem(
                         'purchasedMessages',
                         JSON.stringify(storedPurchasedProducts)
-                     );
-
-                     const purchasedSongTitle = purchasedMessage.title;
-
-                     // Display a success toast notification
-                     toast.success(
-                        `${purchasedSongTitle}, Purchase successful`,
-                        {
-                           duration: 4000,
-                           position: 'bottom-right',
-                           icon: '✅',
-                        }
                      );
                      setMessagesLoadingStates((prevStates) => ({
                         ...prevStates,
@@ -307,7 +293,6 @@ const Messages = () => {
 
    return (
       <div className="w-[95%] m-auto mt-28 ">
-         <Toaster />
          <div className="flex mt-8 justify-evenly items-center mb-3">
             <h4 className="text-white">Messages</h4>
             <form>

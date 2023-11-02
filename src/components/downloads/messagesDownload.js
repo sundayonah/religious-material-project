@@ -30,11 +30,18 @@ export const MessagesDownload = ({ selectedFilter }) => {
       // Retrieve the list of purchased products from local storage
       const storedPurchasedProducts =
          JSON.parse(localStorage.getItem('purchasedMessages')) || [];
+      console.log('Stored Purchased Products:', storedPurchasedProducts);
 
       // Deserialize the stored products and filter them based on the current user's address
       const userPurchasedProducts = storedPurchasedProducts
          .map((serializedProduct) => JSON.parse(serializedProduct))
-         .filter((item) => item.address === address);
+         .filter((item) => {
+            console.log('Filtering Item:', item);
+            console.log('User Address:', address);
+            return item.address === address;
+         });
+      console.log('User Purchased Products:', userPurchasedProducts);
+
       setPurchasedProducts(userPurchasedProducts);
    }, [address]);
 

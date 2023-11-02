@@ -99,11 +99,6 @@ const Single = () => {
 
    const buyNow = async (product) => {
       try {
-         setBookLoadingStates((prevStates) => ({
-            ...prevStates,
-            [product.id]: true,
-         }));
-
          if (product) {
             if (window.ethereum) {
                const provider = new ethers.providers.Web3Provider(
@@ -112,9 +107,23 @@ const Single = () => {
                const signer = provider.getSigner();
 
                if (address === undefined) {
-                  console.log('connect MetMask');
+                  toast.success(`Please Connect Your Wallet.`, {
+                     duration: 4000,
+                     position: 'top-right',
+                     icon: '❌',
+                     style: {
+                        background: '#a16206',
+                        border: '1px solid #a16206',
+                        color: '#fff',
+                     },
+                  });
                   return;
                }
+
+               setBookLoadingStates((prevStates) => ({
+                  ...prevStates,
+                  [product.id]: true,
+               }));
                const contract = new ethers.Contract(
                   RMTestnetContractAddress,
                   RMabi,

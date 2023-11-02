@@ -264,7 +264,16 @@ const Songs = () => {
                const signer = provider.getSigner();
 
                if (address === undefined) {
-                  console.log('connect MetMask');
+                  toast.success(`Please Connect Your Wallet.`, {
+                     duration: 4000,
+                     position: 'top-right',
+                     icon: '❌',
+                     style: {
+                        background: '#a16206',
+                        border: '1px solid #a16206',
+                        color: '#fff',
+                     },
+                  });
                   return;
                }
 
@@ -310,7 +319,6 @@ const Songs = () => {
                      gasLimit: 200000, // Adjust the gas limit as needed
                      gasPrice: ethers.utils.parseUnits('10.0', 'gwei'), // Adjust the gas price as needed
                   });
-                  console.log('Purchase successful. Transaction:', tx);
 
                   const receipt = await tx.wait();
 
@@ -323,8 +331,6 @@ const Songs = () => {
                         imageUrl,
                         address: address,
                      };
-                     console.log(address);
-                     console.log(purchasedProduct);
 
                      // Store purchased products in localStorage
                      const serializedProduct = JSON.stringify(purchasedProduct);

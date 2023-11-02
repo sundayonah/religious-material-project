@@ -199,10 +199,21 @@ const Messages = () => {
                   window.ethereum
                );
                const signer = provider.getSigner();
+
                if (address === undefined) {
-                  console.log('connect MetMask');
+                  toast.success(`Please Connect Your Wallet.`, {
+                     duration: 4000,
+                     position: 'top-right',
+                     icon: '❌',
+                     style: {
+                        background: '#a16206',
+                        border: '1px solid #a16206',
+                        color: '#fff',
+                     },
+                  });
                   return;
                }
+
                // Check if the user is authenticated and obtain the user's address
 
                // Find the index of the product in songDetails using its id

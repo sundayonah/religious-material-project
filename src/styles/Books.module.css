@@ -1,5 +1,3 @@
-/* Style.css */
-
 .hr {
 }
 
@@ -11,7 +9,6 @@
    margin-top: 7rem;
    margin-bottom: 2rem;
    gap: 1rem;
-   /* border: 1px solid blue; */
 }
 
 .sidebar {
@@ -30,20 +27,12 @@
 .rightMain {
    width: 65%;
    padding: 20px;
-   /* border: 1px solid blue; */
 }
 
 .sidebar li {
    list-style: none;
 }
 
-/* from udemy course */
-
-/*
-=============== 
-Products 
-===============
-*/
 .products {
    width: var(--fluid-width);
    display: grid;
@@ -92,14 +81,10 @@ Products
    box-shadow: inset 0 -3em 3em rgba(0, 0, 0, 0.1), 0 0 0 2px rgb(255, 255, 255),
       0.3em 0.3em 1em rgba(0, 0, 0, 0.3);
 }
-/* .productImg {
-   border-radius: var(--borderRadius);
-} */
+
 .img {
    width: 100%;
    height: 10rem;
-   /* display: block; */
-   /* object-fit: cover; */
 }
 
 .productName {
@@ -143,7 +128,6 @@ Products
 .productContainer:hover .productIcons {
    opacity: 1;
 }
-/*  */
 @media screen and (min-width: 768px) {
    .products {
       grid-template-columns: 200px 1fr;

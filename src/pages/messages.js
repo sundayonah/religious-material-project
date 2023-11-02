@@ -323,7 +323,7 @@ const Messages = () => {
             <h4 className="text-white">Messages</h4>
             <form>
                <input
-                  className="px-20 py-2 rounded-md"
+                  className="w-full md:w-[320px] px-4 py-2 rounded-md border border-transparent bg-[#342b1c] text-white focus:outline-none focus:ring-2 focus:ring-slate-700 focus:border-transparent"
                   type="text"
                   placeholder="Search message..."
                   value={searchInput}

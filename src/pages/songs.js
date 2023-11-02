@@ -384,7 +384,7 @@ const Songs = () => {
             <div>
                <form className="flex mb-8 justify-center items-center">
                   <input
-                     className="w-[80%] md:w-[320px] px-4 py-2 rounded-md border border-transparent bg-slate-300/25 text-white focus:outline-none focus:ring-2 focus:ring-slate-700 focus:border-transparent"
+                     className="w-[80%] md:w-[320px] px-4 py-2 rounded-md border border-transparent bg-[#342b1c] text-white focus:outline-none focus:ring-2 focus:ring-slate-700 focus:border-transparent"
                      type="text"
                      placeholder="search songs..."
                      value={searchInput}

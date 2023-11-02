@@ -19,21 +19,6 @@ export const BooksDownload = () => {
    const [purchasedBooks, setPurchasedBooks] = useState([]);
    const [selectedBook, setSelectedBook] = useState(null);
 
-   // useEffect(() => {
-   //    // Retrieve the list of purchased books from local storage
-   //    const storedPurchasedBooks =
-   //       JSON.parse(localStorage.getItem('purchasedBooks')) || [];
-   //    //   console.log(storedPurchasedBooks);
-
-   //    // Filter purchased books based on the current user's address
-   //    const userPurchasedBooks = storedPurchasedBooks.filter(
-   //       (book) => book.address === address
-   //    );
-   //    console.log(userPurchasedBooks);
-
-   //    setPurchasedBooks(userPurchasedBooks);
-   // }, [address]);
-
    useEffect(() => {
       // Retrieve the list of purchased products from local storage
       const storedPurchasedProducts =

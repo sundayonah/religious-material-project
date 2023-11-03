@@ -111,7 +111,9 @@ export const MessagesDownload = ({ selectedFilter }) => {
    if (purchasedProducts.length === 0) {
       return (
          <div className="mt-28 text-gray-500 pl-5">
-            <h1>Connect your wallet to see all your messages</h1>
+            <h1 className="capitalize text-2xl">
+               Connect your wallet to see all your messages
+            </h1>
          </div>
       );
    }

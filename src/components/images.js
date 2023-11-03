@@ -18,7 +18,7 @@ const whatWeOffer = [
 const PerkImage = () => {
    return (
       <>
-         <h3 className="flex text-white justify-center items-center mb-4">
+         <h3 className="flex text-white text-3xl justify-center items-center mb-4">
             What we offer
          </h3>
          <div className="flex flex-col md:flex-row w-full justify-center items-center space-x-6 space-y-3">
@@ -34,7 +34,7 @@ const PerkImage = () => {
             ))}
          </div>
 
-         <div className="flex w-full justify-center items-center space-x-6 space-y-3 mt-6 ">
+         <div className="flex w-full justify-center items-center space-x-6 space-y-3 mt-6 mb-12">
             <Image
                className=""
                src={whatWeOffer[2].src}
@@ -43,7 +43,7 @@ const PerkImage = () => {
                alt={whatWeOffer[2].name}
             />
          </div>
-         <h3 className="flex text-white justify-center items-center mt-5">
+         <h3 className="flex text-white text-3xl justify-center items-center mt-5">
             The Perks
          </h3>
          <div className="flex justify-center items-center flex-wrap space-x-8 mb-3">

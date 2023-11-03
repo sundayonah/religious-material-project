@@ -142,10 +142,7 @@ const Header = () => {
                onClick={toggleMenu}
             ></div>
          )}
-         <main
-            className="flex justify-between px-6 py-2 items-center fixed left-0 top-0 w-full 
-         bg-opacity-10 backdrop-blur-md shadow-md   h-14"
-         >
+         <main className="flex justify-between px-6 py-2 items-center fixed left-0 top-0 w-full bg-opacity-10 backdrop-blur-md shadow-md h-14 z-20">
             <div className="">
                <span className="text-white bold">LOGO</span>
             </div>
@@ -165,7 +162,7 @@ const Header = () => {
             <div
                className={`${
                   isMenuOpen
-                     ? 'block px-5 py-4 shadow-custom bg-transparent'
+                     ? 'block px-5 py-4 shadow-2xl bg-[#342b1c]'
                      : 'hidden'
                } md:flex  absolute right-0 justify-center items-center top-0 w-[50%] md:static md:space-x-4  md:w-auto`}
             >
@@ -180,7 +177,7 @@ const Header = () => {
                   )}
                </div>
                {menuItems.map((menu, i) => (
-                  <ul key={i + 1} className={isMenuOpen ? 'pt-3' : ''}>
+                  <ul key={i + 1} className={isMenuOpen ? 'pt-3 mb-2' : ''}>
                      <div
                         className={
                            router.pathname === menu.url

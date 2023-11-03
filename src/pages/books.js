@@ -119,25 +119,33 @@ const Books = () => {
 
    const displayProducts = () => {
       if (filteredProducts.length < 1) {
-         // return <h6>Sorry, no products matched your search</h6>;
+         return (
+            <h6 className="text-white text-3xl">
+               Sorry, no products matched your search
+            </h6>
+         );
       }
 
       return filteredProducts.map(({ id, title, image, price }) => (
          <div
-            className="bg-transparent p-2 border border-gray-500 rounded-tr-3xl rounded-bl-3xl   shadow-md mb-4"
+            className="relative bg-transparent p-2 border border-gray-700 rounded-tl-3xl rounded-br-3xl shadow-custom mb-4"
             key={id}
          >
             <Link href={`/single?id=${id}`} passHref>
                <img
                   src={image}
-                  className="h-32 w-full rounded-tr-3xl object-cover"
+                  className="h-48 w-full rounded-tl-3xl object-center"
+                  // className="h-32 md:h-48 lg:h-56 w-full rounded-tl-3xl md:rounded-tl-lg lg:rounded-tl-xl object-center"
                   alt={title}
                />
             </Link>
 
-            <div className="text-center mt-1">
-               <h5 className="text-gray-500 text-sm">{title}</h5>
-               <h4 className="text-gray-700 font-bold text-lg">$TKC {price}</h4>
+            <div className="text-center mt-1 mb-3 ">
+               <h5 className="text-gray-500 text-lg">{title}</h5>
+               {/* <span className="absolute bg-[#DAA851] rounded-md left-48 px-2 py-1 text-gray-700 font-bold text-small "> */}
+               <span className="absolute bg-[#DAA851] px-2 py-1 text-gray-700 font-bold text-sm left-58 md:left-68 lg:left-48 xl:left-64 2xl:left-80 rounded-md">
+                  $TKC {price}
+               </span>
             </div>
          </div>
       ));
@@ -162,10 +170,10 @@ const Books = () => {
 
    return (
       <>
-         <div className=" w-[87%] m-auto mt-28 mb-8 gap-4 ">
+         <div className=" w-[87%] m-auto mt-28 mb-8 gap-4">
             <div className="flex justify-center items-center mb-7 relative">
                <div
-                  className=" flex justify-center items-center mb-12"
+                  className=" flex justify-center items-center mb-4"
                   ref={sidebarRef}
                >
                   <input
@@ -175,18 +183,16 @@ const Books = () => {
                      value={searchInput}
                      onChange={(e) => setSearchInput(e.target.value)}
                   />
-
                   <button
                      onClick={opeBookModal}
                      className="flex mx-3 py-1 px-3 text-[#DAA851] rounded-md space-x-2 border border-[#DAA851] "
                   >
-                     <span className="text-white">Filter Book</span>
+                     <span className="text-white text-sm">Filter</span>
                      <FilterIcon />
                   </button>
                </div>
-
                {bookModalOpen && (
-                  <div className="absolute top-12 right-0 md:right-8 lg:right-16 xl:right-64 2xl:right-64 flex items-center">
+                  <div className="absolute top-12 right-0 md:right-8 lg:right-16 xl:right-64 2xl:right-64 flex items-center z-10 ">
                      <div className="w-64 p-4 bg-[#2c2518] rounded-lg shadow-custom">
                         <div className="flex justify-end">
                            <button

@@ -124,8 +124,6 @@ const DownloadSidebar = () => {
       return filteredProducts;
    };
 
-   console.log(filterPurchasedProducts());
-
    return (
       <>
          <div className="flex justify-center items-center mb-7 relative">

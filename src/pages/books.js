@@ -128,7 +128,7 @@ const Books = () => {
 
       return filteredProducts.map(({ id, title, image, price }) => (
          <div
-            className="relative bg-transparent p-2 border border-gray-700  hover:bg-[#342b1c] rounded-tl-3xl rounded-br-3xl shadow-custom mb-4"
+            className="relative bg-transparent p-2  hover:bg-[#342b1c] rounded-tl-3xl rounded-br-3xl shadow-custom mb-4"
             key={id}
          >
             <Link href={`/single?id=${id}`} passHref>
@@ -141,7 +141,7 @@ const Books = () => {
             </Link>
 
             <div className="text-center mt-1 mb-3 ">
-               <h5 className="text-gray-500 text-lg">{title}</h5>
+               <h5 className="text-gray-500 text-lg capitalize">{title}</h5>
                {/* <span className="absolute bg-[#DAA851] rounded-md left-48 px-2 py-1 text-gray-700 font-bold text-small "> */}
                <span className="absolute bg-[#DAA851] px-2 py-1 text-gray-700 font-bold text-sm left-58 md:left-68 lg:left-48 xl:left-64 2xl:left-80 rounded-md">
                   $TKC {price}

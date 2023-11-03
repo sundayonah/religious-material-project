@@ -135,7 +135,6 @@ const Books = () => {
                <img
                   src={image}
                   className="h-48 w-full rounded-tl-3xl object-center "
-                  // className="h-32 md:h-48 lg:h-56 w-full rounded-tl-3xl md:rounded-tl-lg lg:rounded-tl-xl object-center"
                   alt={title}
                />
             </Link>

@@ -28,7 +28,7 @@ export const BooksDownload = () => {
       const userPurchasedProducts = storedPurchasedProducts
          .map((serializedProduct) => JSON.parse(serializedProduct))
          .filter((item) => item.address === address);
-      console.log(userPurchasedProducts);
+      // console.log(userPurchasedProducts);
       setPurchasedBooks(userPurchasedProducts);
    }, [address, dispatch]);
 

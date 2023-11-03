@@ -66,18 +66,18 @@ const DownloadSidebar = () => {
          case 'All':
             return (
                <>
-                  <SongDownloads products={filterPurchasedProducts()} />
-                  <MessagesDownload products={filterPurchasedProducts()} />
-                  <BooksDownload products={filterPurchasedProducts()} />
+                  <SongDownloads />
+                  <MessagesDownload />
+                  <BooksDownload />
                   {/* Add rendering for Books here */}
                </>
             );
          case 'Books':
-            return <BooksDownload products={filterPurchasedProducts()} />;
+            return <BooksDownload />;
          case 'Songs':
-            return <SongDownloads products={filterPurchasedProducts()} />;
+            return <SongDownloads />;
          case 'Messages':
-            return <MessagesDownload products={filterPurchasedProducts()} />;
+            return <MessagesDownload />;
          default:
             return null;
       }
@@ -120,7 +120,7 @@ const DownloadSidebar = () => {
          return false; // Exclude products without a title property
       });
 
-      console.log(filteredProducts);
+      // console.log(filteredProducts);
       return filteredProducts;
    };
 

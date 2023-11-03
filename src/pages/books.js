@@ -1,213 +1,3 @@
-// 'use client';
-
-// import React, { useState, useEffect, useContext, useRef } from 'react';
-// import Style from '@/styles/Books.module.css';
-// import { useRouter } from 'next/router';
-
-// // import products from './products/[id]';
-// import products from '@/pages/api/[id]';
-// import Link from 'next/link';
-// import axios from 'axios';
-
-// // import { StateContext } from '@/Context/ReligiousContext';
-
-// const Books = () => {
-//    // const [filteredProducts, setFilteredProducts] = useState([...products]);
-//    const [filteredProducts, setFilteredProducts] = useState([...products]);
-//    const [searchInput, setSearchInput] = useState('');
-//    const [selectedCompany, setSelectedCompany] = useState('all');
-//    const [selectedProductId, setSelectedProductId] = useState(null);
-//    const [kingdomBook, setKingdomBook] = useState([]);
-//    const sidebarRef = useRef(null);
-
-//    // const { address, disconnect, connect } = useContext(StateContext);
-
-//    // console.log(address);
-//    // const fetchBooks = async () => {
-//    //    try {
-//    //       const res = await axios.get(booksURL);
-
-//    //       const data = await res.data.data;
-//    //       console.log(data);
-//    //       setKingdomBook(data);
-//    //       return data;
-//    //    } catch (error) {
-//    //       console.log('Failed to fetch', error);
-//    //    }
-//    // };
-
-//    //    To make calls to other endpoints fetch the token value from the data you stored on local storage and pass it in the authorization header of your request
-
-//    // create another function called fetchBooks
-
-//    // const booksURL =
-//    //    'http://kingdomcoin-001-site1.ctempurl.com/api/Book/GetAllBooks';
-
-//    // // Function to fetch books using the stored token
-//    // const fetchBooks = async () => {
-//    //    try {
-//    //       // Get the stored token from local storage
-//    //       const storedData = JSON.parse(localStorage.getItem('responseData'));
-//    //       const token = storedData.token;
-//    //       console.log(token);
-
-//    //       if (token) {
-//    //          // Define the API endpoint for fetching books
-//    //          // const booksURL =
-//    //          //    'http://kingdomcoin-001-site1.ctempurl.com/api/Book/GetAllBooks';
-
-//    //          // Make a GET request to the books endpoint with the token in the Authorization header
-//    //          const res = await axios.get(booksURL, {
-//    //             headers: {
-//    //                Authorization: `Bearer ${token}`,
-//    //             },
-//    //          });
-//    //          console.log(res);
-
-//    //          if (res.data.statusCode === 200) {
-//    //             const booksData = res.data; // Access the res data
-//    //             console.log(booksData);
-//    //          } else {
-//    //             console.error(
-//    //                `API request failed with status code ${res.status}`
-//    //             );
-//    //             if (res.status === 401) {
-//    //                console.error(
-//    //                   'Unauthorized: Check your authorization token.'
-//    //                );
-//    //             }
-//    //          }
-//    //       } else {
-//    //          console.error('Token not found in local storage');
-//    //       }
-//    //    } catch (error) {
-//    //       console.error('Error fetching books:', error);
-//    //    }
-//    // };
-
-//    // // Now you can call fetchBooks whenever you need to fetch books
-
-//    // fetchBooks();
-
-//    useEffect(() => {
-//       // Filter products based on searchInput and selectedCompany
-//       let filtered = [...products];
-
-//       if (searchInput) {
-//          filtered = filtered.filter((product) =>
-//             product.title.toLowerCase().includes(searchInput.toLowerCase())
-//          );
-//       }
-
-//       if (selectedCompany !== 'all') {
-//          filtered = filtered.filter(
-//             (product) => product.category === selectedCompany
-//          );
-//       }
-//       // fetchBooks();
-//       setFilteredProducts(filtered);
-//    }, [searchInput, selectedCompany, products]);
-
-//    const displayProducts = () => {
-//       if (filteredProducts.length < 1) {
-//          // return <h6>Sorry, no products matched your search</h6>;
-//       }
-
-//       return filteredProducts.map(({ id, title, image, price }) => (
-//          <div className="bg-white p-4 rounded shadow-md mb-4" key={id}>
-//             <Link href={`/single?id=${id}`} passHref>
-//                <img
-//                   src={image}
-//                   className="h-28 w-full object-cover"
-//                   width={400}
-//                   height={150}
-//                   alt={title}
-//                />
-//             </Link>
-
-//             <div className="text-center mt-2">
-//                <h5 className="text-gray-500 text-sm">{title}</h5>
-//                <h4 className="text-gray-700 font-bold text-lg">$TKC {price}</h4>
-//             </div>
-//          </div>
-//       ));
-//    };
-
-//    const displayButtons = () => {
-//       const buttons = [
-//          'all',
-//          ...new Set(products.map((product) => product.category)),
-//       ];
-
-//       return buttons.map((button) => (
-//          <button
-//             className="block mb-1 px-2 py-1 text-sm capitalize border border-transparent text-gray-500 hover:text-gray-600 focus:outline-none transition"
-//             key={button}
-//             onClick={() => setSelectedCompany(button)}
-//          >
-//             {button}
-//          </button>
-//       ));
-//    };
-
-//    return (
-//       <>
-//          <div className="flex justify-center w-[92%] ml-28 mt-28 mb-8 gap-4 ">
-//             <div
-//                className="fixed left-10 w-1/4 h-full p-4 text-white"
-//                ref={sidebarRef}
-//             >
-//                <form>
-//                   <input
-//                      type="text"
-//                      className="w-full px-2 py-1 mb-2 bg-gray-200 rounded focus:outline-none"
-//                      placeholder="Search..."
-//                      value={searchInput}
-//                      onChange={(e) => setSearchInput(e.target.value)}
-//                   />
-//                </form>
-//                <span className="text-[#daa851]">Books</span>
-//                <div className="">{displayButtons()}</div>
-//             </div>
-//             <div className="w-[65%] ">
-//                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-//                   {displayProducts()}
-//                </div>
-//                <div>
-//                   <ul>
-//                      {/* {kingdomBook.map((book, index) => (
-//                         <li key={index}>
-//                            <h2>{book.name}</h2>
-//                            <img
-//                               src={book.cover}
-//                               alt="image"
-//                               width={100}
-//                               height={100}
-//                            />
-//                            <p>
-//                               <strong>Author:</strong> {book.author}
-//                            </p>
-//                            <p>
-//                               <strong>Category:</strong> {book.category}
-//                            </p>
-//                            <p>
-//                               <strong>Description:</strong> {book.description}
-//                            </p>
-//                            <p>
-//                               <strong>Price:</strong> ${book.price}
-//                            </p>
-//                         </li>
-//                      ))} */}
-//                   </ul>
-//                </div>
-//             </div>
-//          </div>
-//       </>
-//    );
-// };
-
-// export default Books;
-
 'use client';
 
 import React, { useState, useEffect, useContext, useRef } from 'react';
@@ -360,7 +150,7 @@ const Books = () => {
 
       return buttons.map((button) => (
          <button
-            className="block mb-1 px-2 py-1 text-sm capitalize border border-transparent text-gray-500 hover:text-gray-600 focus:outline-none transition"
+            className="block px-4 py-2 w-full text-left hover:bg-[#342b1c] rounded-lg text-lg capitalize  text-gray-500 hover:text-gray-600 "
             key={button}
             onClick={() => setSelectedCompany(button)}
          >
@@ -389,7 +179,7 @@ const Books = () => {
                      onClick={opeBookModal}
                      className="flex mx-3 py-1 px-3 text-[#DAA851] rounded-md space-x-2 border border-[#DAA851] "
                   >
-                     <span>Filter Book</span>
+                     <span className="text-white">Filter Book</span>
                      <FilterIcon />
                   </button>
                </div>
@@ -406,7 +196,7 @@ const Books = () => {
                            </button>
                         </div>
                         <span className="text-[#daa851]">Books</span>
-                        <div className="">{displayButtons()}</div>
+                        <div>{displayButtons()}</div>
                      </div>
                   </div>
                )}

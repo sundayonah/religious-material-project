@@ -5,7 +5,7 @@ import DownloadSidebar from '@/components/downloads/downloadSidebar';
 import { MessagesDownload } from '@/components/downloads/messagesDownload';
 import { useState } from 'react';
 
-const Download = ({ products }) => {
+const Download = () => {
    const activeSongId = useSelector((state) => state.audio.activeSongId);
    const isPlaying = useSelector(
       (state) => state.audio.songStates[state.audio.activeSongId]
@@ -17,8 +17,6 @@ const Download = ({ products }) => {
    const handleFilterChange = (filter) => {
       setSelectedFilter(filter);
    };
-
-   console.log(products);
 
    return (
       <>

@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useCallback, useContext, useEffect, useState } from 'react';
 import Link from 'next/link';
 import { StateContext } from '@/Context/ReligiousContext';
 import { ConnectButton, Menu } from './connectWallet';
@@ -20,16 +20,20 @@ const Header = () => {
       connectWallet,
       ConnectButton,
       // signIn,
-      isConnected,
+      // isConnected,
       Connect,
    } = useContext(StateContext);
    const router = useRouter();
 
    const [accounts, setAccounts] = useState('');
+   const [isConnected, setIsConnected] = useState(false);
    const [isLoading, setIsLoading] = useState(false);
+   const [isSignInCompleted, setSignInCompleted] = useState(false);
+   const [isInitialLoad, setIsInitialLoad] = useState(false);
+
    const [isMenuOpen, setIsMenuOpen] = useState(false);
    const [walletConnected, setWalletConnected] = useState(false);
-   const [signInCompleted, setSignInCompleted] = useState(false);
+   // const [signInCompleted, setSignInCompleted] = useState(false);
 
    // console.log(address);
 
@@ -55,120 +59,80 @@ const Header = () => {
 
    const { address, isConnecting, isDisconnected } = useAccount();
 
-   const signIn = async () => {
-      // setIsConnected(false);
+   const signIn = useCallback(async () => {
       try {
-         // if (!isConnected) {
-         if (window.ethereum) {
-            // // Call the ConnectButton component
-            // // ConnectButton();
+         // if (isConnected && !isSignInCompleted) {
+         // if (!isSignInCompleted) {
+         const provider = new ethers.providers.Web3Provider(window.ethereum);
+         const signer = provider.getSigner();
 
-            // const accounts = await window.ethereum.request({
-            //    method: 'eth_requestAccounts',
-            // });
+         setIsLoading(true);
 
-            const provider = new ethers.providers.Web3Provider(window.ethereum);
-            const signer = provider.getSigner();
+         const messageHash = ethers.utils.hashMessage(
+            'Sign-in to web3 kigdom-coin e-comerce projects'
+         );
+         const signature = await signer.signMessage(messageHash);
 
-            console.log(signer);
+         localStorage.setItem('userSignature', signature);
 
-            setIsLoading(true);
+         const userSignature = localStorage.getItem('userSignature');
 
-            // setSignInCompleted(false);
-            const messageHash = ethers.utils.hashMessage(
-               'Sign-in to web3 kigdom-coin e-comerce'
-            );
-            const signature = await signer.signMessage(messageHash);
+         if (userSignature) {
+            const authURL =
+               'http://kingdomcoin-001-site1.ctempurl.com/api/Account/AuthenticateUser';
 
-            // Save the signature in local storage
-            localStorage.setItem('userSignature', signature);
-
-            const userSignature = localStorage.getItem('userSignature');
-
-            if (userSignature) {
-               // Include the signature in the request header
-
-               const authURL =
-                  'http://kingdomcoin-001-site1.ctempurl.com/api/Account/AuthenticateUser';
-
-               const res = await axios.post(
-                  authURL,
-                  {
-                     address: accounts[0], // Use the user's address
-                     signature: userSignature, // Use the user's signature
+            const res = await axios.post(
+               authURL,
+               {
+                  address: signer._address, // Use the user's address from signer
+                  signature: userSignature,
+               },
+               {
+                  headers: {
+                     'Content-Type': 'application/json',
                   },
-                  {
-                     headers: {
-                        'Content-Type': 'application/json',
-                     },
-                  }
-               );
-               console.log(res);
-
-               if (res.data.statusCode === 200) {
-                  // Store responseData in localStorage
-                  const responseData = res.data.data;
-                  localStorage.setItem(
-                     'responseData',
-                     JSON.stringify(responseData)
-                  );
-                  // Now you can access it later by parsing it back
-                  const storedData = JSON.parse(
-                     localStorage.getItem('responseData')
-                  );
-               } else {
-                  console.error(
-                     `API request failed with status code ${res.status}`
-                  );
-                  if (res.status === 401) {
-                     console.error(
-                        'Unauthorized: Check your authorization token.'
-                     );
-                  }
                }
-               localStorage.setItem('signInCompleted', 'true');
+            );
+
+            if (res.data.statusCode === 200) {
+               const responseData = res.data.data;
+               localStorage.setItem(
+                  'responseData',
+                  JSON.stringify(responseData)
+               );
             } else {
-               console.error('User signature not found in local storage');
+               console.error(
+                  `API request failed with status code ${res.status}`
+               );
+               if (res.status === 401) {
+                  console.error(
+                     'Unauthorized: Check your authorization token.'
+                  );
+               }
             }
-            setIsLoading(false);
-            setSignInCompleted(true);
+            localStorage.setItem('signInCompleted', 'true');
          } else {
-            console.error('MetaMask not installed');
+            console.error('User signature not found in local storage');
          }
+         setIsLoading(false);
+         setSignInCompleted(true);
+         // } else {
+         //    console.error('MetaMask not installed or user already signed in.');
+         // }
       } catch (error) {
          console.error('Error signing in with message hash:', error);
       }
-   };
+   }, []);
 
-   // useEffect(() => {
-   //    const signInFlag = localStorage.getItem('signInCompleted');
+   useEffect(() => {
+      const checkWalletConnection = async () => {
+         if (address !== undefined) {
+            signIn(); // Automatically trigger sign-in when wallet is connected and sign-in is not yet completed
+         }
+      };
 
-   //    if (address && isDisconnected !== true) {
-   //       if (signInFlag !== 'true' && !walletConnected) {
-   //          signIn();
-   //          // Set the signIn flag to indicate that sign-in has been completed
-   //          localStorage.setItem('signInCompleted', 'true');
-
-   //          // Set walletConnected to true to prevent multiple sign-ins
-   //          setWalletConnected(true);
-   //       }
-   //    }
-   // }, [address, isDisconnected, walletConnected]);
-
-   // useEffect(() => {
-   //    // Check if the wallet is disconnected or signInCompleted is false
-   //    // if (isDisconnected === false){
-   //    if (isDisconnected === false) {
-   //       signIn();
-   //    }
-   // }, [address, isDisconnected]);
-
-   // useEffect(() => {
-   //    // Check if the wallet is disconnected or signInCompleted is false
-   //    if (isDisconnected === false && !signInCompleted) {
-   //       signIn();
-   //    }
-   // }, [address, isDisconnected, signInCompleted]);
+      checkWalletConnection();
+   }, [address, signIn]);
 
    return (
       <>

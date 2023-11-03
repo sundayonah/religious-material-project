@@ -201,13 +201,14 @@ const Single = () => {
       return (
          <>
             <div class="flex justify-center mt-72 shadow rounded-md p-4 max-w-sm w-full mx-auto">
-               <div class="animate-spin flex space-x-4">
-                  <div class="rounded-full  bg-yellow-700  h-48 w-48">
-                     <div class="rounded-full bg-red-400 h-28 w-28">
-                        <div class="rounded-full bg-white h-12 w-12"></div>
-                     </div>
+               <div class="animate-spin flex space-x-4 border">
+                  <div class=" rounded-full  bg-yellow-700  h-48 w-48">
+                     {/* <div class="rounded-full bg-red-400 h-28 w-28"> */}
+                     <div class="animate-pulse rounded-full bg-white h-12 w-12"></div>
+                     {/* </div> */}
                   </div>
                </div>
+               <p className="animate__headShake">Hello world</p>
             </div>
          </>
       );
@@ -274,7 +275,7 @@ const Single = () => {
                               onClick={() => {
                                  buyNow(product, address);
                               }}
-                              className="text-white mt-1 bg-yellow-700 py-1 px-2 rounded-sm hover-bg-yellow-800 focus:outline-none focus:ring-1 focus:ring-yellow-500 focus:ring-opacity-50"
+                              className="text-white mt-1 bg-yellow-700 py-1 px-2 rounded-sm hover:bg-yellow-800 focus:outline-none focus:ring-1 focus:ring-yellow-500 focus:ring-opacity-50"
                            >
                               {bookLoadingStates[product.id] ? (
                                  <div class="flex items-center justify-center  px-4 ">

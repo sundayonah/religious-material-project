@@ -241,7 +241,6 @@ const Messages = () => {
                   );
 
                   const contentId = parseInt(product.id);
-                  console.log(contentId);
                   const token = TokenAddress;
 
                   // const valueInWei = ethers.utils.parseEther(
@@ -261,7 +260,6 @@ const Messages = () => {
                   // If the purchase is successful, store the purchased product in local storage
 
                   if (receipt.status === 1) {
-                     console.log('bingo');
                      const purchasedMessage = {
                         ...product,
                         imageUrl,
@@ -368,7 +366,7 @@ const Messages = () => {
                               setSelectedProduct(message);
                               buyNow(message, address);
                            }}
-                           className="w-full text-white mt-1 bg-yellow-700 py-1 px-2 rounded-sm hover-bg-yellow-800 focus:outline-none focus:ring-1 focus:ring-yellow-500 focus:ring-opacity-50"
+                           className="w-full text-white mt-1 bg-yellow-700 py-1 px-2 rounded-sm hover:bg-yellow-800 focus:outline-none focus:ring-1 focus:ring-yellow-500 focus:ring-opacity-50"
                         >
                            {messagesLoadingStates[message.id] ? (
                               <div class="flex items-center justify-center  px-4 ">

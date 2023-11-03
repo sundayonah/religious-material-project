@@ -128,13 +128,13 @@ const Books = () => {
 
       return filteredProducts.map(({ id, title, image, price }) => (
          <div
-            className="relative bg-transparent p-2 border border-gray-700 rounded-tl-3xl rounded-br-3xl shadow-custom mb-4"
+            className="relative bg-transparent p-2 border border-gray-700  hover:bg-[#342b1c] rounded-tl-3xl rounded-br-3xl shadow-custom mb-4"
             key={id}
          >
             <Link href={`/single?id=${id}`} passHref>
                <img
                   src={image}
-                  className="h-48 w-full rounded-tl-3xl object-center"
+                  className="h-48 w-full rounded-tl-3xl object-center "
                   // className="h-32 md:h-48 lg:h-56 w-full rounded-tl-3xl md:rounded-tl-lg lg:rounded-tl-xl object-center"
                   alt={title}
                />

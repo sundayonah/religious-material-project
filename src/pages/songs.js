@@ -324,7 +324,6 @@ const Songs = () => {
                   // If the purchase is successful, store the purchased product in local storage
 
                   if (receipt.status === 1) {
-                     console.log('bingo');
                      const purchasedProduct = {
                         ...product,
                         imageUrl,
@@ -432,7 +431,7 @@ const Songs = () => {
                                     setSelectedProduct(song);
                                     buyNow(song, address);
                                  }}
-                                 className="text-white mt-1 bg-yellow-700 py-1 px-2 rounded-sm hover-bg-yellow-800 focus:outline-none focus:ring-1 focus:ring-yellow-500 focus:ring-opacity-50"
+                                 className="text-white mt-1 bg-yellow-700 py-1 px-2 rounded-sm hover:bg-yellow-800 focus:outline-none focus:ring-1 focus:ring-yellow-500 focus:ring-opacity-50"
                               >
                                  {songLoadingStates[song.id] ? (
                                     <div class="flex items-center justify-center  px-4 ">

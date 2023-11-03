@@ -101,8 +101,10 @@ export default function Home() {
                   your spirit with enlightening sermons and music and make
                   seamless downloads using E-Wallet{' '}
                </p>
-               <div className="flex w-[90%] text-[#fff] justify-center items-center  p-1 m-auto rounded-sm bg-[#DAA851] mb-7 cursor-pointer ">
-                  <button>Get Stared</button>
+               <div className=" ">
+                  <button className="flex w-[90%] justify-center text-white mt-1 bg-yellow-700 py-1 px-2 rounded-sm hover:bg-yellow-800 focus:outline-none focus:ring-1 focus:ring-yellow-500 focus:ring-opacity-50 mb-3">
+                     Get Stared
+                  </button>
                </div>
             </div>
             <div className=" m-auto">

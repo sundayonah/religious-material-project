@@ -123,18 +123,19 @@ const Books = () => {
       }
 
       return filteredProducts.map(({ id, title, image, price }) => (
-         <div className="bg-white p-4 rounded shadow-md mb-4" key={id}>
+         <div
+            className="bg-transparent p-2 border border-gray-500 rounded-tr-3xl rounded-bl-3xl   shadow-md mb-4"
+            key={id}
+         >
             <Link href={`/single?id=${id}`} passHref>
                <img
                   src={image}
-                  className="h-28 w-full object-cover"
-                  width={400}
-                  height={150}
+                  className="h-32 w-full rounded-tr-3xl object-cover"
                   alt={title}
                />
             </Link>
 
-            <div className="text-center mt-2">
+            <div className="text-center mt-1">
                <h5 className="text-gray-500 text-sm">{title}</h5>
                <h4 className="text-gray-700 font-bold text-lg">$TKC {price}</h4>
             </div>

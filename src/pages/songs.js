@@ -268,11 +268,10 @@ const Songs = () => {
                      duration: 4000,
                      position: 'top-right',
                      icon: '❌',
-                     style: {
-                        background: '#a16206',
-                        border: '1px solid #a16206',
-                        color: '#fff',
-                     },
+                     // style: {
+                     //    background: '#fff',
+                     //    // border: '1px solid #a16206',
+                     // },
                   });
                   return;
                }

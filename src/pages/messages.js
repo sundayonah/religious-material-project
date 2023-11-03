@@ -205,15 +205,13 @@ const Messages = () => {
                      duration: 4000,
                      position: 'top-right',
                      icon: '❌',
-                     style: {
-                        background: '#a16206',
-                        border: '1px solid #a16206',
-                        color: '#fff',
-                     },
+                     // style: {
+                     //    background: '#fff',
+                     //    // border: '1px solid #a16206',
+                     // },
                   });
                   return;
                }
-
                // Check if the user is authenticated and obtain the user's address
 
                // Find the index of the product in songDetails using its id
@@ -257,7 +255,6 @@ const Messages = () => {
                      gasLimit: 200000, // Adjust the gas limit as needed
                      gasPrice: ethers.utils.parseUnits('10.0', 'gwei'), // Adjust the gas price as needed
                   });
-                  console.log('Purchase successful. Transaction:', tx);
 
                   const receipt = await tx.wait();
 
@@ -331,7 +328,7 @@ const Messages = () => {
                />
             </form>
          </div>
-         <div className="flex flex-wrap gap-3 p-2 justify-center items-center">
+         <div className="flex flex-wrap gap-3 p-2 justify-center items-center  ">
             {filteredMessages.map((message, index) => (
                // <div key={message.id} className={Style.messagesDetails}>
                <div
@@ -352,10 +349,10 @@ const Messages = () => {
                      <span className="text-white text-sm pt-1 pb-1">
                         {message.title}
                      </span>
-                     <span className="text-white text-small">
+                     <span className="text-gray-400 italic text-small">
                         {message.artist}
                      </span>
-                     <span className="text-gray-400">$TKC {message.price}</span>
+                     <span className="text-gray-500">$TKC {message.price}</span>
                   </div>
                   <div className="flex justify-center items-center">
                      {hasPurchased(address, message.id) ? (

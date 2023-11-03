@@ -112,9 +112,8 @@ const Single = () => {
                      position: 'top-right',
                      icon: '❌',
                      style: {
-                        background: '#a16206',
+                        background: '#fff',
                         border: '1px solid #a16206',
-                        color: '#fff',
                      },
                   });
                   return;

@@ -138,11 +138,11 @@ const Books = () => {
                   alt={title}
                />
             </Link>
+            {/* //                <span className="absolute bg-[#DAA851] px-2 py-1 text-gray-700 font-bold text-sm left-42 md:left-42 lg:left-28 xl:left-28 2xl:left-70 rounded-md"> */}
 
             <div className="text-center mt-1 mb-3 ">
                <h5 className="text-gray-500 text-lg capitalize">{title}</h5>
-               {/* <span className="absolute bg-[#DAA851] rounded-md left-48 px-2 py-1 text-gray-700 font-bold text-small "> */}
-               <span className="absolute bg-[#DAA851] px-2 py-1 text-gray-700 font-bold text-sm left-58 md:left-68 lg:left-48 xl:left-64 2xl:left-80 rounded-md">
+               <span className="absolute bg-[#DAA851] my-1 px-2 py-1 text-gray-700 font-bold text-sm left-48 md:left-32 lg:left-28 xl:left-24 2xl:left-70 rounded-md">
                   $TKC {price}
                </span>
             </div>
@@ -169,7 +169,7 @@ const Books = () => {
 
    return (
       <>
-         <div className=" w-[87%] m-auto mt-28 mb-8 gap-4">
+         <div className=" w-[90%] m-auto mt-28 mb-8 gap-4">
             <div className="flex justify-center items-center mb-7 relative">
                <div
                   className=" flex justify-center items-center mb-4"
@@ -184,14 +184,14 @@ const Books = () => {
                   />
                   <button
                      onClick={opeBookModal}
-                     className="flex mx-3 py-1 px-3 text-[#DAA851] rounded-md space-x-2 border border-[#DAA851] "
+                     className="flex mx-3 py-1 px-3 text-[#DAA851] rounded-md space-x-2 border border-[#DAA851]"
                   >
                      <span className="text-white text-sm">Filter</span>
                      <FilterIcon />
                   </button>
                </div>
                {bookModalOpen && (
-                  <div className="absolute top-12 right-0 md:right-8 lg:right-16 xl:right-64 2xl:right-64 flex items-center z-10 ">
+                  <div className="absolute top-12 right-0 md:right-8 lg:right-1/4 xl:right-72 2xl:right-1/3 flex items-center z-10 ">
                      <div className="w-64 p-4 bg-[#2c2518] rounded-lg shadow-custom">
                         <div className="flex justify-end">
                            <button
@@ -207,8 +207,8 @@ const Books = () => {
                   </div>
                )}
             </div>
-            <div className="w-full justify-center items-center m-auto ">
-               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div className="w-[95%] justify-center items-center m-auto">
+               <div className=" grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
                   {displayProducts()}
                </div>
             </div>

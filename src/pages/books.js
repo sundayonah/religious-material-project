@@ -169,7 +169,7 @@ const Books = () => {
 
    return (
       <>
-         <div className=" w-[90%] m-auto mt-28 mb-8 gap-4">
+         <div className=" w-[90%] m-auto mt-28 mb-8">
             <div className="flex justify-center items-center mb-7 relative">
                <div
                   className=" flex justify-center items-center mb-4"
@@ -207,7 +207,8 @@ const Books = () => {
                   </div>
                )}
             </div>
-            <div className="w-[95%] justify-center items-center m-auto">
+            {/* <div className="w-[95%] justify-center items-center m-auto"> */}
+            <div className="flex m-auto flex-col justify-center items-center">
                <div className=" grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
                   {displayProducts()}
                </div>

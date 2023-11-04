@@ -326,7 +326,7 @@ const Messages = () => {
                />
             </form>
          </div>
-         <div className="flex flex-wrap gap-3 p-2 justify-center items-center  ">
+         <div className="flex flex-wrap gap-3 p-2 justify-center items-center">
             {filteredMessages.map((message, index) => (
                // <div key={message.id} className={Style.messagesDetails}>
                <div

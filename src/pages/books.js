@@ -8,6 +8,7 @@ import products from '@/pages/api/[id]';
 import Link from 'next/link';
 import axios from 'axios';
 import { CloseIcon, FilterIcon } from '@/components/icons';
+import Image from 'next/image';
 
 // import { StateContext } from '@/Context/ReligiousContext';
 
@@ -20,75 +21,6 @@ const Books = () => {
    const [kingdomBook, setKingdomBook] = useState([]);
    const [bookModalOpen, setBookModalOpen] = useState(false);
    const sidebarRef = useRef(null);
-
-   // const { address, disconnect, connect } = useContext(StateContext);
-
-   // console.log(address);
-   // const fetchBooks = async () => {
-   //    try {
-   //       const res = await axios.get(booksURL);
-
-   //       const data = await res.data.data;
-   //       console.log(data);
-   //       setKingdomBook(data);
-   //       return data;
-   //    } catch (error) {
-   //       console.log('Failed to fetch', error);
-   //    }
-   // };
-
-   //    To make calls to other endpoints fetch the token value from the data you stored on local storage and pass it in the authorization header of your request
-
-   // create another function called fetchBooks
-
-   // const booksURL =
-   //    'http://kingdomcoin-001-site1.ctempurl.com/api/Book/GetAllBooks';
-
-   // // Function to fetch books using the stored token
-   // const fetchBooks = async () => {
-   //    try {
-   //       // Get the stored token from local storage
-   //       const storedData = JSON.parse(localStorage.getItem('responseData'));
-   //       const token = storedData.token;
-   //       console.log(token);
-
-   //       if (token) {
-   //          // Define the API endpoint for fetching books
-   //          // const booksURL =
-   //          //    'http://kingdomcoin-001-site1.ctempurl.com/api/Book/GetAllBooks';
-
-   //          // Make a GET request to the books endpoint with the token in the Authorization header
-   //          const res = await axios.get(booksURL, {
-   //             headers: {
-   //                Authorization: `Bearer ${token}`,
-   //             },
-   //          });
-   //          console.log(res);
-
-   //          if (res.data.statusCode === 200) {
-   //             const booksData = res.data; // Access the res data
-   //             console.log(booksData);
-   //          } else {
-   //             console.error(
-   //                `API request failed with status code ${res.status}`
-   //             );
-   //             if (res.status === 401) {
-   //                console.error(
-   //                   'Unauthorized: Check your authorization token.'
-   //                );
-   //             }
-   //          }
-   //       } else {
-   //          console.error('Token not found in local storage');
-   //       }
-   //    } catch (error) {
-   //       console.error('Error fetching books:', error);
-   //    }
-   // };
-
-   // // Now you can call fetchBooks whenever you need to fetch books
-
-   // fetchBooks();
 
    const opeBookModal = () => {
       setBookModalOpen(true);
@@ -132,14 +64,24 @@ const Books = () => {
             key={id}
          >
             <Link href={`/single?id=${id}`} passHref>
+               <Image
+                  src={image}
+                  className="h-40 w-full rounded-tl-3xl object-center "
+                  alt={title}
+                  width={200}
+                  height={150}
+               />
+               {/* 
+               <div class="md:flex-shrink-0">
                <img
                   src={image}
-                  className="h-48 w-full rounded-tl-3xl object-center "
-                  alt={title}
+                  alt={`${title} Image `}
+                  className="rounded-md object-center h-48"
+                  // width={200}
+                  // height={150}
                />
+               </div> */}
             </Link>
-            {/* //                <span className="absolute bg-[#DAA851] px-2 py-1 text-gray-700 font-bold text-sm left-42 md:left-42 lg:left-28 xl:left-28 2xl:left-70 rounded-md"> */}
-
             <div className="text-center mt-1 mb-3 ">
                <h5 className="text-gray-500 text-lg capitalize">{title}</h5>
                <span className="absolute bg-[#DAA851] my-1 px-2 py-1 text-gray-700 font-bold text-sm left-48 md:left-32 lg:left-28 xl:left-24 2xl:left-70 rounded-md">
@@ -217,5 +159,4 @@ const Books = () => {
       </>
    );
 };
-
 export default Books;

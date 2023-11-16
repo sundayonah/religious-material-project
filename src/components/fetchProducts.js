@@ -141,7 +141,7 @@ export const fetchMessages = async () => {
             if (pinataResponse.status === 200) {
                const ipfsContent = pinataResponse.data;
 
-               const completeBookInfo = {
+               const completeMessageInfo = {
                   recId: book.recId,
                   counterId: book.counterId,
                   category: book.category,
@@ -149,7 +149,7 @@ export const fetchMessages = async () => {
                   ...ipfsContent,
                };
 
-               return completeBookInfo;
+               return completeMessageInfo;
             } else {
                console.error(
                   'Pinata API returned an error:',

@@ -75,7 +75,7 @@ const Messages = () => {
          // console.log(messagesDetails);
       };
       fetchMessagesWithPrice();
-   }, [fetchPrices]);
+   }, [kingdomMessages, fetchPrices]);
 
    // FETCHING DATA
 

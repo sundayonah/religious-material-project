@@ -244,7 +244,6 @@ const Books = () => {
       const updatedMessages = [];
       for (const book of kingdomBook) {
          const contentId = book.id;
-         console.log(contentId);
 
          const contentData = await contract.content(contentId);
          const contentSplit = contentData.toString();
@@ -256,12 +255,12 @@ const Books = () => {
 
          // // Assuming other values in 'contentData' correspond to other properties in 'book'
          const bookWithPrice = { ...book, contentPrice };
-         console.log(bookWithPrice);
+         // console.log(bookWithPrice);
 
          updatedMessages.push(bookWithPrice);
       }
 
-      console.log(updatedMessages);
+      // console.log(updatedMessages);
       return updatedMessages;
    }, [kingdomBook]);
 
@@ -277,7 +276,7 @@ const Books = () => {
       fetchMessagesWithPrice();
    }, [fetchPrices]);
 
-   console.log(kingdomBooksWithPrice);
+   // console.log(kingdomBooksWithPrice);
 
    // useEffect(() => {
    //    const fetchData = async () => {

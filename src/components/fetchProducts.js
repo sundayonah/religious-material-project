@@ -20,7 +20,7 @@ export const fetchBooks = async () => {
    try {
       const res = await axios.get(bookURL, config);
       const data = res.data.data;
-      console.log(data);
+      // console.log(data);
 
       const bookDetails = await Promise.all(
          data.map(async (book) => {
@@ -40,7 +40,7 @@ export const fetchBooks = async () => {
                   ...ipfsContent,
                };
 
-               console.log(completeBookInfo);
+               // console.log(completeBookInfo);
 
                return completeBookInfo;
             } else {

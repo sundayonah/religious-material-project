@@ -38,7 +38,7 @@ const Single = () => {
    useEffect(() => {
       const fetchData = async () => {
          const bookDetails = await fetchBooks();
-         console.log(bookDetails);
+         // console.log(bookDetails);
          const foundBook = bookDetails.find((book) => book.recId === id);
          // console.log(foundBook);
 
@@ -47,6 +47,8 @@ const Single = () => {
 
       fetchData();
    }, [id]);
+
+   // console.log(bookDetails);
 
    // const buyNows = (bookDetails, userAddress) => {
    //    if (bookDetails && userAddress) {
@@ -255,7 +257,7 @@ const Single = () => {
       );
 
       const contPrice = await contract.content(4);
-      console.log(contPrice.toString());
+      // console.log(contPrice.toString());
    };
 
    useEffect(() => {

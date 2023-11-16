@@ -60,118 +60,118 @@ const Header = () => {
 
    const { address, isConnecting, isDisconnected } = useAccount();
 
-   // const signIn = useCallback(async () => {
-   //    try {
-   //       // if (isConnected && !isSignInCompleted) {
-   //       if (!isSignInCompleted) {
-   //          const provider = new ethers.providers.Web3Provider(window.ethereum);
-   //          const signer = provider.getSigner();
+   const signIn = useCallback(async () => {
+      try {
+         // if (isConnected && !isSignInCompleted) {
+         if (!isSignInCompleted) {
+            const provider = new ethers.providers.Web3Provider(window.ethereum);
+            const signer = provider.getSigner();
 
-   //          // const userAddress = await signer.getAddress();
+            // const userAddress = await signer.getAddress();
 
-   //          const messageHash = ethers.utils.hashMessage(
-   //             'Ensure that the signature you are generating and sending in the request is valid '
-   //          );
-   //          const signature = await signer.signMessage(messageHash);
+            const messageHash = ethers.utils.hashMessage(
+               'Ensure that the signature you are generating and sending in the request is valid '
+            );
+            const signature = await signer.signMessage(messageHash);
 
-   //          localStorage.setItem('userSignature', signature);
+            localStorage.setItem('userSignature', signature);
 
-   //          const userSignature = localStorage.getItem('userSignature');
+            const userSignature = localStorage.getItem('userSignature');
 
-   //          console.log('Request Payload:', {
-   //             address: address,
-   //             signature: userSignature,
-   //          });
+            console.log('Request Payload:', {
+               address: address,
+               signature: userSignature,
+            });
 
-   //          if (address) {
-   //             const authURL =
-   //                'http://kingdomcoin-001-site1.ctempurl.com/api/Account/AuthenticateUser';
+            if (address) {
+               const authURL =
+                  'http://kingdomcoin-001-site1.ctempurl.com/api/Account/AuthenticateUser';
 
-   //             const res = await axios.post(
-   //                authURL,
-   //                {
-   //                   address: address, // Use the user's address from signer
-   //                   signature: userSignature,
-   //                },
-   //                {
-   //                   headers: {
-   //                      'Content-Type': 'application/json',
-   //                   },
-   //                }
-   //             );
-   //             console.log(res);
-   //             // Log the entire response
-   //             if (res.data) {
-   //                console.log('Response Data:', res.data);
-   //             } else {
-   //                console.log('Response Data is null');
-   //             }
+               const res = await axios.post(
+                  authURL,
+                  {
+                     address: address, // Use the user's address from signer
+                     signature: userSignature,
+                  },
+                  {
+                     headers: {
+                        'Content-Type': 'application/json',
+                     },
+                  }
+               );
+               console.log(res);
+               // Log the entire response
+               if (res.data) {
+                  console.log('Response Data:', res.data);
+               } else {
+                  console.log('Response Data is null');
+               }
 
-   //             // Check if the status indicates success (status code 200)
-   //             if (res.status === 200 && res.data?.data) {
-   //                const {
-   //                   token,
-   //                   refreshToken,
-   //                   tokenExpirationDate,
-   //                   userId,
-   //                   address,
-   //                } = res.data.data;
+               // Check if the status indicates success (status code 200)
+               if (res.status === 200 && res.data?.data) {
+                  const {
+                     token,
+                     refreshToken,
+                     tokenExpirationDate,
+                     userId,
+                     address,
+                  } = res.data.data;
 
-   //                // Now you can use these values as needed
-   //                console.log('token:', token);
-   //                console.log('refreshToken:', refreshToken);
-   //                console.log('tokenExpirationDate:', tokenExpirationDate);
-   //                console.log('userId:', userId);
-   //                console.log('address:', address);
-   //             } else {
-   //                console.error(
-   //                   'Authentication failed:',
-   //                   res.data?.message || 'Unknown error'
-   //                );
-   //             }
+                  // Now you can use these values as needed
+                  console.log('token:', token);
+                  console.log('refreshToken:', refreshToken);
+                  console.log('tokenExpirationDate:', tokenExpirationDate);
+                  console.log('userId:', userId);
+                  console.log('address:', address);
+               } else {
+                  console.error(
+                     'Authentication failed:',
+                     res.data?.message || 'Unknown error'
+                  );
+               }
 
-   //             if (res.data?.statusCode === 200) {
-   //                const responseData = res.data.data;
-   //                console.log(responseData);
-   //                localStorage.setItem(
-   //                   'responseData',
-   //                   JSON.stringify(responseData)
-   //                );
-   //                setSignInCompleted(true);
-   //             } else {
-   //                console.error(
-   //                   `API request failed with status code ${res.status}`
-   //                );
-   //                if (res.status === 401) {
-   //                   console.error(
-   //                      'Unauthorized: Check your authorization token.'
-   //                   );
-   //                }
-   //             }
-   //             localStorage.setItem('signInCompleted', 'true');
-   //          } else {
-   //             console.error('User signature not found in local storage');
-   //          }
-   //          setIsLoading(false);
-   //       } else {
-   //          console.error('MetaMask not installed or user already signed in.');
-   //       }
-   //    } catch (error) {
-   //       console.error('Error signing in with message hash:', error);
-   //    }
-   // }, [isSignInCompleted, address]);
+               if (res.data?.statusCode === 200) {
+                  const responseData = res.data.data;
+                  console.log(responseData);
+                  localStorage.setItem(
+                     'responseData',
+                     JSON.stringify(responseData)
+                  );
+                  setSignInCompleted(true);
+               } else {
+                  console.error(
+                     `API request failed with status code ${res.status}`
+                  );
+                  if (res.status === 401) {
+                     console.error(
+                        'Unauthorized: Check your authorization token.'
+                     );
+                  }
+               }
+               localStorage.setItem('signInCompleted', 'true');
+            } else {
+               console.error('User signature not found in local storage');
+            }
+            setIsLoading(false);
+         } else {
+            console.error('MetaMask not installed or user already signed in.');
+         }
+      } catch (error) {
+         console.error('Error signing in with message hash:', error);
+      }
+   }, [isSignInCompleted, address]);
 
-   // console.log(isDisconnected);
+   console.log(isDisconnected);
 
-   // useEffect(() => {
-   //    const checkWalletConnection = async () => {
-   //       if (address && !isDisconnected) {
-   //          signIn();
-   //       }
-   //    };
+   useEffect(() => {
+      const checkWalletConnection = async () => {
+         if (address && !isDisconnected) {
+            signIn();
+         }
+      };
 
-   //    checkWalletConnection();
-   // }, [address, signIn, isDisconnected]);
+      checkWalletConnection();
+   }, [address, signIn, isDisconnected]);
 
    return (
       <>

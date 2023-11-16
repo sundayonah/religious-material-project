@@ -256,7 +256,7 @@ const Songs = () => {
 
    // approve address 0x8dFaC13397e766f892bFA55790798A60eaB52921
 
-   if (kingdomSongs.length < 1) {
+   if (kingdomSongsWithPrice.length === 0) {
       return (
          <>
             <div class="flex items-center justify-center   mt-80">

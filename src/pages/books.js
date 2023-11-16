@@ -314,7 +314,7 @@ const Books = () => {
    const router = useRouter();
 
    const displayProducts = () => {
-      if (kingdomBook.length < 1) {
+      if (kingdomBooksWithPrice.length === 0) {
          return (
             <>
                <div class="flex items-center justify-center   mt-24">

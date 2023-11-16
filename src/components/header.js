@@ -70,7 +70,7 @@ const Header = () => {
             // const userAddress = await signer.getAddress();
 
             const messageHash = ethers.utils.hashMessage(
-               'Ensure that the signature you are generating and sending in the request is valid '
+               'Sign-in to web3 kigdom-coin e-comerce'
             );
             const signature = await signer.signMessage(messageHash);
 
@@ -78,10 +78,10 @@ const Header = () => {
 
             const userSignature = localStorage.getItem('userSignature');
 
-            console.log('Request Payload:', {
-               address: address,
-               signature: userSignature,
-            });
+            // console.log('Request Payload:', {
+            //    address: address,
+            //    signature: userSignature,
+            // });
 
             if (address) {
                const authURL =
@@ -99,13 +99,13 @@ const Header = () => {
                      },
                   }
                );
-               console.log(res);
+               // console.log(res);
                // Log the entire response
-               if (res.data) {
-                  console.log('Response Data:', res.data);
-               } else {
-                  console.log('Response Data is null');
-               }
+               // if (res.data) {
+               //    console.log('Response Data:', res.data);
+               // } else {
+               //    console.log('Response Data is null');
+               // }
 
                // Check if the status indicates success (status code 200)
                if (res.status === 200 && res.data?.data) {
@@ -161,7 +161,7 @@ const Header = () => {
       }
    }, [isSignInCompleted, address]);
 
-   console.log(isDisconnected);
+   // console.log(isDisconnected);
 
    useEffect(() => {
       const checkWalletConnection = async () => {

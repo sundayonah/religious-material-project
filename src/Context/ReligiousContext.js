@@ -173,9 +173,9 @@ export const StateContextProvider = ({ children }) => {
 
    //          setIsLoading(true);
 
-   //          const messageHash = ethers.utils.hashMessage(
-   //             'Sign-in to web3 kigdom-coin e-comerce'
-   //          );
+   // const messageHash = ethers.utils.hashMessage(
+   //    'Sign-in to web3 kigdom-coin e-comerce'
+   // );
    //          const signature = await signer.signMessage(messageHash);
 
    //          // Save the signature in local storage

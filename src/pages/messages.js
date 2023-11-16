@@ -366,7 +366,7 @@ const Messages = () => {
    //    }));
    // };
 
-   if (kingdomMessages.length === 0) {
+   if (kingdomMessagesWithPrice.length === 0) {
       return (
          <>
             <div class="flex items-center justify-center  m-80">

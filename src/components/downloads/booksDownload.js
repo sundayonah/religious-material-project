@@ -24,6 +24,8 @@ export const BooksDownload = () => {
       const storedPurchasedProducts =
          JSON.parse(localStorage.getItem('purchasedBooks')) || [];
 
+      // console.log(storedPurchasedProducts);
+
       // Deserialize the stored products and filter them based on the current user's address
       const userPurchasedProducts = storedPurchasedProducts
          .map((serializedProduct) => JSON.parse(serializedProduct))
@@ -59,16 +61,18 @@ export const BooksDownload = () => {
    return (
       <div className="py-4">
          <h4 className="text-2xl font-bold my-4 text-white">Purchased Books</h4>
-         <div className="grid grid-cols-2 gap-4">
+         <div className="grid grid-cols-2">
             {purchasedBooks.map((book, index) => (
                <div
                   key={index}
-                  className=" mx-1  px-2 py-3  rounded-md  shadow-custom"
+                  className=" mx-12  px-2 py-3  rounded-md  shadow-custom"
                >
                   <img
-                     src={book.image}
+                     src={`https://gateway.pinata.cloud/ipfs/${book.image}`}
                      alt={book.title}
-                     className="w-full h-40 object-cover rounded-md"
+                     className="m-auto object-cover rounded-md"
+                     width={250}
+                     height={200}
                   />
                   <h3 className="text-lg font-semibold mt-2 text-gray-400 italic">
                      {book.title}
@@ -105,11 +109,11 @@ export const BooksDownload = () => {
             ))}
          </div>
          {selectedBook && (
-            <div className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-80 flex justify-center items-center">
+            <div className="fixed top-0 left-0 w-full h-full mt-8 bg-black bg-opacity-80 flex justify-center items-center">
                <div className="bg-white p-4 rounded-lg shadow-md">
                   <button
                      onClick={handleCloseBook}
-                     className="absolute top-2 right-2 text-white py-1 px-2 rounded-full"
+                     className="absolute top-7 right-4 text-black py-1 px-2 rounded-full"
                   >
                      <CloseIcon />
                   </button>

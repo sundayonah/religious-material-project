@@ -67,6 +67,8 @@
 
 import React, { useEffect, useState } from 'react';
 // import Style from '@/styles/messages.module.css';
+import { create } from 'ipfs-http-client';
+import axios from 'axios';
 
 const Messages = () => {
    const ipfsHash = 'QmfMQiWGrcswgwc3BsjLuprEV95ZQhHQj6a4Ygy1NHhVs9'; // Replace with your IPFS hash
@@ -75,122 +77,138 @@ const Messages = () => {
    const [messages, setMessages] = useState([]);
    const [selectedProduct, setSelectedProduct] = useState(null);
 
-   const messagesDetails = [
-      {
-         id: 'rec43w3ipXvP28vog',
-         title: 'high-back bench',
-         artist: 'John Doe',
-         category: 'healing',
-         file: 'https',
-         price: 9.99,
-         imageUrl: '',
-      },
-      {
-         id: 'rec4f2RIftFCb7aHh',
-         title: 'albany table',
-         artist: 'John Doe',
-         category: 'faith',
-         file: 'https',
-         price: 79.99,
-         imageUrl: '',
-      },
-      {
-         id: 'rec8kkCmSiMkbkiko',
-         title: 'accent chair',
-         artist: 'John Doe',
-         category: 'faith',
-         file: 'https',
-         price: 25.99,
-         imageUrl: '',
-      },
-      {
-         id: 'recBohCqQsot4Q4II',
-         title: 'wooden table',
-         artist: 'John Doe',
-         category: 'faith',
-         file: 'https',
-         price: 45.99,
-         imageUrl: '',
-      },
-      {
-         id: 'recDG1JRZnbpRHpoy',
-         title: 'dining table',
-         artist: 'John Doe',
-         category: 'faith',
-         file: 'https',
-         price: 6.99,
-         imageUrl: '',
-      },
-      {
-         id: 'recNWGyP7kjFhSqw3',
-         title: 'sofa set',
-         artist: 'John Doe',
-         category: 'supernatural',
-         file: 'https',
-         price: 69.99,
-         imageUrl: '',
-      },
-   ];
+   // const fetchImageUrls = async () => {
+   //    try {
+   //       // Fetch the list of files and directories in the IPFS folder
+   //       const response = await fetch(gatewayUrl);
+   //       if (!response.ok) {
+   //          throw new Error('Failed to fetch folder content');
+   //       }
 
-   const fetchImageUrls = async () => {
-      try {
-         // Fetch the list of files and directories in the IPFS folder
-         const response = await fetch(gatewayUrl);
-         if (!response.ok) {
-            throw new Error('Failed to fetch folder content');
-         }
+   //       // Assuming the response is HTML containing links to files
+   //       const html = await response.text();
 
-         // Assuming the response is HTML containing links to files
-         const html = await response.text();
+   //       // Parse the HTML to extract links to image files
+   //       const parser = new DOMParser();
+   //       const doc = parser.parseFromString(html, 'text/html');
+   //       const links = Array.from(doc.querySelectorAll('a'));
 
-         // Parse the HTML to extract links to image files
-         const parser = new DOMParser();
-         const doc = parser.parseFromString(html, 'text/html');
-         const links = Array.from(doc.querySelectorAll('a'));
+   //       // Filter links to include only image files ending with "/img.png"
+   //       const imageLinks = links.filter((link) =>
+   //          link.getAttribute('href').includes('/img')
+   //       );
 
-         // Filter links to include only image files ending with "/img.png"
-         const imageLinks = links.filter((link) =>
-            link.getAttribute('href').includes('/img')
-         );
+   //       // Create image URLs from the links
+   //       const urls = imageLinks.map(
+   //          (link) => `https://ipfs.io${link.getAttribute('href')}`
+   //       );
 
-         // Create image URLs from the links
-         const urls = imageLinks.map(
-            (link) => `https://ipfs.io${link.getAttribute('href')}`
-         );
+   //       // Set the image URL for each product in the Messages array
+   //       const updatedMessages = messagesDetails.map((message, index) => ({
+   //          ...message,
+   //          imageUrl: urls[index] || 'hello',
+   //       }));
 
-         // Set the image URL for each product in the Messages array
-         const updatedMessages = messagesDetails.map((message, index) => ({
-            ...message,
-            imageUrl: urls[index] || 'hello',
-         }));
+   //       // Remove duplicates by converting the array to a Set and then back to an array
+   //       const uniqueUrls = Array.from(new Set(urls));
 
-         // Remove duplicates by converting the array to a Set and then back to an array
-         const uniqueUrls = Array.from(new Set(urls));
-
-         setImageUrls(uniqueUrls);
-         setMessages(updatedMessages);
-      } catch (error) {
-         console.error('Error fetching folder content:', error);
-      }
-   };
+   //       setImageUrls(uniqueUrls);
+   //       setMessages(updatedMessages);
+   //    } catch (error) {
+   //       console.error('Error fetching folder content:', error);
+   //    }
+   // };
 
    const [searchInput, setSearchInput] = useState('');
    const [filteredMessages, setFilteredMessages] = useState(messages);
+   const [kingdomBook, setKingdomBook] = useState([]);
+
+   const bookURL =
+      'http://kingdomcoin-001-site1.ctempurl.com/api/Catalog/GetAllBooks';
+
+   const ipfs = create({ url: 'https://gateway.pinata.cloud/ipfs/' }); // Replace with the IPFS gateway URL you're using
+
+   const bookFile = async () => {
+      // Fetch book data from the server
+      const token =
+         'eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiMzQ2NjkzYWItOGZhOS00Mjg4LWEwZmYtMzNkOTZmYzdiOWJmIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbmFtZWlkZW50aWZpZXIiOiIweDMyZTgwZTE2YWFmZGJiYjIwYmE1NTY5MGYyNzVhMjYwOGUzZWNmYzAiLCJleHAiOjE2OTk1OTc5MDgsImlzcyI6Imh0dHA6Ly9yb2Fkc3Rhci5jb20iLCJhdWQiOiJodHRwOi8vcm9hZHN0YXIuY29tIn0.HcQ6DkETMVi3FK6JYgBg49A9mv65jv7B4eJYWGrOnzg'; // Replace with your actual access token // Replace with your actual access token
+      const config = {
+         headers: {
+            Authorization: `Bearer ${token}`,
+         },
+      };
+      const res = await axios.get(bookURL, config);
+      const data = res.data.data;
+
+      console.log(data);
+
+      // Fetch and display book details from IPFS
+      const bookDetails = [];
+
+      for (const book of data) {
+         const ipfsHash = book.hash;
+         console.log('IPFS Hash:', ipfsHash);
+
+         try {
+            // Fetch content from Pinata API
+            const pinataApiUrl = `https://purple-existing-woodpecker-520.mypinata.cloud/ipfs/${ipfsHash}`;
+            console.log(pinataApiUrl);
+
+            // Fetch content from Pinata API
+            const pinataResponse = await axios.get(pinataApiUrl);
+
+            console.log(pinataResponse);
+            if (pinataResponse.status === 200) {
+               const ipfsContent = pinataResponse.data;
+               console.log('IPFS Content:', ipfsContent);
+
+               // Assuming the content is JSON, parse it
+               const bookInfo = ipfsContent;
+               console.log('Parsed IPFS Content:', bookInfo);
+
+               // Include additional fields from the original book data
+               const completeBookInfo = {
+                  recId: book.recId,
+                  counterId: book.counterId,
+                  category: book.category,
+                  bookFile: book.bookFile,
+                  ...bookInfo, // Include the rest of the book info
+               };
+               console.log('Complete Book Info:', completeBookInfo);
+
+               // Add completeBookInfo to the list of bookDetails
+               bookDetails.push(completeBookInfo);
+            } else {
+               console.error(
+                  'Pinata API returned an error:',
+                  pinataResponse.status,
+                  pinataResponse.statusText
+               );
+            }
+         } catch (error) {
+            console.error('Error fetching IPFS content:', error);
+         }
+      }
+
+      // Update the UI with book details
+      setKingdomBook(bookDetails);
+   };
+
+   // useEffect(() => {
+   //    // Filter the messages based on the search input
+   //    const filtered = messagesDetails.filter(
+   //       (message) =>
+   //          message.artist.toLowerCase().includes(searchInput.toLowerCase()) ||
+   //          message.title.toLowerCase().includes(searchInput.toLowerCase())
+   //    );
+
+   //    setFilteredMessages(filtered);
+   // }, [searchInput]);
 
    useEffect(() => {
-      // Filter the messages based on the search input
-      const filtered = messagesDetails.filter(
-         (message) =>
-            message.artist.toLowerCase().includes(searchInput.toLowerCase()) ||
-            message.title.toLowerCase().includes(searchInput.toLowerCase())
-      );
-
-      setFilteredMessages(filtered);
-   }, [searchInput]);
-
-   useEffect(() => {
-      fetchImageUrls();
-   }, [gatewayUrl]);
+      // fetchImageUrls();
+      bookFile();
+   }, []);
 
    const buyNow = (product) => {
       if (product) {
@@ -201,24 +219,29 @@ const Messages = () => {
    return (
       <>
          <div className="w-[80%] m-auto mt-28">
-            <p>hello</p>
-
             <div
                className=" grid flex-col p-1 rounded-md
                      flex-wrap md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-1 "
             >
-               {messagesDetails.map((message, i) => (
+               {kingdomBook.map((book, i) => (
                   <div
-                     key={i}
-                     className="w-full mt-2 m-auto flex justify-between p-2 space-x-9 bg-white border rounded"
+                     key={book.recId}
+                     className="w-full mt-2 m-auto flex justify-between p-2
+                     space-x-9 bg-white border rounded"
                   >
+                     <img
+                        src={`https://gateway.pinata.cloud/ipfs/${book.image}`}
+                        alt={book.title}
+                        width={100}
+                        height={100}
+                     />
                      <div className="">
-                        <p>{message.title}</p>
-                        <p>{message.artist}</p>
+                        <p>{book.title}</p>
+                        <p>{book.artist}</p>
                      </div>
                      <div className="">
-                        <p>{message.category}</p>
-                        <p>{message.price}</p>
+                        <p>{book.category}</p>
+                        <p>{book.counterId}</p>
                      </div>
                   </div>
                ))}

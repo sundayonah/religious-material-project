@@ -117,7 +117,7 @@ const SongDownloads = ({ selectedFilter }) => {
    }
    return (
       <div className="w-full flex flex-col gap-3 ">
-         {purchasedProducts.map(({ id, file, imageUrl, title, artist }) => (
+         {purchasedProducts.map(({ id, file, image, title, author }) => (
             <div
                key={id}
                className="flex justify-between items-center py-2 bg-transparent border-b-[1px] border-gray-700"
@@ -136,7 +136,7 @@ const SongDownloads = ({ selectedFilter }) => {
                      <source src={file} type="audio/mpeg" />
                   </audio>
                   <img
-                     src={imageUrl}
+                     src={`https://gateway.pinata.cloud/ipfs/${image}`}
                      alt={`Image ${title}`}
                      className="rounded-md cursor-pointer"
                      width={50}
@@ -147,7 +147,7 @@ const SongDownloads = ({ selectedFilter }) => {
                      <div className="flex justify-center items-center p-1 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-white">
                         <button
                            onClick={() =>
-                              handlePlayClick(id, title, artist, imageUrl)
+                              handlePlayClick(id, title, author, image)
                            }
                         >
                            {activeSongId === id ? (
@@ -167,7 +167,7 @@ const SongDownloads = ({ selectedFilter }) => {
                   {title.length > 20 ? `${title.slice(0, 20)}...` : title}
                </span>
                <span className="w-[150px] text-gray-600 text-sm overflow-hidden whitespace-nowrap">
-                  {artist.length > 20 ? `${artist.slice(0, 20)}...` : artist}
+                  {author.length > 20 ? `${author.slice(0, 20)}...` : author}
                </span>
                <div className="w-[50px] flex items-center space-x-4">
                   {hoveredItemId === id ? (

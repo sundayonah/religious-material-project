@@ -1182,3 +1182,118 @@ const DownloadSidebar = () => {
 };
 
 // export default DownloadSidebar;
+
+const approveContract = new ethers.Contract(
+   approveContractAddress,
+   approveAbi,
+   signer
+);
+// const value = ethers.utils.parseUnits(purchasedPrice, 'ether');
+// const valString = value.toString();
+// console.log(valString);
+
+const priceInEther = ethers.utils.parseEther(purchasedPrice.toString());
+
+// Approve the contract to spend tokens on your behalf
+const approvalTx = await approveContract.approve(
+   RMTestnetContractAddress,
+   priceInEther,
+   {
+      gasLimit: 8000000, // Adjust the gas limit as needed
+   }
+);
+
+console.log(approvalTx);
+
+// Wait for the approval transaction to be mined
+await approvalTx.wait();
+
+//API Key: 49270efd7e905a81cab6
+//API Secret: d1c01e382edc1f128bc49e904def11798c8b3c124ce62df273305b3bb1c950af
+//JWT: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySW5mb3JtYXRpb24iOnsiaWQiOiIwY2MxYzEwZC1iZGNhLTRjNzEtYWFjZS1hMGY0NDczMmEyZDAiLCJlbWFpbCI6Im9uYWhzdW5kYXkwNjEyQGdtYWlsLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJwaW5fcG9saWN5Ijp7InJlZ2lvbnMiOlt7ImlkIjoiRlJBMSIsImRlc2lyZWRSZXBsaWNhdGlvbkNvdW50IjoxfSx7ImlkIjoiTllDMSIsImRlc2lyZWRSZXBsaWNhdGlvbkNvdW50IjoxfV0sInZlcnNpb24iOjF9LCJtZmFfZW5hYmxlZCI6ZmFsc2UsInN0YXR1cyI6IkFDVElWRSJ9LCJhdXRoZW50aWNhdGlvblR5cGUiOiJzY29wZWRLZXkiLCJzY29wZWRLZXlLZXkiOiI0OTI3MGVmZDdlOTA1YTgxY2FiNiIsInNjb3BlZEtleVNlY3JldCI6ImQxYzAxZTM4MmVkYzFmMTI4YmM0OWU5MDRkZWYxMTc5OGM4YjNjMTI0Y2U2MmRmMjczMzA1YjNiYjFjOTUwYWYiLCJpYXQiOjE2OTkzMTUwMjN9.daojj7OGyrYveuKuRD-nyz6bousFnOWmvBY-OXmfxuA
+
+// const signIn = useCallback(async () => {
+try {
+   // if (isConnected && !isSignInCompleted) {
+   // if (!isSignInCompleted) {
+   const provider = new ethers.providers.Web3Provider(window.ethereum);
+   const signer = provider.getSigner();
+
+   // const userAddress = await signer.getAddress();
+
+   const messageHash = ethers.utils.hashMessage(
+      'Sign-in to web3 kigdom-coin marketplace projects'
+   );
+   const signature = await signer.signMessage(messageHash);
+
+   localStorage.setItem('userSignature', signature);
+
+   const userSignature = localStorage.getItem('userSignature');
+
+   if (userSignature) {
+      const authURL =
+         'http://kingdomcoin-001-site1.ctempurl.com/api/Account/AuthenticateUser';
+
+      const res = await axios.post(
+         authURL,
+         {
+            address: address, // Use the user's address from signer
+            signature: userSignature,
+         },
+         {
+            headers: {
+               'Content-Type': 'application/json',
+            },
+         }
+      );
+      console.log(res);
+
+      // // Check if data property is not null or undefined
+      // if (res.data?.data) {
+      //    // Destructure properties with optional chaining
+      //    const { refreshToken, tokenExpirationDate, userId } =
+      //       res.data.data;
+
+      //    // Now you can use these values as needed
+      //    console.log('refreshToken:', refreshToken);
+      //    console.log('tokenExpirationDate:', tokenExpirationDate);
+      //    console.log('userId:', userId);
+      // } else {
+      //    console.error(
+      //       'Error in server response. Data property is null or undefined.'
+      //    );
+      // }
+
+      if (res.data?.statusCode === 200) {
+         const responseData = res.data.data;
+         console.log(responseData);
+         localStorage.setItem('responseData', JSON.stringify(responseData));
+         setSignInCompleted(true);
+      } else {
+         console.error(`API request failed with status code ${res.status}`);
+         if (res.status === 401) {
+            console.error('Unauthorized: Check your authorization token.');
+         }
+      }
+      localStorage.setItem('signInCompleted', 'true');
+   } else {
+      console.error('User signature not found in local storage');
+   }
+   setIsLoading(false);
+   // } else {
+   //    console.error('MetaMask not installed or user already signed in.');
+   // }
+} catch (error) {
+   console.error('Error signing in with message hash:', error);
+}
+// }, [isSignInCompleted, address]);
+
+// useEffect(() => {
+//    const checkWalletConnection = async () => {
+//       if (address !== undefined) {
+//          signIn();
+//       }
+//    };
+
+//    checkWalletConnection();
+// }, [address, signIn]);

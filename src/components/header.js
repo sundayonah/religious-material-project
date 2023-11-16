@@ -33,7 +33,8 @@ const Header = () => {
 
    const [isMenuOpen, setIsMenuOpen] = useState(false);
    const [walletConnected, setWalletConnected] = useState(false);
-   // const [signInCompleted, setSignInCompleted] = useState(false);
+
+   const [account, setAccount] = useState('');
 
    // console.log(address);
 
@@ -59,80 +60,118 @@ const Header = () => {
 
    const { address, isConnecting, isDisconnected } = useAccount();
 
-   const signIn = useCallback(async () => {
-      try {
-         // if (isConnected && !isSignInCompleted) {
-         // if (!isSignInCompleted) {
-         const provider = new ethers.providers.Web3Provider(window.ethereum);
-         const signer = provider.getSigner();
+   // const signIn = useCallback(async () => {
+   //    try {
+   //       // if (isConnected && !isSignInCompleted) {
+   //       if (!isSignInCompleted) {
+   //          const provider = new ethers.providers.Web3Provider(window.ethereum);
+   //          const signer = provider.getSigner();
 
-         setIsLoading(true);
+   //          // const userAddress = await signer.getAddress();
 
-         const messageHash = ethers.utils.hashMessage(
-            'Sign-in to web3 kigdom-coin e-comerce projects'
-         );
-         const signature = await signer.signMessage(messageHash);
+   //          const messageHash = ethers.utils.hashMessage(
+   //             'Ensure that the signature you are generating and sending in the request is valid '
+   //          );
+   //          const signature = await signer.signMessage(messageHash);
 
-         localStorage.setItem('userSignature', signature);
+   //          localStorage.setItem('userSignature', signature);
 
-         const userSignature = localStorage.getItem('userSignature');
+   //          const userSignature = localStorage.getItem('userSignature');
 
-         if (userSignature) {
-            const authURL =
-               'http://kingdomcoin-001-site1.ctempurl.com/api/Account/AuthenticateUser';
+   //          console.log('Request Payload:', {
+   //             address: address,
+   //             signature: userSignature,
+   //          });
 
-            const res = await axios.post(
-               authURL,
-               {
-                  address: signer._address, // Use the user's address from signer
-                  signature: userSignature,
-               },
-               {
-                  headers: {
-                     'Content-Type': 'application/json',
-                  },
-               }
-            );
+   //          if (address) {
+   //             const authURL =
+   //                'http://kingdomcoin-001-site1.ctempurl.com/api/Account/AuthenticateUser';
 
-            if (res.data.statusCode === 200) {
-               const responseData = res.data.data;
-               localStorage.setItem(
-                  'responseData',
-                  JSON.stringify(responseData)
-               );
-            } else {
-               console.error(
-                  `API request failed with status code ${res.status}`
-               );
-               if (res.status === 401) {
-                  console.error(
-                     'Unauthorized: Check your authorization token.'
-                  );
-               }
-            }
-            localStorage.setItem('signInCompleted', 'true');
-         } else {
-            console.error('User signature not found in local storage');
-         }
-         setIsLoading(false);
-         setSignInCompleted(true);
-         // } else {
-         //    console.error('MetaMask not installed or user already signed in.');
-         // }
-      } catch (error) {
-         console.error('Error signing in with message hash:', error);
-      }
-   }, []);
+   //             const res = await axios.post(
+   //                authURL,
+   //                {
+   //                   address: address, // Use the user's address from signer
+   //                   signature: userSignature,
+   //                },
+   //                {
+   //                   headers: {
+   //                      'Content-Type': 'application/json',
+   //                   },
+   //                }
+   //             );
+   //             console.log(res);
+   //             // Log the entire response
+   //             if (res.data) {
+   //                console.log('Response Data:', res.data);
+   //             } else {
+   //                console.log('Response Data is null');
+   //             }
 
-   useEffect(() => {
-      const checkWalletConnection = async () => {
-         if (address !== undefined) {
-            signIn(); // Automatically trigger sign-in when wallet is connected and sign-in is not yet completed
-         }
-      };
+   //             // Check if the status indicates success (status code 200)
+   //             if (res.status === 200 && res.data?.data) {
+   //                const {
+   //                   token,
+   //                   refreshToken,
+   //                   tokenExpirationDate,
+   //                   userId,
+   //                   address,
+   //                } = res.data.data;
 
-      checkWalletConnection();
-   }, [address, signIn]);
+   //                // Now you can use these values as needed
+   //                console.log('token:', token);
+   //                console.log('refreshToken:', refreshToken);
+   //                console.log('tokenExpirationDate:', tokenExpirationDate);
+   //                console.log('userId:', userId);
+   //                console.log('address:', address);
+   //             } else {
+   //                console.error(
+   //                   'Authentication failed:',
+   //                   res.data?.message || 'Unknown error'
+   //                );
+   //             }
+
+   //             if (res.data?.statusCode === 200) {
+   //                const responseData = res.data.data;
+   //                console.log(responseData);
+   //                localStorage.setItem(
+   //                   'responseData',
+   //                   JSON.stringify(responseData)
+   //                );
+   //                setSignInCompleted(true);
+   //             } else {
+   //                console.error(
+   //                   `API request failed with status code ${res.status}`
+   //                );
+   //                if (res.status === 401) {
+   //                   console.error(
+   //                      'Unauthorized: Check your authorization token.'
+   //                   );
+   //                }
+   //             }
+   //             localStorage.setItem('signInCompleted', 'true');
+   //          } else {
+   //             console.error('User signature not found in local storage');
+   //          }
+   //          setIsLoading(false);
+   //       } else {
+   //          console.error('MetaMask not installed or user already signed in.');
+   //       }
+   //    } catch (error) {
+   //       console.error('Error signing in with message hash:', error);
+   //    }
+   // }, [isSignInCompleted, address]);
+
+   // console.log(isDisconnected);
+
+   // useEffect(() => {
+   //    const checkWalletConnection = async () => {
+   //       if (address && !isDisconnected) {
+   //          signIn();
+   //       }
+   //    };
+
+   //    checkWalletConnection();
+   // }, [address, signIn, isDisconnected]);
 
    return (
       <>
@@ -198,6 +237,8 @@ const Header = () => {
                <div className="">
                   <w3m-button balance="hide" />
                </div>
+
+               {/* <button onClick={signIn}>Connect</button> */}
             </div>
             <style jsx>{`
                .active-link {

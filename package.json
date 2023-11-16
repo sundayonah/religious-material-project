@@ -10,6 +10,7 @@
    },
    "dependencies": {
       "@heroicons/react": "^2.0.18",
+      "@pinata/sdk": "^2.1.0",
       "@reduxjs/toolkit": "^1.9.7",
       "@web3modal/wagmi": "^3.0.1",
       "autoprefixer": "10.4.16",

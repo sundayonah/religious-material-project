@@ -14,6 +14,7 @@ const DownloadSidebar = () => {
    const [downloadedBooks, setDownloadedBooks] = useState([]);
    const [filterModalOpen, setFilterModalOpen] = useState(false);
    const [searchInput, setSearchInput] = useState('');
+
    const [combinedPurchasedProducts, setCombinedPurchasedProducts] = useState(
       []
    );
@@ -61,28 +62,6 @@ const DownloadSidebar = () => {
    //    }
    // };
 
-   const renderContent = () => {
-      switch (selectedFilter) {
-         case 'All':
-            return (
-               <>
-                  <SongDownloads />
-                  <MessagesDownload />
-                  <BooksDownload />
-                  {/* Add rendering for Books here */}
-               </>
-            );
-         case 'Books':
-            return <BooksDownload />;
-         case 'Songs':
-            return <SongDownloads />;
-         case 'Messages':
-            return <MessagesDownload />;
-         default:
-            return null;
-      }
-   };
-
    const handleSearchInputChange = (e) => {
       console.log(e.target.value);
       setSearchInput(e.target.value);
@@ -109,6 +88,26 @@ const DownloadSidebar = () => {
       setCombinedPurchasedProducts(allPurchasedProducts);
    }, []);
 
+   let [filteredDownloadProduct, setFilteredDownloadProduct] = useState(
+      combinedPurchasedProducts
+   );
+   useEffect(() => {
+      // Filter the messages based on the search input
+      const filtered = combinedPurchasedProducts.filter((purchased) => {
+         const artist = purchased.artist || '';
+         const title = purchased.title || '';
+
+         return (
+            artist.toLowerCase().includes(searchInput.toLowerCase()) ||
+            title.toLowerCase().includes(searchInput.toLowerCase())
+         );
+      });
+
+      setFilteredDownloadProduct(filtered);
+   }, [searchInput, combinedPurchasedProducts]);
+
+   console.log(filteredDownloadProduct.length);
+
    // ...
 
    const filterPurchasedProducts = () => {
@@ -122,6 +121,28 @@ const DownloadSidebar = () => {
 
       // console.log(filteredProducts);
       return filteredProducts;
+   };
+
+   const renderContent = () => {
+      switch (selectedFilter) {
+         case 'All':
+            return (
+               <>
+                  <SongDownloads />
+                  <MessagesDownload />
+                  <BooksDownload />
+                  {/* Add rendering for Books here */}
+               </>
+            );
+         case 'Books':
+            return <BooksDownload />;
+         case 'Songs':
+            return <SongDownloads />;
+         case 'Messages':
+            return <MessagesDownload />;
+         default:
+            return null;
+      }
    };
 
    return (

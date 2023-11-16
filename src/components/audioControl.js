@@ -57,6 +57,7 @@ const AudioPlayer = () => {
 
    const songStates = useSelector((state) => state.audio.songStates);
    const activeSongId = useSelector((state) => state.audio.activeSongId);
+   // console.log(activeSongId);
    const repeat = useSelector((state) => state.audio.repeat);
 
    const isPlaying = useSelector(
@@ -78,7 +79,7 @@ const AudioPlayer = () => {
    );
 
    const songDetails = useSelector((state) => state.audio.songDetails);
-   // console.log(songDetails);
+   console.log(songDetails);
 
    const imageUrl = useSelector((state) => state.audio.imageUrl);
    const volume = useSelector((state) => state.audio.volume);
@@ -89,8 +90,11 @@ const AudioPlayer = () => {
    const purchasedMessages =
       JSON.parse(localStorage.getItem('purchasedMessages')) || [];
 
+   // console.log(purchasedMessages);
+
    // Merge the purchasedSongs and purchasedMessages arrays
    const mergedPurchases = [...purchasedSongs, ...purchasedMessages];
+   // console.log(mergedPurchases);
 
    // console.log(purchasedMessages);
 
@@ -417,7 +421,7 @@ const AudioPlayer = () => {
                <div className="flex justify-center items-center">
                   <img
                      // src="/images/explore2.jpg"
-                     src={songDetails.imageUrl}
+                     src={`https://gateway.pinata.cloud/ipfs/${songDetails.imageUrl}`}
                      alt={`Image`}
                      className="rounded-md cursor-pointer object-contain"
                      width={30}

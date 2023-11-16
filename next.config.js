@@ -2,7 +2,11 @@
 const nextConfig = {
    reactStrictMode: true,
    images: {
-      domains: ['imgs.search.brave.com', 'course-api.com'],
+      domains: [
+         'imgs.search.brave.com',
+         'course-api.com',
+         'gateway.pinata.cloud',
+      ],
    },
 };
 

@@ -154,7 +154,7 @@ const Songs = () => {
 
                let tx;
                tx = await contract.purchase(contentId, token, {
-                  gasLimit: 50000, // Adjust the gas limit as needed
+                  gasLimit: 100000, // Adjust the gas limit as needed
                   gasPrice: ethers.utils.parseUnits('10.0', 'gwei'), // Adjust the gas price as needed
                });
 

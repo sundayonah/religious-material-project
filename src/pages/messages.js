@@ -6,7 +6,7 @@ import { ethers } from 'ethers';
 import RMabi from '@/Contract/rm-abi.json';
 import toast, { Toaster } from 'react-hot-toast';
 import axios from 'axios';
-import { fetchMessages } from '@/components/fetchProducts';
+import { useFetchMessages } from '@/components/fetchProducts';
 
 const Messages = () => {
    const { UnStake } = useContext(StateContext);
@@ -64,34 +64,18 @@ const Messages = () => {
       return updatedMessages;
    }, [kingdomMessages]);
 
+   const messagesFetchHook = useFetchMessages();
+
    useEffect(() => {
-      const fetchMessagesWithPrice = async () => {
+      const FetchMessagesWithPrice = async () => {
          const messagesWithPrices = await fetchPrices();
          setKingdomMessagesWithPrice(messagesWithPrices);
-         // console.log(messagesWithPrices);
 
-         const messagesDetails = await fetchMessages();
+         const messagesDetails = await messagesFetchHook();
          setKingdomMessages(messagesDetails);
-         // console.log(messagesDetails);
       };
-      fetchMessagesWithPrice();
+      FetchMessagesWithPrice();
    }, [kingdomMessages, fetchPrices]);
-
-   // FETCHING DATA
-
-   // useEffect(() => {
-   //    const fetchPriceData = async () => {
-   //       // Fetch and update the purchase prices for messages
-   //       const messagesWithPrices = await fetchPrices();
-   //       setKingdomMessages(messagesWithPrices);
-   //       console.log(messagesWithPrices);
-
-   //       // const messagesDetails = await fetchMessages();
-   //       // setKingdomMessages(messagesDetails);
-   //       // console.log(messagesDetails);
-   //    };
-   //    fetchPriceData();
-   // }, []);
 
    // Filter the messages based on the search input
    useEffect(() => {

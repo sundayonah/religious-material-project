@@ -244,6 +244,7 @@ const Books = () => {
       const updatedMessages = [];
       for (const book of kingdomBook) {
          const contentId = book.id;
+         console.log(contentId);
 
          const contentData = await contract.content(contentId);
          const contentSplit = contentData.toString();
@@ -255,12 +256,12 @@ const Books = () => {
 
          // // Assuming other values in 'contentData' correspond to other properties in 'book'
          const bookWithPrice = { ...book, contentPrice };
-         // console.log(bookWithPrice);
+         console.log(bookWithPrice);
 
          updatedMessages.push(bookWithPrice);
       }
 
-      // console.log(updatedMessages);
+      console.log(updatedMessages);
       return updatedMessages;
    }, [kingdomBook]);
 
@@ -268,7 +269,6 @@ const Books = () => {
       const fetchMessagesWithPrice = async () => {
          const bookWithPrices = await fetchPrices();
          setKingdomBooksWithPrice(bookWithPrices);
-         // console.log(bookWithPrices);
 
          const bookDetails = await fetchBooks();
          // console.log(bookDetails);
@@ -276,6 +276,8 @@ const Books = () => {
       };
       fetchMessagesWithPrice();
    }, [fetchPrices]);
+
+   console.log(kingdomBooksWithPrice);
 
    // useEffect(() => {
    //    const fetchData = async () => {
@@ -340,7 +342,7 @@ const Books = () => {
          );
       }
 
-      // console.log(filteredProducts);
+      console.log(kingdomBooksWithPrice);
       return (
          <>
             {/* {filteredProducts.length === 0 ? (
@@ -370,7 +372,9 @@ const Books = () => {
                            <h5 className="text-gray-500 text-lg capitalize">
                               {title}
                            </h5>
-                           {/* <h5 className="text-gray-500 text-lg capitalize">{id}</h5> */}
+                           {/* <h5 className="text-gray-500 text-lg capitalize">
+                              {id}
+                           </h5> */}
                            <h5 className="text-gray-500 text-lg capitalize">
                               {author}
                            </h5>

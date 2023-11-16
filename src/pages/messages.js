@@ -76,7 +76,9 @@ const Messages = () => {
          setKingdomMessages(messagesDetails);
       };
       FetchMessagesWithPrice();
-   }, [kingdomMessages, fetchPrices]);
+   }, [kingdomMessages, fetchPrices, messagesFetchHook]);
+
+   // console.log(kingdomMessagesWithPrice);
 
    // Filter the messages based on the search input
    useEffect(() => {
@@ -141,7 +143,7 @@ const Messages = () => {
 
                let tx;
                tx = await contract.purchase(contentId, token, {
-                  gasLimit: 100000, // Adjust the gas limit as needed
+                  gasLimit: 400000, // Adjust the gas limit as needed
                   gasPrice: ethers.utils.parseUnits('10.0', 'gwei'), // Adjust the gas price as needed
                });
 

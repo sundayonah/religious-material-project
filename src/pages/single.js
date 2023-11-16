@@ -148,7 +148,7 @@ const Single = () => {
 
                let tx;
                tx = await contract.purchase(contentId, token, {
-                  gasLimit: 100000, // Adjust the gas limit as needed
+                  gasLimit: 400000, // Adjust the gas limit as needed
                   gasPrice: ethers.utils.parseUnits('10.0', 'gwei'), // Adjust the gas price as needed
                });
                // console.log('Transaction hash:', tx.hash);
@@ -333,7 +333,7 @@ const Single = () => {
                   <div className="m-4">
                      <h4 className="text-white">{bookDetails.title}</h4>
                      <h4 className="text-gray-500">{bookDetails.category}</h4>
-                     {/* <p className="text-white">{bookDetails.description}</p> */}
+                     <p className="text-white">{bookDetails.description}</p>
 
                      <div className="flex flex-col">
                         {/* <span className="text-gray-500 pb-3 ">

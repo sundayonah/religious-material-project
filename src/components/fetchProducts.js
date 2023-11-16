@@ -40,6 +40,8 @@ export const fetchBooks = async () => {
                   ...ipfsContent,
                };
 
+               console.log(completeBookInfo);
+
                return completeBookInfo;
             } else {
                console.error(

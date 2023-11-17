@@ -360,14 +360,12 @@ export const StateContextProvider = ({ children }) => {
    };
 
    const Approved = async (product) => {
-      console.log('Apppppppprove', product);
-
       try {
          const provider = new ethers.providers.Web3Provider(window.ethereum);
          const signer = provider.getSigner();
 
          const contractInstance = new ethers.Contract(
-            '0xcff4DC410aAF567831d27Cb168010174f0E58a5F',
+            TokenAddress,
             ApproveAbi,
             signer
          );
@@ -377,15 +375,18 @@ export const StateContextProvider = ({ children }) => {
             [product.recId]: true,
          }));
 
+         const contentPrice = product.contentPrice;
+         console.log(contentPrice);
+
+         const priceToString = contentPrice.toString();
+         const price = ethers.utils.parseEther(priceToString, 'ether');
+         console.log(price);
+
          let tx;
-         tx = await contractInstance.approve(
-            RMTestnetContractAddress,
-            product.contentPrice,
-            {
-               gasLimit: 600000,
-               gasPrice: ethers.utils.parseUnits('10.0', 'gwei'),
-            }
-         );
+         tx = await contractInstance.approve(RMTestnetContractAddress, price, {
+            gasLimit: 600000,
+            gasPrice: ethers.utils.parseUnits('10.0', 'gwei'),
+         });
 
          // setIsApproved(true);
          const receipt = await tx.wait();
@@ -408,12 +409,11 @@ export const StateContextProvider = ({ children }) => {
             console.log('approving fail');
          }
 
-         // setIsApproved(true);
+         setIsApproved(true);
       } catch (error) {
          console.error(error);
       }
 
-      // setIsLoading(false);
       setApproveLoadingStates((prevStates) => ({
          ...prevStates,
          [product.recId]: false,

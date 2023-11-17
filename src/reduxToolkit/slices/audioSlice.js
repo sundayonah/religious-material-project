@@ -25,6 +25,7 @@ const audioSlice = createSlice({
          artist: '',
          duration: 0, // You can include other details you need
          imageUrl: '',
+         bookFile: '',
       },
       likedSongs: getLikesAndDislikesFromLocalStorage().likedSongs,
       dislikedSongs: getLikesAndDislikesFromLocalStorage().dislikedSongs,

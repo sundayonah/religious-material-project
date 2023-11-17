@@ -106,8 +106,6 @@ const DownloadSidebar = () => {
       setFilteredDownloadProduct(filtered);
    }, [searchInput, combinedPurchasedProducts]);
 
-   console.log(filteredDownloadProduct.length);
-
    // ...
 
    const filterPurchasedProducts = () => {

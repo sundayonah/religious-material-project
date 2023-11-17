@@ -79,7 +79,6 @@ const AudioPlayer = () => {
    );
 
    const songDetails = useSelector((state) => state.audio.songDetails);
-   console.log(songDetails);
 
    const imageUrl = useSelector((state) => state.audio.imageUrl);
    const volume = useSelector((state) => state.audio.volume);

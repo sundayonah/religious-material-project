@@ -33,7 +33,7 @@ export const MessagesDownload = ({
       // Retrieve the list of purchased products from local storage
       const storedPurchasedProducts =
          JSON.parse(localStorage.getItem('purchasedMessages')) || [];
-      console.log(storedPurchasedProducts);
+      // console.log(storedPurchasedProducts);
 
       // Deserialize the stored products and filter them based on the current user's address
       const userPurchasedProducts = storedPurchasedProducts
@@ -41,13 +41,11 @@ export const MessagesDownload = ({
          .filter((item) => {
             return item.address === address;
          });
-
       setPurchasedProducts(userPurchasedProducts);
    }, [address]);
 
    const formatTime = (time) => {
       const minutes = Math.floor(time / 60);
-      // console.log(minutes);
       const seconds = Math.floor(time % 60);
       return `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(
          2,

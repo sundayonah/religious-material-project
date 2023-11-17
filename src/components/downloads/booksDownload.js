@@ -23,6 +23,7 @@ export const BooksDownload = () => {
       // Retrieve the list of purchased products from local storage
       const storedPurchasedProducts =
          JSON.parse(localStorage.getItem('purchasedBooks')) || [];
+      // console.log(storedPurchasedProducts);
 
       // console.log(storedPurchasedProducts);
 

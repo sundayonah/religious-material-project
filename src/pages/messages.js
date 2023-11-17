@@ -78,8 +78,6 @@ const Messages = () => {
       FetchMessagesWithPrice();
    }, [kingdomMessages, fetchPrices, messagesFetchHook]);
 
-   // console.log(kingdomMessagesWithPrice);
-
    // Filter the messages based on the search input
    useEffect(() => {
       const filtered = kingdomMessagesWithPrice.filter(
@@ -87,7 +85,6 @@ const Messages = () => {
             message.author.toLowerCase().includes(searchInput.toLowerCase()) ||
             message.title.toLowerCase().includes(searchInput.toLowerCase())
       );
-      // console.log(filtered);
 
       setFilteredMessages(filtered);
    }, [searchInput, kingdomMessagesWithPrice]);
@@ -101,7 +98,6 @@ const Messages = () => {
             parsedProduct.address === userAddress &&
             parsedProduct.id === contentId
          );
-         yes;
       });
    };
 
@@ -162,7 +158,7 @@ const Messages = () => {
                      address: address, // Store the user's address with the purchased book
                   };
 
-                  console.log(purchasedMessages);
+                  // console.log(purchasedMessages);
 
                   // Serialize the purchased product before storing it
                   const serializedProduct = JSON.stringify(purchasedMessages);
@@ -243,137 +239,10 @@ const Messages = () => {
       }));
    };
 
-   // const buyNow = async (product, details) => {
-   //    try {
-   //       if (product) {
-   //          // Check if the user is connected to a Web3 provider
-   //          if (window.ethereum) {
-   //             const provider = new ethers.providers.Web3Provider(
-   //                window.ethereum
-   //             );
-   //             const signer = provider.getSigner();
-
-   //             if (address === undefined) {
-   //                toast.success(`Please Connect Your Wallet.`, {
-   //                   duration: 4000,
-   //                   position: 'top-right',
-   //                   icon: '❌',
-   //                   // style: {
-   //                   //    background: '#fff',
-   //                   //    // border: '1px solid #a16206',
-   //                   // },
-   //                });
-   //                return;
-   //             }
-   //             // Check if the user is authenticated and obtain the user's address
-
-   //             // Find the index of the product in songDetails using its id
-   //             // const productIndex = messagesDetails.findIndex(
-   //             //    (message) => message.id === product.id
-   //             // );
-
-   //             setMessagesLoadingStates((prevStates) => ({
-   //                ...prevStates,
-   //                [product.id]: true,
-   //             }));
-   //             // if (productIndex !== -1) {
-   //             // Retrieve the corresponding image URL based on the product's index
-   //             // const imageUrl = imageUrls[productIndex];
-
-   //             // Convert the product's price to Wei (assuming it's in Ether)
-   //             // // const priceInWei = ethers.utils.parseEther(priceInEther);
-
-   //             // Initialize the contract instance
-   //             const contract = new ethers.Contract(
-   //                RMTestnetContractAddress,
-   //                RMabi,
-   //                signer
-   //             );
-
-   //             const price = product.contentPrice;
-
-   //             console.log(price);
-   //             const contentId = product.counterId;
-
-   //             console.log(contentId);
-   //             const token = TokenAddress;
-
-   //             // console.log(product);
-
-   //             // const valueInWei = ethers.utils.parseEther(
-   //             //    product.price.toString()
-   //             // ); // Convert the product price to Wei
-
-   //             // Call the smart contract's purchase function
-   //             let tx;
-   //             // tx = await contract.purchase(contentId, token, {
-   //             //    // value: valueInWei, // Send the price as value in Wei
-   //             //    gasLimit: 200000, // Adjust the gas limit as needed
-   //             //    gasPrice: ethers.utils.parseUnits('10.0', 'gwei'), // Adjust the gas price as needed
-   //             // });
-
-   //             // const receipt = await tx.wait();
-
-   //             // If the purchase is successful, store the purchased product in local storage
-
-   //             if (receipt.status === 1) {
-   //                const purchasedMessage = {
-   //                   id: product.id,
-   //                   recId: product.recId,
-   //                   title: product.title,
-   //                   author: product.author,
-   //                   bookFile: product.bookFile,
-   //                   image: product.image,
-   //                   address: address,
-   //                };
-   //                console.log(purchasedMessage);
-
-   //                // Store purchased products in localStorage
-   //                const serializedProduct = JSON.stringify(purchasedMessage);
-   //                const storedPurchasedProducts =
-   //                   JSON.parse(localStorage.getItem('purchasedMessages')) ||
-   //                   [];
-   //                storedPurchasedProducts.push(serializedProduct);
-   //                localStorage.setItem(
-   //                   'purchasedMessages',
-   //                   JSON.stringify(storedPurchasedProducts)
-   //                );
-
-   //                const purchasedSongTitle = purchasedMessage.title;
-
-   //                // Display a success toast notification
-   //                toast.success(`${purchasedSongTitle}, Purchase successful`, {
-   //                   duration: 4000,
-   //                   position: 'bottom-right',
-   //                   icon: '✅',
-   //                });
-   //                setMessagesLoadingStates((prevStates) => ({
-   //                   ...prevStates,
-   //                   [product.id]: false,
-   //                }));
-   //             } else {
-   //                console.error('Transaction Not Successful');
-   //             }
-   //          } else {
-   //             console.error('Product not found in songDetails.');
-   //          }
-   //          // } else {
-   //          //    console.error('User is not connected to a Web3 provider.');
-   //          // }
-   //       }
-   //    } catch (err) {
-   //       console.error('Purchase failed:', err);
-   //    }
-   //    setMessagesLoadingStates((prevStates) => ({
-   //       ...prevStates,
-   //       [product.id]: false,
-   //    }));
-   // };
-
    if (kingdomMessagesWithPrice.length === 0) {
       return (
          <>
-            <div class="flex items-center justify-center  m-80">
+            <div class="flex items-center justify-center   mt-80">
                <div class="flex items-center justify-center  w-6 h-6">
                   <div class="w-24 h-24 p-5 bg-[#DAA851] rounded-full animate-pulse delay-500">
                      Lo

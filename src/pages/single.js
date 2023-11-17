@@ -38,79 +38,13 @@ const Single = () => {
    useEffect(() => {
       const fetchData = async () => {
          const bookDetails = await fetchBooks();
-         // console.log(bookDetails);
          const foundBook = bookDetails.find((book) => book.recId === id);
-         // console.log(foundBook);
 
          setBookDetails(foundBook);
       };
 
       fetchData();
    }, [id]);
-
-   // console.log(bookDetails);
-
-   // const buyNows = (bookDetails, userAddress) => {
-   //    if (bookDetails && userAddress) {
-   //       // Find the index of the product in songDetails using its id
-   //       const productIndex = messagesDetails.findIndex(
-   //          (message) => message.id === product.id
-   //       );
-
-   //       if (productIndex !== -1) {
-   //          // Retrieve the corresponding image URL based on the product's index
-   //          const imageUrl = imageUrls[productIndex];
-
-   //          // Store the purchased product with the imageUrl and user address
-   //          const purchasedProduct = {
-   //             ...product,
-   //             imageUrl,
-   //             address: userAddress, // Include the user's address
-   //          };
-
-   //          // Serialize the purchased product before storing it
-   //          const serializedProduct = JSON.stringify(purchasedProduct);
-
-   //          // Retrieve the existing purchased products or initialize an empty array
-   //          const purchasedMessages =
-   //             JSON.parse(localStorage.getItem('purchasedMessages')) || [];
-
-   //          // Add the purchased product to the array
-   //          purchasedMessages.push(serializedProduct);
-   //          localStorage.setItem(
-   //             'purchasedMessages',
-   //             JSON.stringify(purchasedMessages)
-   //          );
-   //       } else {
-   //          console.error('Product not found in songDetails.');
-   //       }
-   //    }
-   // };
-
-   // const notify = () =>
-   //    toast('Hello World', {
-   //       duration: 4000,
-   //       position: 'top-center',
-
-   //       // Styling
-   //       style: {},
-   //       className: '',
-
-   //       // Custom Icon
-   //       icon: '👏',
-
-   //       // Change colors of success/error/loading icon
-   //       iconTheme: {
-   //          primary: '#000',
-   //          secondary: '#fff',
-   //       },
-
-   //       // Aria
-   //       ariaProps: {
-   //          role: 'status',
-   //          'aria-live': 'polite',
-   //       },
-   //    });
 
    const buyNow = async (product) => {
       try {
@@ -153,7 +87,6 @@ const Single = () => {
                   gasLimit: 400000, // Adjust the gas limit as needed
                   gasPrice: ethers.utils.parseUnits('10.0', 'gwei'), // Adjust the gas price as needed
                });
-               // console.log('Transaction hash:', tx.hash);
 
                const receipt = await tx.wait();
                console.log(receipt);

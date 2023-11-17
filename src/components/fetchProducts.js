@@ -6,7 +6,7 @@ export const fetchBooks = async () => {
    // const bookURL =
    //    'http://kingdomcoin-001-site1.ctempurl.com/api/Catalog/GetAllBooks';
 
-   const bookURL = '/api/hello';
+   const bookURL = '/api/book';
 
    const token =
       'eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiMDc4NzJmNGMtNmQ0MC00M2IyLWE1Y2ItOGE1ZmQwZTA1NDBhIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbmFtZWlkZW50aWZpZXIiOiIweDk3NTZCNzA0OEJlMzRlNzA0QzI3RGVFYjdkQjM0QkUxQTkxMGFCOTIiLCJleHAiOjE3MDAyNDU0NTksImlzcyI6Imh0dHA6Ly9yb2Fkc3Rhci5jb20iLCJhdWQiOiJodHRwOi8vcm9hZHN0YXIuY29tIn0.NutJY74M-eLlkTIvvPsRAFe5Xye8bHy2B5k4EtE3wno';
@@ -20,6 +20,7 @@ export const fetchBooks = async () => {
    try {
       const res = await axios.get(bookURL, config);
       const data = res.data.data;
+      // console.log('Response:', res.data.data);
 
       const bookDetails = await Promise.all(
          data.map(async (book) => {
@@ -33,6 +34,7 @@ export const fetchBooks = async () => {
 
                const completeBookInfo = {
                   recId: book.recId,
+                  hash: book.hash,
                   counterId: book.counterId,
                   category: book.category,
                   bookFile: book.bookFile,
@@ -61,7 +63,7 @@ export const fetchBooks = async () => {
 export const fetchSongs = async () => {
    // const songsURL =
    //    'http://kingdomcoin-001-site1.ctempurl.com/api/Catalog/GetAllSongs';
-   const songsURL = '/api/hello';
+   const songsURL = '/api/song';
 
    const token =
       'eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiMDc4NzJmNGMtNmQ0MC00M2IyLWE1Y2ItOGE1ZmQwZTA1NDBhIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbmFtZWlkZW50aWZpZXIiOiIweDk3NTZCNzA0OEJlMzRlNzA0QzI3RGVFYjdkQjM0QkUxQTkxMGFCOTIiLCJleHAiOjE3MDAyNDU0NTksImlzcyI6Imh0dHA6Ly9yb2Fkc3Rhci5jb20iLCJhdWQiOiJodHRwOi8vcm9hZHN0YXIuY29tIn0.NutJY74M-eLlkTIvvPsRAFe5Xye8bHy2B5k4EtE3wno';
@@ -78,8 +80,8 @@ export const fetchSongs = async () => {
       const data = res.data.data;
 
       const bookDetails = await Promise.all(
-         data.map(async (book) => {
-            const ipfsHash = book.hash;
+         data.map(async (song) => {
+            const ipfsHash = song.hash;
             const pinataApiUrl = `https://purple-existing-woodpecker-520.mypinata.cloud/ipfs/${ipfsHash}`;
 
             const pinataResponse = await axios.get(pinataApiUrl);
@@ -88,10 +90,12 @@ export const fetchSongs = async () => {
                const ipfsContent = pinataResponse.data;
 
                const completeBookInfo = {
-                  recId: book.recId,
-                  counterId: book.counterId,
-                  category: book.category,
-                  bookFile: book.bookFile,
+                  recId: song.recId,
+
+                  hash: song.hash,
+                  counterId: song.counterId,
+                  category: song.category,
+                  bookFile: song.bookFile,
                   ...ipfsContent,
                };
 
@@ -107,7 +111,7 @@ export const fetchSongs = async () => {
          })
       );
 
-      return bookDetails.filter((book) => book !== null);
+      return bookDetails.filter((song) => song !== null);
    } catch (error) {
       console.error('Error fetching songs details:', error);
       return [];
@@ -178,7 +182,7 @@ export const useFetchMessages = () => {
          // const messageURL =
          //    'http://kingdomcoin-001-site1.ctempurl.com/api/Catalog/GetAllMessages';
 
-         const messageURL = '/api/hello';
+         const messageURL = '/api/message';
          const token =
             'eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiMDc4NzJmNGMtNmQ0MC00M2IyLWE1Y2ItOGE1ZmQwZTA1NDBhIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbmFtZWlkZW50aWZpZXIiOiIweDk3NTZCNzA0OEJlMzRlNzA0QzI3RGVFYjdkQjM0QkUxQTkxMGFCOTIiLCJleHAiOjE3MDAyNDU0NTksImlzcyI6Imh0dHA6Ly9yb2Fkc3Rhci5jb20iLCJhdWQiOiJodHRwOi8vcm9hZHN0YXIuY29tIn0.NutJY74M-eLlkTIvvPsRAFe5Xye8bHy2B5k4EtE3wno';
 
@@ -194,8 +198,8 @@ export const useFetchMessages = () => {
          const data = res.data.data;
 
          const messageDetails = await Promise.all(
-            data.map(async (book) => {
-               const ipfsHash = book.hash;
+            data.map(async (message) => {
+               const ipfsHash = message.hash;
                const pinataApiUrl = `https://purple-existing-woodpecker-520.mypinata.cloud/ipfs/${ipfsHash}`;
 
                const pinataResponse = await axios.get(pinataApiUrl);
@@ -204,10 +208,12 @@ export const useFetchMessages = () => {
                   const ipfsContent = pinataResponse.data;
 
                   const completeMessageInfo = {
-                     recId: book.recId,
-                     counterId: book.counterId,
-                     category: book.category,
-                     bookFile: book.bookFile,
+                     recId: message.recId,
+                     hash: message.hash,
+                     counterId: message.counterId,
+                     category: message.category,
+                     bookFile: message.bookFile,
+                     type: message.type,
                      ...ipfsContent,
                   };
 
@@ -225,7 +231,7 @@ export const useFetchMessages = () => {
             })
          );
 
-         return messageDetails.filter((book) => book !== null);
+         return messageDetails.filter((message) => message !== null);
       } catch (error) {
          console.error('Error fetching message details:', error);
          return [];

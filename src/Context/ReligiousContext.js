@@ -360,7 +360,7 @@ export const StateContextProvider = ({ children }) => {
    };
 
    const Approved = async (product) => {
-      console.log('Apppppppprove');
+      console.log('Apppppppprove', product);
 
       try {
          const provider = new ethers.providers.Web3Provider(window.ethereum);
@@ -376,13 +376,6 @@ export const StateContextProvider = ({ children }) => {
             ...prevStates,
             [product.recId]: true,
          }));
-
-         // const pro = {
-         //    price: product.contentPrice,
-         //    id: product.recId,
-         // };
-
-         // console.log(pro);
 
          let tx;
          tx = await contractInstance.approve(

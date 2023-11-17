@@ -213,10 +213,11 @@ const Songs = () => {
 
                   // Call the API to add the transaction
                   const transactionData = {
-                     hash: receipt.transactionHash,
+                     hash: product.hash,
                      address: address,
                      counterId: product.counterId,
-                     type: 'purchase',
+                     type: 'song',
+                     transactionHash: receipt.transactionHash,
                   };
 
                   console.log(transactionData);

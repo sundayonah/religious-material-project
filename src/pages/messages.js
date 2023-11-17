@@ -112,7 +112,6 @@ const Messages = () => {
    };
 
    const buyNow = async (product) => {
-      console.log('buying', product.contentPrice);
       try {
          if (product) {
             if (window.ethereum) {
@@ -203,7 +202,8 @@ const Messages = () => {
                      hash: receipt.transactionHash,
                      address: address,
                      counterId: product.counterId,
-                     type: 'purchase',
+                     type: 'message',
+                     transactionHash: receipt.transactionHash,
                   };
 
                   console.log(transactionData);

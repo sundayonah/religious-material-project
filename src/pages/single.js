@@ -1,6 +1,6 @@
 // pages / products / [id].js;
 
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import Products from './api/[id]'; // Import your bookDetails data
 import Link from 'next/link';
@@ -9,8 +9,17 @@ import { ethers } from 'ethers';
 import RMabi from '@/Contract/rm-abi.json';
 import toast, { Toaster } from 'react-hot-toast';
 import { fetchBooks } from '@/components/fetchProducts';
+import { StateContext } from '@/Context/ReligiousContext';
+import { LoadingSpinner } from '@/components/loading';
 
 const Single = () => {
+   const {
+      approvedProducts,
+      Approved,
+      setApprovedProducts,
+      approveLoadingStates,
+   } = useContext(StateContext);
+
    const router = useRouter();
    const { id } = router.query; // Get the bookDetails ID from the query parameter
 
@@ -92,6 +101,11 @@ const Single = () => {
                console.log(receipt);
 
                if (receipt.status === 1) {
+                  // Update the approvedProducts state
+                  setApprovedProducts((prevProducts) => [
+                     ...prevProducts,
+                     product.recId,
+                  ]);
                   // Create a product details object
                   const purchasedBook = {
                      id: product.recId,
@@ -128,10 +142,11 @@ const Single = () => {
 
                   // Call the API to add the transaction
                   const transactionData = {
-                     hash: receipt.transactionHash,
+                     hash: product.hash,
                      address: address,
                      counterId: product.counterId,
-                     type: 'purchase',
+                     type: 'book',
+                     transactionHash: receipt.transactionHash,
                   };
 
                   console.log(transactionData);
@@ -172,6 +187,10 @@ const Single = () => {
          }
       } catch (err) {
          console.error('Purchase failed:', err.message);
+         setBookLoadingStates((prevStates) => ({
+            ...prevStates,
+            [product.id]: false,
+         }));
       }
       setBookLoadingStates((prevStates) => ({
          ...prevStates,
@@ -179,35 +198,9 @@ const Single = () => {
       }));
    };
 
-   const ProductsPrice = async () => {
-      const provider = new ethers.providers.Web3Provider(window.ethereum);
-      const signer = provider.getSigner();
-
-      const contract = new ethers.Contract(
-         RMTestnetContractAddress,
-         RMabi,
-         signer
-      );
-
-      const contPrice = await contract.content(4);
-      // console.log(contPrice.toString());
-   };
-
-   useEffect(() => {
-      ProductsPrice();
-   }, []);
-
    if (!bookDetails) {
       return (
          <>
-            {/* <div className="flex justify-center items-center mt-48">
-               <div className="animate-spin  space-x-4">
-                  <div className=" rounded-full  bg-yellow-700  h-32 w-32">
-                  
-                     <div className="animate-pulse rounded-full bg-white h-12 w-12"></div>
-                  </div>
-               </div>
-            </div> */}
             <div class="flex items-center justify-center   mt-72">
                <div class="flex items-center justify-center  w-6 h-6">
                   <div class="w-24 h-24 p-5 bg-[#DAA851] rounded-full animate-pulse delay-500">
@@ -280,7 +273,7 @@ const Single = () => {
                         >
                            Buy Now
                         </button> */}
-                        {hasPurchased(address, bookDetails.id) ? (
+                        {hasPurchased(address, bookDetails.recId) ? (
                            <button
                               disabled
                               className="text-white mt-1 bg-gray-500 py-1 px-2 rounded-sm"
@@ -288,25 +281,35 @@ const Single = () => {
                               Purchased
                            </button>
                         ) : (
-                           <button
-                              onClick={() => {
-                                 buyNow(bookDetails);
-                              }}
-                              className="text-white mt-1 bg-yellow-700 py-1 px-2 rounded-sm hover:bg-yellow-800 focus:outline-none focus:ring-1 focus:ring-yellow-500 focus:ring-opacity-50"
-                           >
-                              {bookLoadingStates[bookDetails.id] ? (
-                                 <div class="flex items-center justify-center  px-4 ">
-                                    <div class="flex items-center justify-center  w-6 h-6">
-                                       <div class="w-2 h-2 mr-1 bg-white rounded-full animate-ping delay-100"></div>
-                                       <div class="w-2 h-4 mr-1 bg-white rounded-full animate-pulse delay-500"></div>
-                                       <div class="w-2 h-2 mr-1 bg-white rounded-full animate-ping delay-700"></div>
-                                       <div class="w-2 h-4 bg-white rounded-full animate-pulse delay-1000"></div>
-                                    </div>
-                                 </div>
+                           <>
+                              {approvedProducts.includes(bookDetails.recId) ? (
+                                 <button
+                                    onClick={() => {
+                                       buyNow(bookDetails);
+                                    }}
+                                    className="text-white mt-1 bg-yellow-700 py-1 px-2 rounded-sm hover:bg-yellow-800 focus:outline-none focus:ring-1 focus:ring-yellow-500 focus:ring-opacity-50"
+                                 >
+                                    {bookLoadingStates[bookDetails.recId] ? (
+                                       <LoadingSpinner />
+                                    ) : (
+                                       'Buy Now'
+                                    )}
+                                 </button>
                               ) : (
-                                 'Buy Now'
+                                 <button
+                                    onClick={() => {
+                                       buyNow(bookDetails);
+                                    }}
+                                    className="text-white mt-1 bg-yellow-700 py-1 px-2 rounded-sm hover:bg-yellow-800 focus:outline-none focus:ring-1 focus:ring-yellow-500 focus:ring-opacity-50"
+                                 >
+                                    {bookLoadingStates[bookDetails.recId] ? (
+                                       <LoadingSpinner />
+                                    ) : (
+                                       'Approve'
+                                    )}
+                                 </button>
                               )}
-                           </button>
+                           </>
                         )}
                      </div>
                   </div>

@@ -18,6 +18,7 @@ import Image from 'next/image';
 import { fetchBooks } from '@/components/fetchProducts';
 import { ethers } from 'ethers';
 import RMabi from '@/Contract/rm-abi.json';
+import { LoadingSpinner } from '@/components/loading';
 
 // import { StateContext } from '@/Context/ReligiousContext';
 
@@ -128,6 +129,8 @@ const Books = () => {
 
    const router = useRouter();
 
+   // console.log(kingdomBook);
+
    const displayProducts = () => {
       if (kingdomBooksWithPrice.length === 0) {
          return (
@@ -187,7 +190,7 @@ const Books = () => {
                            {/* <h5 className="text-gray-500 text-lg capitalize">
                               {id}
                            </h5> */}
-                           <h5 className="text-gray-500 text-lg capitalize">
+                           <h5 className="text-white text-lg capitalize">
                               {author}
                            </h5>
                            {/* <span className="absolute bg-[#DAA851] my-1 px-4 py-1 text-gray-700 font-bold text-sm left-48 md:left-40 lg:left-40 xl:left-40 2xl:left-70 rounded-md"> */}
@@ -264,9 +267,10 @@ const Books = () => {
             {/* <div className="w-[95%] justify-center items-center m-auto"> */}
             {filteredProducts.length === 0 ? (
                <div className="flex justify-center items-center mt-24">
-                  <p className="text-2xl text-gray-400">
+                  {/* <p className="text-2xl text-gray-400">
                      No Books 📚 found matching the search.
-                  </p>
+                  </p> */}
+                  <LoadingSpinner />
                </div>
             ) : (
                <div className="flex m-auto flex-col justify-center items-center">

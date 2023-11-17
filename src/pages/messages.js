@@ -4,12 +4,19 @@ import { useAccount } from 'wagmi';
 import { StateContext } from '@/Context/ReligiousContext';
 import { ethers } from 'ethers';
 import RMabi from '@/Contract/rm-abi.json';
+import ApproveAbi from '@/Contract/approve.json';
 import toast, { Toaster } from 'react-hot-toast';
 import axios from 'axios';
 import { useFetchMessages } from '@/components/fetchProducts';
+import { LoadingSpinner } from '@/components/loading';
 
 const Messages = () => {
-   const { UnStake } = useContext(StateContext);
+   const {
+      approvedProducts,
+      Approved,
+      setApprovedProducts,
+      approveLoadingStates,
+   } = useContext(StateContext);
 
    const ipfsHash = 'QmfMQiWGrcswgwc3BsjLuprEV95ZQhHQj6a4Ygy1NHhVs9';
    const gatewayUrl = `https://ipfs.io/ipfs/${ipfsHash}`;
@@ -19,6 +26,9 @@ const Messages = () => {
    const [messagesLoadingStates, setMessagesLoadingStates] = useState({});
    const [kingdomMessages, setKingdomMessages] = useState([]);
    const [kingdomMessagesWithPrice, setKingdomMessagesWithPrice] = useState([]);
+   // const [approveLoadingStates, setApproveLoadingStates] = useState({});
+   // const [isApproved, setIsApproved] = useState(false);
+   // const [approvedProducts, setApprovedProducts] = useState([]);
 
    const { address } = useAccount();
 
@@ -102,6 +112,7 @@ const Messages = () => {
    };
 
    const buyNow = async (product) => {
+      console.log('buying', product.contentPrice);
       try {
          if (product) {
             if (window.ethereum) {
@@ -127,6 +138,10 @@ const Messages = () => {
                   ...prevStates,
                   [product.recId]: true,
                }));
+
+               const contentId = product.counterId;
+               const token = TokenAddress;
+
                const contract = new ethers.Contract(
                   RMTestnetContractAddress,
                   RMabi,
@@ -134,12 +149,10 @@ const Messages = () => {
                );
 
                // Make the purchase through the smart contract
-               const contentId = product.counterId;
-               const token = TokenAddress;
 
                let tx;
                tx = await contract.purchase(contentId, token, {
-                  gasLimit: 400000, // Adjust the gas limit as needed
+                  gasLimit: 200000, // Adjust the gas limit as needed
                   gasPrice: ethers.utils.parseUnits('10.0', 'gwei'), // Adjust the gas price as needed
                });
 
@@ -147,6 +160,11 @@ const Messages = () => {
                console.log(receipt);
 
                if (receipt.status === 1) {
+                  // Update the approvedProducts state
+                  setApprovedProducts((prevProducts) => [
+                     ...prevProducts,
+                     product.recId,
+                  ]);
                   // Create a product details object
                   const purchasedMessages = {
                      id: product.recId,
@@ -157,8 +175,6 @@ const Messages = () => {
                      bookFile: product.bookFile,
                      address: address, // Store the user's address with the purchased book
                   };
-
-                  // console.log(purchasedMessages);
 
                   // Serialize the purchased product before storing it
                   const serializedProduct = JSON.stringify(purchasedMessages);
@@ -265,6 +281,8 @@ const Messages = () => {
       );
    }
 
+   // console.log(kingdomMessagesWithPrice);
+
    return (
       <div className="w-[95%] m-auto mt-28 ">
          <Toaster />
@@ -325,26 +343,38 @@ const Messages = () => {
                                  Purchased
                               </button>
                            ) : (
-                              <button
-                                 onClick={() => {
-                                    setSelectedProduct(message);
-                                    buyNow(message, address);
-                                 }}
-                                 className="w-full text-white mt-1 bg-yellow-700 py-1 px-2 rounded-sm hover:bg-yellow-800 focus:outline-none focus:ring-1 focus:ring-yellow-500 focus:ring-opacity-50"
-                              >
-                                 {messagesLoadingStates[message.recId] ? (
-                                    <div class="flex items-center justify-center  px-4 ">
-                                       <div class="flex items-center justify-center  w-6 h-6">
-                                          <div class="w-2 h-2 mr-1 bg-white rounded-full animate-ping delay-100"></div>
-                                          <div class="w-2 h-4 mr-1 bg-white rounded-full animate-pulse delay-500"></div>
-                                          <div class="w-2 h-2 mr-1 bg-white rounded-full animate-ping delay-700"></div>
-                                          <div class="w-2 h-4 bg-white rounded-full animate-pulse delay-1000"></div>
-                                       </div>
-                                    </div>
+                              <>
+                                 {/* {isApproved ? ( */}
+                                 {approvedProducts.includes(message.recId) ? (
+                                    <button
+                                       onClick={() => {
+                                          setSelectedProduct(message);
+                                          buyNow(message, address);
+                                       }}
+                                       className="w-full text-white mt-1 bg-yellow-700 py-1 px-2 rounded-sm hover:bg-yellow-800 focus:outline-none focus:ring-1 focus:ring-yellow-500 focus:ring-opacity-50"
+                                    >
+                                       {messagesLoadingStates[message.recId] ? (
+                                          <LoadingSpinner />
+                                       ) : (
+                                          'Buy Now'
+                                       )}
+                                    </button>
                                  ) : (
-                                    'Buy Now'
+                                    <button
+                                       onClick={() => {
+                                          // setSelectedProduct(message);
+                                          Approved(message);
+                                       }}
+                                       className="w-full text-white mt-1 bg-yellow-700 py-1 px-2 rounded-sm hover:bg-yellow-800 focus:outline-none focus:ring-1 focus:ring-yellow-500 focus:ring-opacity-50"
+                                    >
+                                       {approveLoadingStates[message.recId] ? (
+                                          <LoadingSpinner />
+                                       ) : (
+                                          'Approve'
+                                       )}
+                                    </button>
                                  )}
-                              </button>
+                              </>
                            )}
                         </div>
                      </div>

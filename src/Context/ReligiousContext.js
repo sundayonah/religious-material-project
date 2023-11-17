@@ -9,6 +9,7 @@ import axios from 'axios';
 import { ethers } from 'ethers';
 import abi from '../Contract/abi.json';
 import { useAccount } from 'wagmi';
+import ApproveAbi from '@/Contract/approve.json';
 
 ///////for download//////
 
@@ -65,6 +66,10 @@ export const StateContextProvider = ({ children }) => {
    const [dailyRoi, setDailyRoi] = useState(0);
    const [progressUpdateInterval, setProgressUpdateInterval] = useState(null);
 
+   const [isApproved, setIsApproved] = useState(false);
+   const [approvedProducts, setApprovedProducts] = useState([]);
+   const [approveLoadingStates, setApproveLoadingStates] = useState({});
+
    //FETCH CONTRACT
    const Fetch_Contract = (PROVIDER) =>
       new ethers.Contract(contractAddress, contractAbi, PROVIDER);
@@ -109,20 +114,6 @@ export const StateContextProvider = ({ children }) => {
       }, 1000); // Update every 1000 milliseconds (1 second)
       return interval;
    };
-
-   // const startProgressUpdateInterval = (audio) => {
-   //    const interval = setInterval(() => {
-   //       const currentTime = audio.currentTime;
-   //       const totalTime = audio.duration;
-   //       if (!isNaN(totalTime)) {
-   //          const percentage = (currentTime / totalTime) * 100;
-   //          dispatch(setProgressBarWidth(percentage));
-   //          dispatch(setCurrentTime(currentTime));
-   //          dispatch(setDuration(totalTime));
-   //       }
-   //    }, 1000); // Update every 1000 milliseconds (1 second)
-   //    return interval;
-   // };
 
    const handlePlayClick = (productId, title, artist, imageUrl) => {
       const audio = audioRefs[productId];
@@ -368,6 +359,75 @@ export const StateContextProvider = ({ children }) => {
       }
    };
 
+   const Approved = async (product) => {
+      console.log('Apppppppprove');
+
+      try {
+         const provider = new ethers.providers.Web3Provider(window.ethereum);
+         const signer = provider.getSigner();
+
+         const contractInstance = new ethers.Contract(
+            '0xcff4DC410aAF567831d27Cb168010174f0E58a5F',
+            ApproveAbi,
+            signer
+         );
+
+         setApproveLoadingStates((prevStates) => ({
+            ...prevStates,
+            [product.recId]: true,
+         }));
+
+         // const pro = {
+         //    price: product.contentPrice,
+         //    id: product.recId,
+         // };
+
+         // console.log(pro);
+
+         let tx;
+         tx = await contractInstance.approve(
+            RMTestnetContractAddress,
+            product.contentPrice,
+            {
+               gasLimit: 600000,
+               gasPrice: ethers.utils.parseUnits('10.0', 'gwei'),
+            }
+         );
+
+         // setIsApproved(true);
+         const receipt = await tx.wait();
+         //   check if the transaction was successful
+         if (receipt.status === 1) {
+            setIsApproved(true);
+            setApproveLoadingStates((prevStates) => ({
+               ...prevStates,
+               [product.recId]: false,
+            }));
+
+            // Update the approvedProducts state
+            setApprovedProducts((prevProducts) => [
+               ...prevProducts,
+               product.recId,
+            ]);
+
+            console.log('purchasing');
+         } else {
+            console.log('approving fail');
+         }
+         // }
+
+         // setIsApproved(true);
+      } catch (error) {
+         console.error(error);
+      }
+
+      // setIsLoading(false);
+      setApproveLoadingStates((prevStates) => ({
+         ...prevStates,
+         [product.recId]: false,
+      }));
+   };
+
    return (
       <StateContext.Provider
          value={{
@@ -379,6 +439,13 @@ export const StateContextProvider = ({ children }) => {
             activeSongId,
             audioRefs,
             repeat,
+            approvedProducts,
+            isApproved,
+            approveLoadingStates,
+            Approved,
+            setIsApproved,
+            setApproveLoadingStates,
+            setApprovedProducts,
             handleSongEnd,
 
             // walletConnected,

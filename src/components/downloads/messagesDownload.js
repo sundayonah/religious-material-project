@@ -41,6 +41,7 @@ export const MessagesDownload = ({
          .filter((item) => {
             return item.address === address;
          });
+      //console.log(userPurchasedProducts);
       setPurchasedProducts(userPurchasedProducts);
    }, [address]);
 

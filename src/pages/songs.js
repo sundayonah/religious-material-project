@@ -8,13 +8,19 @@ import { ethers } from 'ethers';
 import toast, { Toaster } from 'react-hot-toast';
 import axios from 'axios';
 import { fetchSongs } from '@/components/fetchProducts';
+import { LoadingSpinner } from '@/components/loading';
 // import { addSong } from '../reduxToolkit/slices/songsSlices';
 
 const Songs = () => {
    const dispatch = useDispatch();
 
-   const { UnStake } = useContext(StateContext);
-   // Initialize purchasedSongs and activeSongIndex state variables
+   const {
+      approvedProducts,
+      Approved,
+      setApprovedProducts,
+      approveLoadingStates,
+   } = useContext(StateContext); // Initialize purchasedSongs and activeSongIndex state variables
+
    const [purchasedSongs, setPurchasedSongs] = useState([]);
    const [activeSongIndex, setActiveSongIndex] = useState(null);
 
@@ -117,6 +123,8 @@ const Songs = () => {
    };
 
    const buyNow = async (product) => {
+      console.log('buying', product.contentPrice);
+
       try {
          if (product) {
             if (window.ethereum) {
@@ -148,6 +156,8 @@ const Songs = () => {
                   signer
                );
 
+               console.log(product);
+
                // Make the purchase through the smart contract
                const contentId = product.counterId;
                const token = TokenAddress;
@@ -159,9 +169,13 @@ const Songs = () => {
                });
 
                const receipt = await tx.wait();
-               console.log(receipt);
 
                if (receipt.status === 1) {
+                  // Update the approvedProducts state
+                  setApprovedProducts((prevProducts) => [
+                     ...prevProducts,
+                     product.recId,
+                  ]);
                   // Create a product details object
                   const purchasedSongs = {
                      id: product.recId,
@@ -352,26 +366,41 @@ const Songs = () => {
                                        Purchased
                                     </button>
                                  ) : (
-                                    <button
-                                       onClick={() => {
-                                          setSelectedProduct(song);
-                                          buyNow(song, address);
-                                       }}
-                                       className="text-white mt-1 bg-yellow-700 py-1 px-2 rounded-sm hover:bg-yellow-800 focus:outline-none focus:ring-1 focus:ring-yellow-500 focus:ring-opacity-50"
-                                    >
-                                       {songLoadingStates[song.recId] ? (
-                                          <div class="flex items-center justify-center  px-4 ">
-                                             <div class="flex items-center justify-center  w-6 h-6">
-                                                <div class="w-2 h-2 mr-1 bg-white rounded-full animate-ping delay-100"></div>
-                                                <div class="w-2 h-4 mr-1 bg-white rounded-full animate-pulse delay-500"></div>
-                                                <div class="w-2 h-2 mr-1 bg-white rounded-full animate-ping delay-700"></div>
-                                                <div class="w-2 h-4 bg-white rounded-full animate-pulse delay-1000"></div>
-                                             </div>
-                                          </div>
+                                    <>
+                                       {approvedProducts.includes(
+                                          song.recId
+                                       ) ? (
+                                          <button
+                                             onClick={() => {
+                                                setSelectedProduct(song);
+                                                buyNow(song, address);
+                                             }}
+                                             className="w-full text-white mt-1 bg-yellow-700 py-1 px-2 rounded-sm hover:bg-yellow-800 focus:outline-none focus:ring-1 focus:ring-yellow-500 focus:ring-opacity-50"
+                                          >
+                                             {songLoadingStates[song.recId] ? (
+                                                <LoadingSpinner />
+                                             ) : (
+                                                'Buy Now'
+                                             )}
+                                          </button>
                                        ) : (
-                                          'Buy Now'
+                                          <button
+                                             onClick={() => {
+                                                // setSelectedProduct(song);
+                                                Approved(song);
+                                             }}
+                                             className="w-full text-white mt-1 bg-yellow-700 py-1 px-2 rounded-sm hover:bg-yellow-800 focus:outline-none focus:ring-1 focus:ring-yellow-500 focus:ring-opacity-50"
+                                          >
+                                             {approveLoadingStates[
+                                                song.recId
+                                             ] ? (
+                                                <LoadingSpinner />
+                                             ) : (
+                                                'Approve'
+                                             )}
+                                          </button>
                                        )}
-                                    </button>
+                                    </>
                                  )}
                               </div>
                            </div>

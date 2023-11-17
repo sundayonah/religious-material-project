@@ -14,3 +14,27 @@ export const LoadingSpinner = () => {
       </div>
    );
 };
+
+export const ProductLenghtLoadingSpinner = () => {
+   return (
+      <div class="flex items-center justify-center   mt-72">
+         <div class="flex items-center justify-center  w-6 h-6">
+            <div class="w-24 h-24 p-5 bg-[#DAA851] rounded-full animate-pulse delay-500">
+               Lo
+            </div>
+            <div class="w-24 h-24 p-5 bg-[#DAA851] rounded-full animate-ping delay-100">
+               ad
+            </div>
+            <div class="w-24 h-24 p-5 bg-[#DAA851] rounded-full animate-pulse delay-500">
+               i
+            </div>
+            <div class="w-24 h-24 p-5 bg-[#DAA851] rounded-full animate-ping delay-700">
+               n
+            </div>
+            <div class="w-24 h-24 p-5 bg-[#DAA851] rounded-full animate-pulse delay-1000">
+               g
+            </div>
+         </div>
+      </div>
+   );
+};

@@ -407,7 +407,6 @@ export const StateContextProvider = ({ children }) => {
          } else {
             console.log('approving fail');
          }
-         // }
 
          // setIsApproved(true);
       } catch (error) {

@@ -78,6 +78,7 @@ export const fetchSongs = async () => {
    try {
       const res = await axios.get(songsURL, config);
       const data = res.data.data;
+      // console.log('Response:', res.data.data);
 
       const bookDetails = await Promise.all(
          data.map(async (song) => {
@@ -193,7 +194,7 @@ export const useFetchMessages = () => {
          };
 
          const res = await axios.get(messageURL, config);
-         // console.log('Response:', res.data);
+         // console.log('Response:', res.data.data);
 
          const data = res.data.data;
 

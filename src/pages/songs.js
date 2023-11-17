@@ -123,8 +123,6 @@ const Songs = () => {
    };
 
    const buyNow = async (product) => {
-      console.log('buying', product.contentPrice);
-
       try {
          if (product) {
             if (window.ethereum) {
@@ -216,7 +214,7 @@ const Songs = () => {
                      hash: product.hash,
                      address: address,
                      counterId: product.counterId,
-                     type: 'song',
+                     type: product.type,
                      transactionHash: receipt.transactionHash,
                   };
 

@@ -65,7 +65,6 @@ const Messages = () => {
 
          // // Assuming other values in 'contentData' correspond to other properties in 'message'
          const messageWithPrice = { ...message, contentPrice };
-         // console.log(messageWithPrice);
 
          updatedMessages.push(messageWithPrice);
          // updatedMessages.push(contentPrice);
@@ -202,7 +201,7 @@ const Messages = () => {
                      hash: receipt.transactionHash,
                      address: address,
                      counterId: product.counterId,
-                     type: 'message',
+                     type: product.type,
                      transactionHash: receipt.transactionHash,
                   };
 

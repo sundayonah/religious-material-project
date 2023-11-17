@@ -18,7 +18,10 @@ import Image from 'next/image';
 import { fetchBooks } from '@/components/fetchProducts';
 import { ethers } from 'ethers';
 import RMabi from '@/Contract/rm-abi.json';
-import { LoadingSpinner } from '@/components/loading';
+import {
+   LoadingSpinner,
+   ProductLenghtLoadingSpinner,
+} from '@/components/loading';
 
 // import { StateContext } from '@/Context/ReligiousContext';
 
@@ -135,25 +138,7 @@ const Books = () => {
       if (kingdomBooksWithPrice.length === 0) {
          return (
             <>
-               <div class="flex items-center justify-center   mt-24">
-                  <div class="flex items-center justify-center  w-6 h-6">
-                     <div class="w-24 h-24 p-5 bg-[#DAA851] rounded-full animate-pulse delay-500">
-                        Lo
-                     </div>
-                     <div class="w-24 h-24 p-5 bg-[#DAA851] rounded-full animate-ping delay-100">
-                        ad
-                     </div>
-                     <div class="w-24 h-24 p-5 bg-[#DAA851] rounded-full animate-pulse delay-500">
-                        i
-                     </div>
-                     <div class="w-24 h-24 p-5 bg-[#DAA851] rounded-full animate-ping delay-700">
-                        n
-                     </div>
-                     <div class="w-24 h-24 p-5 bg-[#DAA851] rounded-full animate-pulse delay-1000">
-                        g
-                     </div>
-                  </div>
-               </div>
+               <ProductLenghtLoadingSpinner />
             </>
          );
       }
@@ -266,11 +251,12 @@ const Books = () => {
             </div>
             {/* <div className="w-[95%] justify-center items-center m-auto"> */}
             {filteredProducts.length === 0 ? (
-               <div className="flex justify-center items-center mt-24">
+               <div className="flex justify-center items-center mt-8">
                   {/* <p className="text-2xl text-gray-400">
                      No Books 📚 found matching the search.
                   </p> */}
-                  <LoadingSpinner />
+
+                  <ProductLenghtLoadingSpinner />
                </div>
             ) : (
                <div className="flex m-auto flex-col justify-center items-center">

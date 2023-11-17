@@ -10,7 +10,10 @@ import RMabi from '@/Contract/rm-abi.json';
 import toast, { Toaster } from 'react-hot-toast';
 import { fetchBooks } from '@/components/fetchProducts';
 import { StateContext } from '@/Context/ReligiousContext';
-import { LoadingSpinner } from '@/components/loading';
+import {
+   LoadingSpinner,
+   ProductLenghtLoadingSpinner,
+} from '@/components/loading';
 
 const Single = () => {
    const {
@@ -145,7 +148,7 @@ const Single = () => {
                      hash: product.hash,
                      address: address,
                      counterId: product.counterId,
-                     type: 'book',
+                     type: product.type,
                      transactionHash: receipt.transactionHash,
                   };
 
@@ -200,27 +203,9 @@ const Single = () => {
 
    if (!bookDetails) {
       return (
-         <>
-            <div class="flex items-center justify-center   mt-72">
-               <div class="flex items-center justify-center  w-6 h-6">
-                  <div class="w-24 h-24 p-5 bg-[#DAA851] rounded-full animate-pulse delay-500">
-                     Lo
-                  </div>
-                  <div class="w-24 h-24 p-5 bg-[#DAA851] rounded-full animate-ping delay-100">
-                     ad
-                  </div>
-                  <div class="w-24 h-24 p-5 bg-[#DAA851] rounded-full animate-pulse delay-500">
-                     i
-                  </div>
-                  <div class="w-24 h-24 p-5 bg-[#DAA851] rounded-full animate-ping delay-700">
-                     n
-                  </div>
-                  <div class="w-24 h-24 p-5 bg-[#DAA851] rounded-full animate-pulse delay-1000">
-                     g
-                  </div>
-               </div>
-            </div>
-         </>
+         <div className="mt-28">
+            <ProductLenghtLoadingSpinner />
+         </div>
       );
    }
 

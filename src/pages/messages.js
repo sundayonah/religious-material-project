@@ -29,6 +29,9 @@ const Messages = () => {
    const [messagesLoadingStates, setMessagesLoadingStates] = useState({});
    const [kingdomMessages, setKingdomMessages] = useState([]);
    const [kingdomMessagesWithPrice, setKingdomMessagesWithPrice] = useState([]);
+   const [individualPurchasedStatus, setIndividualPurchasedStatus] =
+      useState(false);
+
    // const [approveLoadingStates, setApproveLoadingStates] = useState({});
    // const [isApproved, setIsApproved] = useState(false);
    // const [approvedProducts, setApprovedProducts] = useState([]);
@@ -101,17 +104,33 @@ const Messages = () => {
       setFilteredMessages(filtered);
    }, [searchInput, kingdomMessagesWithPrice]);
 
-   const hasPurchased = (userAddress, contentId) => {
-      const purchasedMesages =
-         JSON.parse(localStorage.getItem('purchasedMessages')) || [];
-      return purchasedMesages.some((product) => {
-         const parsedProduct = JSON.parse(product);
-         return (
-            parsedProduct.address === userAddress &&
-            parsedProduct.id === contentId
-         );
-      });
-   };
+   useEffect(() => {
+      const checkPurchasedStatus = async () => {
+         try {
+            const response = await axios.get(
+               `http://kingdomcoin-001-site1.ctempurl.com/api/Catalog/GetTransactions/${address}`
+            );
+
+            const purchasedProducts = response.data.data;
+            const purchasedMap = {};
+
+            filteredMessages.forEach((message) => {
+               const isPurchased = purchasedProducts.some(
+                  (product) => product.counterId === message.counterId
+               );
+               purchasedMap[message.counterId] = isPurchased;
+            });
+
+            console.log(purchasedMap);
+
+            setIndividualPurchasedStatus(purchasedMap);
+         } catch (error) {
+            console.error('Error checking purchase status:', error);
+         }
+      };
+
+      checkPurchasedStatus();
+   }, [address]);
 
    const buyNow = async (product) => {
       try {
@@ -336,7 +355,8 @@ const Messages = () => {
                            </span>
                         </div>
                         <div className="flex justify-center items-center">
-                           {hasPurchased(address, message.recId) ? (
+                           {/* {hasPurchased(address, message.recId) ? ( */}
+                           {individualPurchasedStatus[message.counterId] ? (
                               <button
                                  disabled
                                  className="w-full text-white mt-1 bg-gray-500 py-1 px-2 rounded-sm"

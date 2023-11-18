@@ -509,27 +509,3 @@ const ProductsDownload = ({ selectedFilter, filteredDownloadProduct }) => {
 };
 
 export default ProductsDownload;
-
-//    useEffect(() => {
-//       // Filter products based on searchInput and selectedType
-//       let filtered = [...kingdomBooksWithPrice];
-
-//       if (searchInput) {
-//          filtered = filtered.filter((book) =>
-//             book.title.toLowerCase().includes(searchInput.toLowerCase())
-//          );
-
-//          // console.log(filtered);
-//       }
-
-//   if (selectedType !== 'all') {
-//      filtered = filtered.filter(
-//         (product) => product.category === selectedType
-//      );
-//   }
-//       // console.log(filtered);
-
-//       // fetchBooks();
-//       setFilteredProducts(filtered);
-//       // setFilteredProducts(filtered);
-//    }, [searchInput, selectedType, kingdomBooksWithPrice]);

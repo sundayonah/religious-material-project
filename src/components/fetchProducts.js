@@ -190,6 +190,10 @@ export const useFetchMessages = () => {
 export const getTransactions = async (address) => {
    const downloadsUrl = `http://kingdomcoin-001-site1.ctempurl.com/api/Catalog/GetTransactions/${address}`;
 
+   // const downloadsUrl = '/api/message';
+   // const downloadsUrl = `/api/message?address=${address}`;
+   // console.log(downloadsUrl);
+
    try {
       const res = await axios.get(downloadsUrl);
       const data = res.data.data;
@@ -238,7 +242,7 @@ export const getTransactions = async (address) => {
       // Remove null values (failed downloads) and update state with the array
       return validDownloadDetails.filter((detail) => detail !== null);
    } catch (error) {
-      console.error('Error fetching download details:', error);
+      // console.error('Error fetching download details:', error);
    }
 };
 

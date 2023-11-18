@@ -121,7 +121,7 @@ const Messages = () => {
                purchasedMap[message.counterId] = isPurchased;
             });
 
-            console.log(purchasedMap);
+            // console.log(purchasedMap);
 
             setIndividualPurchasedStatus(purchasedMap);
          } catch (error) {

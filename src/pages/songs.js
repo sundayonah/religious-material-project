@@ -8,7 +8,11 @@ import { ethers } from 'ethers';
 import toast, { Toaster } from 'react-hot-toast';
 import axios from 'axios';
 import { fetchSongs } from '@/components/fetchProducts';
-import { LoadingSpinner } from '@/components/loading';
+import {
+   LoadingSpinner,
+   ProductLenghtLoadingSpinner,
+   SearchIconWhenThereIsNoFilter,
+} from '@/components/utils';
 // import { addSong } from '../reduxToolkit/slices/songsSlices';
 
 const Songs = () => {
@@ -272,38 +276,10 @@ const Songs = () => {
    if (kingdomSongsWithPrice.length === 0) {
       return (
          <>
-            <div class="flex items-center justify-center   mt-80">
-               <div class="flex items-center justify-center  w-6 h-6">
-                  <div class="w-24 h-24 p-5 bg-[#DAA851] rounded-full animate-pulse delay-500">
-                     Lo
-                  </div>
-                  <div class="w-24 h-24 p-5 bg-[#DAA851] rounded-full animate-ping delay-100">
-                     ad
-                  </div>
-                  <div class="w-24 h-24 p-5 bg-[#DAA851] rounded-full animate-pulse delay-500">
-                     i
-                  </div>
-                  <div class="w-24 h-24 p-5 bg-[#DAA851] rounded-full animate-ping delay-700">
-                     n
-                  </div>
-                  <div class="w-24 h-24 p-5 bg-[#DAA851] rounded-full animate-pulse delay-1000">
-                     g
-                  </div>
-               </div>
-            </div>
+            <ProductLenghtLoadingSpinner />
          </>
       );
    }
-
-   // if (filteredSongs.length === 0) {
-   //    return (
-   // <div className="flex justify-center items-center mt-80">
-   //    <p className="text-2xl text-gray-400">
-   //             No songs found matching the search.
-   //          </p>
-   //       </div>
-   //    );
-   // }
    return (
       <>
          <div className="w-[95%] m-auto mt-28 ">
@@ -322,9 +298,7 @@ const Songs = () => {
             <div className="flex flex-wrap gap-3 p-2 justify-center items-center">
                {filteredSongs.length === 0 ? (
                   <div className="flex justify-center items-center mt-24">
-                     <p className="text-2xl text-gray-400">
-                        No Songs 🎵 found matching the search.
-                     </p>
+                     {SearchIconWhenThereIsNoFilter('Song')}
                   </div>
                ) : (
                   <>

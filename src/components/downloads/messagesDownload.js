@@ -29,6 +29,19 @@ export const MessagesDownload = ({
    const [songDurations, setSongDurations] = useState({});
    const [sideBarOpen, setSideBarOpen] = useState(false);
 
+   // useEffect(() => {
+   //    const getTransactions = async () => {
+   //       const sermonUrl = `http://kingdomcoin-001-site1.ctempurl.com/api/Catalog/GetTransactions/${address}`;
+   //       // ' http://kingdomcoin-001-site1.ctempurl.com/MESSAGE/247e1068-26d0-4597-8dbe-6b6b35aeebae.mp3';
+
+   //       const res = await fetch(sermonUrl);
+   //       const data = await res.json();
+
+   //       console.log(data);
+   //    };
+   //    getTransactions();
+   // }, [address]);
+
    useEffect(() => {
       // Retrieve the list of purchased products from local storage
       const storedPurchasedProducts =

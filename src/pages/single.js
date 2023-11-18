@@ -13,7 +13,7 @@ import { StateContext } from '@/Context/ReligiousContext';
 import {
    LoadingSpinner,
    ProductLenghtLoadingSpinner,
-} from '@/components/loading';
+} from '@/components/utils';
 
 const Single = () => {
    const {

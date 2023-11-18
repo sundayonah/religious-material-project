@@ -35,25 +35,32 @@ import {
 import { StateContext } from '@/Context/ReligiousContext';
 import Volume from './Volume';
 import { saveLikesAndDislikesToLocalStorage } from './local-storage';
+import { getTransactions } from './fetchProducts';
+import { useAccount } from 'wagmi';
 
-const AudioPlayer = () => {
+const AudioPlayer = ({ audioRefs }) => {
    const ref = useRef(null);
+   const { address } = useAccount();
 
    const dispatch = useDispatch();
    const {
       handlePlayClick,
       //   songStates,
       //   activeSongId,
-      audioRefs,
+      // audioRefs,
       handleSongEnd,
    } = useContext(StateContext);
    const [mousedown, setMouseDown] = useState(false);
    const [progressUpdateInterval, setProgressUpdateInterval] = useState(null);
+   const [purchasedProducts, setPurchasedProducts] = useState([]);
+
    // const [isLiked, setIsLiked] = useState(false);
    // const [isDisliked, setIsDisliked] = useState(false);
 
    // const [currentTime, setCurrentTime] = useState(0);
    // const [duration, setDuration] = useState(0);
+
+   // const audioRefs = {};
 
    const songStates = useSelector((state) => state.audio.songStates);
    const activeSongId = useSelector((state) => state.audio.activeSongId);
@@ -63,6 +70,8 @@ const AudioPlayer = () => {
    const isPlaying = useSelector(
       (state) => state.audio.songStates[state.audio.activeSongId]
    );
+
+   // console.log(isPlaying);
 
    const currentTime = useSelector((state) => state.audio.currentTime);
    const duration = useSelector((state) => state.audio.duration);
@@ -79,25 +88,36 @@ const AudioPlayer = () => {
    );
 
    const songDetails = useSelector((state) => state.audio.songDetails);
+   // console.log(songDetails);
 
    const imageUrl = useSelector((state) => state.audio.imageUrl);
    const volume = useSelector((state) => state.audio.volume);
 
-   const purchasedSongs =
-      JSON.parse(localStorage.getItem('purchasedProducts')) || [];
+   // const purchasedSongs =
+   //    JSON.parse(localStorage.getItem('purchasedProducts')) || [];
 
-   const purchasedMessages =
-      JSON.parse(localStorage.getItem('purchasedMessages')) || [];
+   // const purchasedMessages =
+   //    JSON.parse(localStorage.getItem('purchasedMessages')) || [];
 
    // console.log(purchasedMessages);
 
    // Merge the purchasedSongs and purchasedMessages arrays
-   const mergedPurchases = [...purchasedSongs, ...purchasedMessages];
-   // console.log(mergedPurchases);
+   // const purchasedProducts = [...purchasedSongs, ...purchasedMessages];
+   // console.log(purchasedProducts);
 
    // console.log(purchasedMessages);
 
    // console.log('Active Song ID:', activeSongId);
+   // console.log(purchasedProducts);
+
+   useEffect(() => {
+      const getDownloads = async () => {
+         const tx = await getTransactions(address);
+         setPurchasedProducts(tx);
+         // console.log(tx);
+      };
+      getDownloads();
+   }, [address]);
 
    const startProgressUpdateInterval = (audio) => {
       const interval = setInterval(() => {
@@ -133,6 +153,7 @@ const AudioPlayer = () => {
    useEffect(() => {
       // Set up a progress update interval when the component mounts
       const audio = audioRefs[activeSongId];
+      // console.log(audio);
       if (audio && isPlaying) {
          const interval = setInterval(handleProgressUpdate, 1000);
          setProgressUpdateInterval(interval);
@@ -144,7 +165,10 @@ const AudioPlayer = () => {
 
    const handlePlayPause = () => {
       const audio = audioRefs[activeSongId];
-      if (audio) {
+      // console.log(activeSongId);
+      // console.log(audio);
+      // console.log(isPlaying);
+      if (activeSongId) {
          if (isPlaying) {
             audio.pause();
             clearInterval(progressUpdateInterval); // Clear the existing interval
@@ -158,7 +182,7 @@ const AudioPlayer = () => {
          }
          dispatch(togglePlayback(activeSongId));
       }
-      console.log('ytfjhgv');
+      // console.log('ytfjhgv');
    };
 
    const handleLikes = () => {
@@ -184,7 +208,7 @@ const AudioPlayer = () => {
    };
 
    const playNextSong = () => {
-      const productIds = mergedPurchases.map((product) => {
+      const productIds = purchasedProducts.map((product) => {
          const parsedProduct = JSON.parse(product);
          return parsedProduct.id;
       });
@@ -194,15 +218,17 @@ const AudioPlayer = () => {
       if (currentIndex !== -1 && currentIndex < productIds.length - 1) {
          const nextSongId = productIds[currentIndex + 1];
 
-         // Find the index of the next song in mergedPurchases
-         const nextSongIndex = mergedPurchases.findIndex((product) => {
+         // Find the index of the next song in purchasedProducts
+         const nextSongIndex = purchasedProducts.findIndex((product) => {
             const parsedProduct = JSON.parse(product);
             return parsedProduct.id === nextSongId;
          });
 
          if (nextSongIndex !== -1) {
             // Get the next song's details (title, artist, duration, etc.)
-            const nextSongDetails = JSON.parse(mergedPurchases[nextSongIndex]);
+            const nextSongDetails = JSON.parse(
+               purchasedProducts[nextSongIndex]
+            );
 
             // Retrieve the audio element for the current and next songs
             const currentAudio = audioRefs[activeSongId];
@@ -231,7 +257,7 @@ const AudioPlayer = () => {
    };
 
    const playPreviousSong = () => {
-      const productIds = mergedPurchases.map((product) => {
+      const productIds = purchasedProducts.map((product) => {
          const parsedProduct = JSON.parse(product);
          return parsedProduct.id;
       });
@@ -241,8 +267,8 @@ const AudioPlayer = () => {
       if (currentIndex > 0) {
          const previousSongId = productIds[currentIndex - 1];
 
-         // Find the index of the previous song in mergedPurchases
-         const previousSongIndex = mergedPurchases.findIndex((product) => {
+         // Find the index of the previous song in purchasedProducts
+         const previousSongIndex = purchasedProducts.findIndex((product) => {
             const parsedProduct = JSON.parse(product);
             return parsedProduct.id === previousSongId;
          });
@@ -250,7 +276,7 @@ const AudioPlayer = () => {
          if (previousSongIndex !== -1) {
             // Get the previous song's details (title, artist, duration, etc.)
             const previousSongDetails = JSON.parse(
-               mergedPurchases[previousSongIndex]
+               purchasedProducts[previousSongIndex]
             );
 
             // Retrieve the audio element for the current and previous songs

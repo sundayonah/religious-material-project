@@ -117,6 +117,7 @@ export const StateContextProvider = ({ children }) => {
 
    const handlePlayClick = (productId, title, artist, imageUrl) => {
       const audio = audioRefs[productId];
+      console.log(audio);
 
       if (audio) {
          if (productId === activeSongId) {
@@ -144,6 +145,47 @@ export const StateContextProvider = ({ children }) => {
          dispatch(togglePlayback(productId));
       }
    };
+
+   // const handlePlayClick = async (
+   //    productId,
+   //    title,
+   //    artist,
+   //    imageUrl,
+   //    audioSource
+   // ) => {
+   //    const audio = audioRefs[productId];
+
+   //    if (audio) {
+   //       if (productId === activeSongId) {
+   //          if (audio.paused) {
+   //             try {
+   //                await audio.play();
+   //             } catch (error) {
+   //                console.error('Failed to play audio:', error);
+   //             }
+   //          } else {
+   //             audio.pause();
+   //          }
+   //       } else {
+   //          dispatch(setActiveSong(productId));
+   //          dispatch(updateSongDetails({ title, artist, imageUrl }));
+
+   //          // Update the audio source dynamically before playing
+   //          audio.src = audioSource;
+
+   //          Object.keys(audioRefs).forEach((songId) => {
+   //             if (songId !== productId) {
+   //                const otherAudio = audioRefs[songId];
+   //                if (otherAudio) {
+   //                   otherAudio.pause();
+   //                   dispatch(togglePlayback(songId));
+   //                }
+   //             }
+   //          });
+   //       }
+   //       dispatch(togglePlayback(productId));
+   //    }
+   // };
 
    // const signIn = async () => {
    //    // setWalletConnected(true);
@@ -380,7 +422,6 @@ export const StateContextProvider = ({ children }) => {
 
          const priceToString = contentPrice.toString();
          const price = ethers.utils.parseEther(priceToString, 'ether');
-         console.log(price);
 
          let tx;
          tx = await contractInstance.approve(RMTestnetContractAddress, price, {

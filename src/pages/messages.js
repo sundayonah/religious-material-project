@@ -8,7 +8,10 @@ import ApproveAbi from '@/Contract/approve.json';
 import toast, { Toaster } from 'react-hot-toast';
 import axios from 'axios';
 import { useFetchMessages } from '@/components/fetchProducts';
-import { LoadingSpinner } from '@/components/loading';
+import {
+   LoadingSpinner,
+   SearchIconWhenThereIsNoFilter,
+} from '@/components/utils';
 
 const Messages = () => {
    const {
@@ -67,7 +70,6 @@ const Messages = () => {
          const messageWithPrice = { ...message, contentPrice };
 
          updatedMessages.push(messageWithPrice);
-         // updatedMessages.push(contentPrice);
       }
 
       // console.log(updatedMessages);
@@ -82,6 +84,7 @@ const Messages = () => {
          setKingdomMessagesWithPrice(messagesWithPrices);
 
          const messagesDetails = await messagesFetchHook();
+         // console.log(messagesDetails);
          setKingdomMessages(messagesDetails);
       };
       FetchMessagesWithPrice();
@@ -155,7 +158,7 @@ const Messages = () => {
                });
 
                const receipt = await tx.wait();
-               console.log(receipt);
+               // console.log(receipt);
 
                if (receipt.status === 1) {
                   // Update the approvedProducts state
@@ -174,18 +177,18 @@ const Messages = () => {
                      address: address, // Store the user's address with the purchased book
                   };
 
-                  // Serialize the purchased product before storing it
-                  const serializedProduct = JSON.stringify(purchasedMessages);
+                  // // Serialize the purchased product before storing it
+                  // const serializedProduct = JSON.stringify(purchasedMessages);
 
-                  // Add the purchased product to localStorage
-                  const storedPurchasedMessages =
-                     JSON.parse(localStorage.getItem('purchasedMessages')) ||
-                     [];
-                  storedPurchasedMessages.push(serializedProduct);
-                  localStorage.setItem(
-                     'purchasedMessages',
-                     JSON.stringify(storedPurchasedMessages)
-                  );
+                  // // Add the purchased product to localStorage
+                  // const storedPurchasedMessages =
+                  //    JSON.parse(localStorage.getItem('purchasedMessages')) ||
+                  //    [];
+                  // storedPurchasedMessages.push(serializedProduct);
+                  // localStorage.setItem(
+                  //    'purchasedMessages',
+                  //    JSON.stringify(storedPurchasedMessages)
+                  // );
 
                   const purchasedBookTitle = purchasedMessages.title;
 
@@ -198,7 +201,7 @@ const Messages = () => {
 
                   // Call the API to add the transaction
                   const transactionData = {
-                     hash: receipt.transactionHash,
+                     hash: product.hash,
                      address: address,
                      counterId: product.counterId,
                      type: product.type,
@@ -212,6 +215,7 @@ const Messages = () => {
                      'http://kingdomcoin-001-site1.ctempurl.com/api/Catalog/AddTransactions',
                      transactionData
                   );
+                  console.log(addTransactionResponse);
 
                   // Check the response from the API
                   if (addTransactionResponse.status === 200) {
@@ -300,9 +304,7 @@ const Messages = () => {
          <div className="flex flex-wrap gap-3 p-2 justify-center items-center">
             {filteredMessages.length === 0 ? (
                <div className="flex justify-center items-center mt-24">
-                  <p className="text-2xl text-gray-400">
-                     No Messages 🔽 found matching the search.
-                  </p>
+                  {SearchIconWhenThereIsNoFilter('Messages')}
                </div>
             ) : (
                <>

@@ -43,7 +43,7 @@ const Header = () => {
       { name: 'Books', url: '/books' },
       { name: 'Messages', url: '/messages' },
       { name: 'Songs', url: '/songs' },
-      { name: 'Download', url: '/download' },
+      { name: 'Download', url: '/productsDownload' },
    ];
 
    const toggleMenu = () => {
@@ -83,14 +83,14 @@ const Header = () => {
    //          //    signature: userSignature,
    //          // });
 
-   //          if (address) {
+   //          if (userSignature) {
    //             const authURL =
    //                'http://kingdomcoin-001-site1.ctempurl.com/api/Account/AuthenticateUser';
 
    //             const res = await axios.post(
    //                authURL,
    //                {
-   //                   address: address, // Use the user's address from signer
+   //                   address: address,
    //                   signature: userSignature,
    //                },
    //                {
@@ -108,6 +108,7 @@ const Header = () => {
    //             // }
 
    //             // Check if the status indicates success (status code 200)
+
    //             if (res.status === 200 && res.data?.data) {
    //                const {
    //                   token,
@@ -161,7 +162,7 @@ const Header = () => {
    //    }
    // }, [isSignInCompleted, address]);
 
-   // // console.log(isDisconnected);
+   // console.log(isDisconnected);
 
    // useEffect(() => {
    //    const checkWalletConnection = async () => {

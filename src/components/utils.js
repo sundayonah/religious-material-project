@@ -38,3 +38,19 @@ export const ProductLenghtLoadingSpinner = () => {
       </div>
    );
 };
+
+export const SearchIconWhenThereIsNoFilter = (slogan) => {
+   return (
+      <div className="flex flex-col justify-center items-center">
+         <h1 className="text-white capitalize text-2xl">
+            No {slogan} 🔽 found matching the search!😆 ☺️
+         </h1>
+         <img
+            src="/images/ethan_searching.png"
+            alt="Search Image"
+            width={200}
+            height={200}
+         />
+      </div>
+   );
+};

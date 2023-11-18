@@ -21,7 +21,8 @@ import RMabi from '@/Contract/rm-abi.json';
 import {
    LoadingSpinner,
    ProductLenghtLoadingSpinner,
-} from '@/components/loading';
+   SearchIconWhenThereIsNoFilter,
+} from '@/components/utils';
 
 // import { StateContext } from '@/Context/ReligiousContext';
 
@@ -40,7 +41,7 @@ const Books = () => {
 
    const sidebarRef = useRef(null);
 
-   const opeBookModal = () => {
+   const openBookModal = () => {
       setBookModalOpen(true);
    };
 
@@ -48,14 +49,21 @@ const Books = () => {
       setBookModalOpen(false);
    };
 
+   const publicProvider =
+      'https://polygon-mumbai.g.alchemy.com/v2/o_O5LwKav_r5UECR-59GtRZsIqnhD0N8';
    // Function to fetch prices for each book
    const fetchPrices = useCallback(async () => {
+      // const provider = new ethers.providers.getDefaultProvider('homestead', {
+      //    alchemy: 'o_O5LwKav_r5UECR-59GtRZsIqnhD0N8',
+      // });
       const provider = new ethers.providers.Web3Provider(window.ethereum);
+
       const signer = provider.getSigner();
 
       const contract = new ethers.Contract(
          RMTestnetContractAddress,
          RMabi,
+         // provider
          signer
       );
 
@@ -134,15 +142,14 @@ const Books = () => {
 
    // console.log(kingdomBook);
 
+   if (kingdomBooksWithPrice.length === 0) {
+      return (
+         <>
+            <ProductLenghtLoadingSpinner />
+         </>
+      );
+   }
    const displayProducts = () => {
-      if (kingdomBooksWithPrice.length === 0) {
-         return (
-            <>
-               <ProductLenghtLoadingSpinner />
-            </>
-         );
-      }
-
       return (
          <>
             {/* {filteredProducts.length === 0 ? (
@@ -225,7 +232,7 @@ const Books = () => {
                      onChange={(e) => setSearchInput(e.target.value)}
                   />
                   <button
-                     onClick={opeBookModal}
+                     onClick={openBookModal}
                      className="flex mx-3 py-1 px-3 text-[#DAA851] rounded-md space-x-2 border border-[#DAA851]"
                   >
                      <span className="text-white text-sm">Filter</span>
@@ -250,19 +257,15 @@ const Books = () => {
                )}
             </div>
             {/* <div className="w-[95%] justify-center items-center m-auto"> */}
-            {filteredProducts.length === 0 ? (
-               <div className="flex justify-center items-center mt-8">
-                  {/* <p className="text-2xl text-gray-400">
-                     No Books 📚 found matching the search.
-                  </p> */}
-
-                  <ProductLenghtLoadingSpinner />
-               </div>
-            ) : (
+            {filteredProducts.length !== 0 ? (
                <div className="flex m-auto flex-col justify-center items-center">
                   <div className=" grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
                      <>{displayProducts()}</>
                   </div>
+               </div>
+            ) : (
+               <div className="flex justify-center items-center mt-8">
+                  {SearchIconWhenThereIsNoFilter('Book')}
                </div>
             )}
          </div>

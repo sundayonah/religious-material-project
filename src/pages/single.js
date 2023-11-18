@@ -14,6 +14,7 @@ import {
    LoadingSpinner,
    ProductLenghtLoadingSpinner,
 } from '@/components/utils';
+import Image from 'next/image';
 
 const Single = () => {
    const {
@@ -233,7 +234,7 @@ const Single = () => {
          <div className="md:flex w-[70%] flex-row m-auto pt-16 justify-around items-center gap-4">
             {bookDetails ? (
                <>
-                  <img
+                  <Image
                      src={`https://gateway.pinata.cloud/ipfs/${bookDetails.image}`}
                      className="m-auto object-cover rounded-md"
                      width={300}

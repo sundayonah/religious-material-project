@@ -12,6 +12,7 @@ import {
    LoadingSpinner,
    SearchIconWhenThereIsNoFilter,
 } from '@/components/utils';
+import Image from 'next/image';
 
 const Messages = () => {
    const {
@@ -75,7 +76,6 @@ const Messages = () => {
          updatedMessages.push(messageWithPrice);
       }
 
-      // console.log(updatedMessages);
       return updatedMessages;
    }, [kingdomMessages]);
 
@@ -130,7 +130,7 @@ const Messages = () => {
       };
 
       checkPurchasedStatus();
-   }, [address]);
+   }, [address, filteredMessages]);
 
    const buyNow = async (product) => {
       try {
@@ -335,7 +335,7 @@ const Messages = () => {
                         className=" rounded-md p-3 m-2 shadow-custom"
                      >
                         <div class="md:flex-shrink-0">
-                           <img
+                           <Image
                               src={`https://gateway.pinata.cloud/ipfs/${message.image}`}
                               alt={message.title}
                               className="rounded-md"

@@ -13,6 +13,7 @@ import {
    ProductLenghtLoadingSpinner,
    SearchIconWhenThereIsNoFilter,
 } from '@/components/utils';
+import Image from 'next/image';
 // import { addSong } from '../reduxToolkit/slices/songsSlices';
 
 const Songs = () => {
@@ -337,7 +338,7 @@ const Songs = () => {
                            // className="flex flex-col w-[calc(50% - 1rem)] md:w-[calc(33.33% - 1rem)] lg:w-[calc(25% - 1rem)] 2xl:w-[calc(20% - 1rem)] mb-3 p-2 rounded-md  shadow-custom"
                         >
                            <div className="md:flex-shrink-0">
-                              <img
+                              <Image
                                  src={`https://gateway.pinata.cloud/ipfs/${song.image}`}
                                  alt={song.title}
                                  className="rounded-md"

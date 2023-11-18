@@ -383,11 +383,11 @@ const ProductsDownload = ({ selectedFilter, filteredDownloadProduct }) => {
 
             {filterProducts.length !== 0 ? (
                <>
-                  <div className=" w-[30%] flex justify-center items-center text-gray-500 space-x-3 mb-3 ">
+                  <div className=" w-[90%] flex justify-start items-center text-gray-500 space-x-3 mb-3 ">
                      <span className="flex justify-center items-center border border-[#daa851] rounded-full px-2 py-1">
                         {filterProducts.length}
                      </span>
-                     <span className="">Item(s) Purchased 🛒 </span>
+                     <span className="">Item(s) Purchased 🛒 🛍️ </span>
                   </div>
                   {filterProducts.map(
                      ({ recId, dataFile, type, image, title, author }) => (

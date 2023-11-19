@@ -188,11 +188,9 @@ export const useFetchMessages = () => {
 };
 
 export const getTransactions = async (address) => {
-   const downloadsUrl = `http://kingdomcoin-001-site1.ctempurl.com/api/Catalog/GetTransactions/${address}`;
+   // const downloadsUrl = `http://kingdomcoin-001-site1.ctempurl.com/api/Catalog/GetTransactions/${address}`;
 
-   // const downloadsUrl = '/api/message';
-   // const downloadsUrl = `/api/message?address=${address}`;
-   // console.log(downloadsUrl);
+   const downloadsUrl = '/api/getAllDownload';
 
    try {
       const res = await axios.get(downloadsUrl);

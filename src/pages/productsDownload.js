@@ -127,13 +127,31 @@ const ProductsDownload = ({ selectedFilter, filteredDownloadProduct }) => {
    };
 
    useEffect(() => {
-      const getDownloads = async () => {
-         const tx = await getTransactions(address);
-         setPurchasedProducts(tx);
-         //  console.log(tx);
+      const getAllDownload = async () => {
+         try {
+            const response = await axios.get(
+               `/api/getAllDownload?address=${address}`
+            );
+            console.log(response);
+            const data = response.data;
+            // console.log({ response, data });
+            // Update the state with the retrieved data
+            setPurchasedProducts(data);
+         } catch (error) {
+            console.error('Error fetching datas:', error);
+         }
       };
-      getDownloads();
+      getAllDownload();
    }, [address]);
+
+   //    useEffect(() => {
+   //       const getDownloads = async () => {
+   //          const tx = await getTransactions(address);
+   //          setPurchasedProducts(tx);
+   //          //  console.log(tx);
+   //       };
+   //       getDownloads();
+   //    }, [address]);
 
    // Fiter Products by Types, author, title
    const displayButtons = () => {
@@ -157,7 +175,7 @@ const ProductsDownload = ({ selectedFilter, filteredDownloadProduct }) => {
 
    // Filter the messages based on the search input and type
    useEffect(() => {
-      // let filtered = [...kingdomBooksWithPrice];
+      ///// let filtered = [...kingdomBooksWithPrice];
 
       let filtered = purchasedProducts.filter(
          (message) =>

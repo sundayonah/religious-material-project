@@ -122,127 +122,117 @@ export const fetchSongs = async () => {
    }
 };
 
-export const useFetchMessages = () => {
-   const fetchMessages = useCallback(async () => {
-      try {
-         // const messageURL =
-         //    'http://kingdomcoin-001-site1.ctempurl.com/api/Catalog/GetAllMessages';
+// export const useFetchMessages = () => {
+//    const fetchMessages = useCallback(async () => {
+//       try {
+//          const messageURL =
+//             'http://kingdomcoin-001-site1.ctempurl.com/api/Catalog/GetAllMessages';
 
-         const messageURL = '/api/message';
-         // const token =
-         //    'eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiMDc4NzJmNGMtNmQ0MC00M2IyLWE1Y2ItOGE1ZmQwZTA1NDBhIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbmFtZWlkZW50aWZpZXIiOiIweDk3NTZCNzA0OEJlMzRlNzA0QzI3RGVFYjdkQjM0QkUxQTkxMGFCOTIiLCJleHAiOjE3MDAyNDU0NTksImlzcyI6Imh0dHA6Ly9yb2Fkc3Rhci5jb20iLCJhdWQiOiJodHRwOi8vcm9hZHN0YXIuY29tIn0.NutJY74M-eLlkTIvvPsRAFe5Xye8bHy2B5k4EtE3wno';
+//          const res = await axios.get(messageURL);
+//          // console.log('Response:', res.data.data);
 
-         // const config = {
-         //    headers: {
-         //       Authorization: `Bearer ${token}`,
-         //    },
-         // };
+//          const data = res.data.data;
 
-         const res = await axios.get(messageURL);
-         // console.log('Response:', res.data.data);
+//          const messageDetails = await Promise.all(
+//             data.map(async (message) => {
+//                const ipfsHash = message.hash;
+//                const pinataApiUrl = `https://purple-existing-woodpecker-520.mypinata.cloud/ipfs/${ipfsHash}`;
 
-         const data = res.data.data;
+//                const pinataResponse = await axios.get(pinataApiUrl);
 
-         const messageDetails = await Promise.all(
-            data.map(async (message) => {
-               const ipfsHash = message.hash;
-               const pinataApiUrl = `https://purple-existing-woodpecker-520.mypinata.cloud/ipfs/${ipfsHash}`;
+//                if (pinataResponse.status === 200) {
+//                   const ipfsContent = pinataResponse.data;
 
-               const pinataResponse = await axios.get(pinataApiUrl);
+//                   const completeMessageInfo = {
+//                      recId: message.recId,
+//                      hash: message.hash,
+//                      counterId: message.counterId,
+//                      category: message.category,
+//                      bookFile: message.bookFile,
+//                      type: message.type,
+//                      ...ipfsContent,
+//                   };
 
-               if (pinataResponse.status === 200) {
-                  const ipfsContent = pinataResponse.data;
+//                   // console.log(completeMessageInfo);
 
-                  const completeMessageInfo = {
-                     recId: message.recId,
-                     hash: message.hash,
-                     counterId: message.counterId,
-                     category: message.category,
-                     bookFile: message.bookFile,
-                     type: message.type,
-                     ...ipfsContent,
-                  };
+//                   return completeMessageInfo;
+//                } else {
+//                   console.error(
+//                      'Pinata API returned an error:',
+//                      pinataResponse.status,
+//                      pinataResponse.statusText
+//                   );
+//                   return null;
+//                }
+//             })
+//          );
 
-                  // console.log(completeMessageInfo);
+//          return messageDetails.filter((message) => message !== null);
+//       } catch (error) {
+//          console.error('Error fetching message details:', error);
+//          return [];
+//       }
+//    }, []);
 
-                  return completeMessageInfo;
-               } else {
-                  console.error(
-                     'Pinata API returned an error:',
-                     pinataResponse.status,
-                     pinataResponse.statusText
-                  );
-                  return null;
-               }
-            })
-         );
+//    return fetchMessages;
+// };
 
-         return messageDetails.filter((message) => message !== null);
-      } catch (error) {
-         console.error('Error fetching message details:', error);
-         return [];
-      }
-   }, []);
+// export const getTransactions = async (address) => {
+//    // const downloadsUrl = `http://kingdomcoin-001-site1.ctempurl.com/api/Catalog/GetTransactions/${address}`;
 
-   return fetchMessages;
-};
+//    const downloadsUrl = '/api/getAllDownload';
 
-export const getTransactions = async (address) => {
-   // const downloadsUrl = `http://kingdomcoin-001-site1.ctempurl.com/api/Catalog/GetTransactions/${address}`;
+//    try {
+//       const res = await axios.get(downloadsUrl);
+//       const data = res.data.data;
+//       // console.log(data);
 
-   const downloadsUrl = '/api/getAllDownload';
+//       const validDownloadDetails = await Promise.all(
+//          data.map(async (download) => {
+//             const ipfsHash = download.hash;
+//             const pinataApiUrl = `https://purple-existing-woodpecker-520.mypinata.cloud/ipfs/${ipfsHash}`;
 
-   try {
-      const res = await axios.get(downloadsUrl);
-      const data = res.data.data;
-      // console.log(data);
+//             const pinataResponse = await axios.get(pinataApiUrl);
 
-      const validDownloadDetails = await Promise.all(
-         data.map(async (download) => {
-            const ipfsHash = download.hash;
-            const pinataApiUrl = `https://purple-existing-woodpecker-520.mypinata.cloud/ipfs/${ipfsHash}`;
+//             if (pinataResponse.status === 200) {
+//                const ipfsContent = pinataResponse.data;
 
-            const pinataResponse = await axios.get(pinataApiUrl);
+//                // Assuming ipfsContent is in JSON format
+//                const { author, title, image } = ipfsContent;
 
-            if (pinataResponse.status === 200) {
-               const ipfsContent = pinataResponse.data;
+//                const completeDownloadInfo = {
+//                   recId: download.recId,
+//                   hash: download.hash,
+//                   counterId: download.counterId,
+//                   address: download.address,
+//                   type: download.type,
+//                   transactionHash: download.transactionHash,
+//                   dataFile: download.dataFile,
+//                   author,
+//                   title,
+//                   image,
+//                   // Add other fields as needed
+//                };
 
-               // Assuming ipfsContent is in JSON format
-               const { author, title, image } = ipfsContent;
+//                // console.log(completeDownloadInfo);
+//                return completeDownloadInfo;
+//             } else {
+//                console.error(
+//                   'Pinata API returned an error:',
+//                   pinataResponse.status,
+//                   pinataResponse.statusText
+//                );
+//                return null;
+//             }
+//          })
+//       );
 
-               const completeDownloadInfo = {
-                  recId: download.recId,
-                  hash: download.hash,
-                  counterId: download.counterId,
-                  address: download.address,
-                  type: download.type,
-                  transactionHash: download.transactionHash,
-                  dataFile: download.dataFile,
-                  author,
-                  title,
-                  image,
-                  // Add other fields as needed
-               };
-
-               // console.log(completeDownloadInfo);
-               return completeDownloadInfo;
-            } else {
-               console.error(
-                  'Pinata API returned an error:',
-                  pinataResponse.status,
-                  pinataResponse.statusText
-               );
-               return null;
-            }
-         })
-      );
-
-      // Remove null values (failed downloads) and update state with the array
-      return validDownloadDetails.filter((detail) => detail !== null);
-   } catch (error) {
-      // console.error('Error fetching download details:', error);
-   }
-};
+//       // Remove null values (failed downloads) and update state with the array
+//       return validDownloadDetails.filter((detail) => detail !== null);
+//    } catch (error) {
+//       // console.error('Error fetching download details:', error);
+//    }
+// };
 
 //  const buyNow = async (product, details) => {
 //     try {

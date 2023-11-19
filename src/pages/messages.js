@@ -79,19 +79,25 @@ const Messages = () => {
       return updatedMessages;
    }, [kingdomMessages]);
 
-   const messagesFetchHook = useFetchMessages();
+   // const messagesFetchHook = useFetchMessages();
 
    useEffect(() => {
       const FetchMessagesWithPrice = async () => {
-         const messagesWithPrices = await fetchPrices();
-         setKingdomMessagesWithPrice(messagesWithPrices);
+         try {
+            const messagesWithPrices = await fetchPrices();
+            setKingdomMessagesWithPrice(messagesWithPrices);
 
-         const messagesDetails = await messagesFetchHook();
-         // console.log(messagesDetails);
-         setKingdomMessages(messagesDetails);
+            const response = await axios.get('/api/message');
+            const data = response.data;
+            // console.log(data);
+
+            setKingdomMessages(data);
+         } catch (error) {
+            console.error('Error fetching datas:', error);
+         }
       };
       FetchMessagesWithPrice();
-   }, [kingdomMessages, fetchPrices, messagesFetchHook]);
+   }, [kingdomMessages]);
 
    // Filter the messages based on the search input
    useEffect(() => {

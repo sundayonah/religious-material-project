@@ -47,8 +47,6 @@ export default async function handler(req, res) {
          })
       );
 
-      console.log(validDownloadDetails);
-
       const filteredDownloads = validDownloadDetails.filter(
          (detail) => detail !== null
       );

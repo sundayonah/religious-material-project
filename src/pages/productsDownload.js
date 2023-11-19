@@ -132,10 +132,9 @@ const ProductsDownload = ({ selectedFilter, filteredDownloadProduct }) => {
             const response = await axios.get(
                `/api/getAllDownload?address=${address}`
             );
-            console.log(response);
+            // console.log(response);
             const data = response.data;
-            // console.log({ response, data });
-            // Update the state with the retrieved data
+
             setPurchasedProducts(data);
          } catch (error) {
             console.error('Error fetching datas:', error);

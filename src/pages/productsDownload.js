@@ -26,6 +26,7 @@ import {
    ProductLenghtLoadingSpinner,
    SearchIconWhenThereIsNoFilter,
 } from '@/components/utils';
+import Image from 'next/image';
 
 const ProductsDownload = ({ selectedFilter, filteredDownloadProduct }) => {
    // }) => {
@@ -411,7 +412,7 @@ const ProductsDownload = ({ selectedFilter, filteredDownloadProduct }) => {
                                     type="audio/mpeg"
                                  />
                               </audio>
-                              <img
+                              <Image
                                  src={`https://gateway.pinata.cloud/ipfs/${image}`}
                                  alt={`Image ${title}`}
                                  className="rounded-md cursor-pointer"

@@ -37,6 +37,7 @@ import Volume from './Volume';
 import { saveLikesAndDislikesToLocalStorage } from './local-storage';
 import { getTransactions } from './fetchProducts';
 import { useAccount } from 'wagmi';
+import Image from 'next/image';
 
 const AudioPlayer = ({ audioRefs }) => {
    const ref = useRef(null);
@@ -444,8 +445,7 @@ const AudioPlayer = ({ audioRefs }) => {
                   </div>
                </div>
                <div className="flex justify-center items-center">
-                  <img
-                     // src="/images/explore2.jpg"
+                  <Image
                      src={`https://gateway.pinata.cloud/ipfs/${songDetails.imageUrl}`}
                      alt={`Image`}
                      className="rounded-md cursor-pointer object-contain"

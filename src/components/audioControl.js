@@ -75,6 +75,7 @@ const AudioPlayer = ({ audioRefs }) => {
    // console.log(isPlaying);
 
    const currentTime = useSelector((state) => state.audio.currentTime);
+   // console.log(currentTime);
    const duration = useSelector((state) => state.audio.duration);
    const progressBarWidth = useSelector(
       (state) => state.audio.progressBarWidth
@@ -125,6 +126,7 @@ const AudioPlayer = ({ audioRefs }) => {
          const currentTime = audio.currentTime;
          const totalTime = audio.duration;
          const image = audio.imageUrl;
+         // console.log(currentTime);
          console.log(image);
          if (!isNaN(totalTime)) {
             const percentage = (currentTime / totalTime) * 100;
@@ -138,8 +140,9 @@ const AudioPlayer = ({ audioRefs }) => {
    };
 
    // Define the progress update function.
-   const handleProgressUpdate = () => {
+   const handleProgressUpdate = useCallback(() => {
       const audio = audioRefs[activeSongId];
+      // console.log(audio);
       if (audio && audio.duration) {
          const currentTime = audio.currentTime;
          const totalTime = audio.duration;
@@ -149,7 +152,7 @@ const AudioPlayer = ({ audioRefs }) => {
          dispatch(setDuration(totalTime));
          // dispatch(setImageUrl(image));
       }
-   };
+   }, [activeSongId, audioRefs, dispatch]);
 
    useEffect(() => {
       // Set up a progress update interval when the component mounts
@@ -162,11 +165,11 @@ const AudioPlayer = ({ audioRefs }) => {
          // Clear the interval when the component unmounts
          return () => clearInterval(interval);
       }
-   }, [activeSongId, isPlaying, audioRefs]);
+   }, [activeSongId, isPlaying, audioRefs, handleProgressUpdate]);
 
    const handlePlayPause = () => {
       const audio = audioRefs[activeSongId];
-      // console.log(activeSongId);
+      console.log(activeSongId);
       // console.log(audio);
       // console.log(isPlaying);
       if (activeSongId) {
@@ -210,8 +213,7 @@ const AudioPlayer = ({ audioRefs }) => {
 
    const playNextSong = () => {
       const productIds = purchasedProducts.map((product) => {
-         const parsedProduct = JSON.parse(product);
-         return parsedProduct.id;
+         return product.recId;
       });
 
       const currentIndex = productIds.indexOf(activeSongId);
@@ -221,19 +223,17 @@ const AudioPlayer = ({ audioRefs }) => {
 
          // Find the index of the next song in purchasedProducts
          const nextSongIndex = purchasedProducts.findIndex((product) => {
-            const parsedProduct = JSON.parse(product);
-            return parsedProduct.id === nextSongId;
+            return product.recId === nextSongId;
          });
 
          if (nextSongIndex !== -1) {
-            // Get the next song's details (title, artist, duration, etc.)
-            const nextSongDetails = JSON.parse(
-               purchasedProducts[nextSongIndex]
-            );
+            // Get the next song's details
+            const nextSongDetails = purchasedProducts[nextSongIndex];
 
             // Retrieve the audio element for the current and next songs
             const currentAudio = audioRefs[activeSongId];
             const nextAudio = audioRefs[nextSongId];
+
             if (currentAudio && nextAudio) {
                currentAudio.pause();
                currentAudio.currentTime = 0;
@@ -259,8 +259,7 @@ const AudioPlayer = ({ audioRefs }) => {
 
    const playPreviousSong = () => {
       const productIds = purchasedProducts.map((product) => {
-         const parsedProduct = JSON.parse(product);
-         return parsedProduct.id;
+         return product.recId;
       });
 
       const currentIndex = productIds.indexOf(activeSongId);
@@ -270,15 +269,12 @@ const AudioPlayer = ({ audioRefs }) => {
 
          // Find the index of the previous song in purchasedProducts
          const previousSongIndex = purchasedProducts.findIndex((product) => {
-            const parsedProduct = JSON.parse(product);
-            return parsedProduct.id === previousSongId;
+            return product.recId === previousSongId;
          });
 
          if (previousSongIndex !== -1) {
-            // Get the previous song's details (title, artist, duration, etc.)
-            const previousSongDetails = JSON.parse(
-               purchasedProducts[previousSongIndex]
-            );
+            // Get the previous song's details
+            const previousSongDetails = purchasedProducts[previousSongIndex];
 
             // Retrieve the audio element for the current and previous songs
             const currentAudio = audioRefs[activeSongId];
@@ -446,7 +442,7 @@ const AudioPlayer = ({ audioRefs }) => {
                </div>
                <div className="flex justify-center items-center">
                   <Image
-                     src={`https://gateway.pinata.cloud/ipfs/${songDetails.imageUrl}`}
+                     src={`https://gateway.pinata.cloud/ipfs/${songDetails.image}`}
                      alt={`Image`}
                      className="rounded-md cursor-pointer object-contain"
                      width={30}
@@ -455,7 +451,7 @@ const AudioPlayer = ({ audioRefs }) => {
                   />
                   <div className="flex flex-col text-xs px-2">
                      <span className="text-white">{songDetails.title}</span>
-                     <span className="text-gray-500">{songDetails.artist}</span>
+                     <span className="text-gray-500">{songDetails.author}</span>
                   </div>
 
                   <div className="flex justify-center items-center mx-4">

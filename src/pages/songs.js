@@ -42,6 +42,8 @@ const Songs = () => {
    const [songLoadingStates, setSongLoadingStates] = useState({});
    const [kingdomSongs, setKingdomSongs] = useState([]);
    const [kingdomSongsWithPrice, setKingdomSongsWithPrice] = useState([]);
+   const [individualPurchasedStatus, setIndividualPurchasedStatus] =
+      useState(false);
 
    const { address } = useAccount();
    // console.log(address);
@@ -204,33 +206,33 @@ const Songs = () => {
       });
    };
 
-   // useEffect(() => {
-   //    const checkPurchasedStatus = async () => {
-   //       try {
-   //          const response = await axios.get(
-   //             `http://kingdomcoin-001-site1.ctempurl.com/api/Catalog/GetTransactions/${address}`
-   //          );
+   useEffect(() => {
+      const checkPurchasedStatus = async () => {
+         try {
+            const response = await axios.get(
+               `http://kingdomcoin-001-site1.ctempurl.com/api/Catalog/GetTransactions/${address}`
+            );
 
-   //          const purchasedProducts = response.data.data;
-   //          const purchasedMap = {};
+            const purchasedProducts = response.data.data;
+            const purchasedMap = {};
 
-   //          filteredMessages.forEach((message) => {
-   //             const isPurchased = purchasedProducts.some(
-   //                (product) => product.counterId === message.counterId
-   //             );
-   //             purchasedMap[message.counterId] = isPurchased;
-   //          });
+            filteredSongs.forEach((message) => {
+               const isPurchased = purchasedProducts.some(
+                  (product) => product.counterId === message.counterId
+               );
+               purchasedMap[message.counterId] = isPurchased;
+            });
 
-   //          // console.log(purchasedMap);
+            // console.log(purchasedMap);
 
-   //          setIndividualPurchasedStatus(purchasedMap);
-   //       } catch (error) {
-   //          console.error('Error checking purchase status:', error);
-   //       }
-   //    };
+            setIndividualPurchasedStatus(purchasedMap);
+         } catch (error) {
+            console.error('Error checking purchase status:', error);
+         }
+      };
 
-   //    checkPurchasedStatus();
-   // }, [address]);
+      checkPurchasedStatus();
+   }, [address, filteredSongs]);
 
    const buyNow = async (product) => {
       try {
@@ -258,25 +260,26 @@ const Songs = () => {
                   ...prevStates,
                   [product.recId]: true,
                }));
+
+               const contentId = product.counterId;
+               const token = TokenAddress;
+
                const contract = new ethers.Contract(
                   RMTestnetContractAddress,
                   RMabi,
                   signer
                );
 
-               console.log(product);
-
                // Make the purchase through the smart contract
-               const contentId = product.counterId;
-               const token = TokenAddress;
 
                let tx;
                tx = await contract.purchase(contentId, token, {
-                  gasLimit: 400000, // Adjust the gas limit as needed
+                  gasLimit: 200000, // Adjust the gas limit as needed
                   gasPrice: ethers.utils.parseUnits('10.0', 'gwei'), // Adjust the gas price as needed
                });
 
                const receipt = await tx.wait();
+               // console.log(receipt);
 
                if (receipt.status === 1) {
                   // Update the approvedProducts state
@@ -294,21 +297,6 @@ const Songs = () => {
                      bookFile: product.bookFile,
                      address: address, // Store the user's address with the purchased book
                   };
-
-                  console.log(purchasedSongs);
-
-                  // Serialize the purchased product before storing it
-                  const serializedProduct = JSON.stringify(purchasedSongs);
-
-                  // Add the purchased product to localStorage
-                  const storedPurchasedSoongs =
-                     JSON.parse(localStorage.getItem('purchasedProducts')) ||
-                     [];
-                  storedPurchasedSoongs.push(serializedProduct);
-                  localStorage.setItem(
-                     'purchasedProducts',
-                     JSON.stringify(storedPurchasedSoongs)
-                  );
 
                   const purchasedSongTitle = purchasedSongs.title;
 
@@ -335,6 +323,7 @@ const Songs = () => {
                      'http://hokoshokos-001-site1.etempurl.com/api/Catalog/AddTransactions',
                      transactionData
                   );
+                  console.log(addTransactionResponse);
 
                   // Check the response from the API
                   if (addTransactionResponse.status === 200) {
@@ -356,7 +345,7 @@ const Songs = () => {
                } else {
                   console.error('Transaction Not Successful');
                }
-               console.log('done');
+               // console.log('done');
             } else {
                console.error('User is not connected to a Web3 provider.');
             }
@@ -437,7 +426,7 @@ const Songs = () => {
                                  $TKC {song.contentPrice / 1e15}
                               </span>
                               <div>
-                                 {hasPurchased(address, song.recId) ? (
+                                 {individualPurchasedStatus[song.counterId] ? (
                                     <button
                                        disabled
                                        className="text-white mt-1 bg-gray-500 py-1 px-2 rounded-sm"

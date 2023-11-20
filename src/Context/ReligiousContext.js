@@ -24,6 +24,7 @@ import {
 } from '@/reduxToolkit/slices/audioSlice';
 import RMabi from '@/Contract/rm-abi.json';
 import { useWeb3Modal } from '@web3modal/wagmi/react';
+import toast, { Toaster } from 'react-hot-toast';
 
 //////////////////////////////
 
@@ -412,13 +413,26 @@ export const StateContextProvider = ({ children }) => {
             signer
          );
 
+         if (address === undefined) {
+            toast.success(`Please Connect Your Wallet.`, {
+               duration: 4000,
+               position: 'top-right',
+               icon: '❌',
+               style: {
+                  background: '#fff',
+                  border: '1px solid #a16206',
+               },
+            });
+            return;
+         }
+
          setApproveLoadingStates((prevStates) => ({
             ...prevStates,
             [product.recId]: true,
          }));
 
          const contentPrice = product.contentPrice;
-         console.log(contentPrice);
+         console.log(product);
 
          const priceToString = contentPrice.toString();
          const price = ethers.utils.parseEther(priceToString, 'ether');
@@ -517,27 +531,6 @@ export const StateContextProvider = ({ children }) => {
       </StateContext.Provider>
    );
 };
-{
-   /* {books.map((book) => {
-            const { recId, author, category, description, price, cover } = book;
-
-            return (
-               <div key={recId}>
-                  <img
-                     src={cover}
-                     alt={`Cover for ${recId}`}
-                     width={150}
-                     height={100}
-                  />
-                  <p>{recId}</p>
-                  <p>{author}</p>
-                  <p>{description}</p>
-                  <p>{price}</p>
-                  <p>{category}</p>
-               </div>
-            );
-         })} */
-}
 
 //  API Key: 56dea089dd75273bcbfa
 //  API Secret: a1e23bc067312846d4546f93e547947dffbad67d2745c5fb5d6888d1f2ca501b

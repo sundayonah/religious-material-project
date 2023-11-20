@@ -66,9 +66,10 @@ export const fetchBooks = async () => {
       // console.log('Original Data:', data);
 
       const bookDetails = await Promise.all(
-         data.map(async (message) => {
+         data.map(async (book) => {
+            // console.log(book);
             try {
-               const ipfsHash = message.hash;
+               const ipfsHash = book.hash;
                const pinataApiUrl = `https://gateway.pinata.cloud/ipfs/${ipfsHash}`;
 
                const pinataResponse = await axios.get(pinataApiUrl);
@@ -76,14 +77,15 @@ export const fetchBooks = async () => {
                // console.log(pinataResponse);
                if (pinataResponse.status === 200) {
                   const ipfsContent = pinataResponse.data;
+                  // console.log(ipfsContent);
 
                   const completeMessageInfo = {
-                     recId: message.recId,
-                     hash: message.hash,
-                     counterId: message.counterId,
-                     category: message.category,
-                     bookFile: message.bookFile,
-                     type: message.type,
+                     recId: book.recId,
+                     hash: book.hash,
+                     counterId: book.counterId,
+                     category: book.category,
+                     bookFile: book.bookFile,
+                     type: book.type,
                      ...ipfsContent,
                   };
 
@@ -104,18 +106,6 @@ export const fetchBooks = async () => {
             }
          })
       );
-
-      // console.log('Message Details:', bookDetails);
-
-      // const filteredMessages = bookDetails.filter(
-      //    (detail) => detail !== null
-      // );
-
-      // console.log('Filtered Messages:', bookDetails);
-
-      // Return the filteredDownloads as the API response
-      // res.status(200).json(filteredMessages);
-      // console.log('Book Details:', bookDetails);
 
       const filteredBooks = bookDetails.filter((book) => book !== null);
       // console.log('Filtered Books:', filteredBooks);
@@ -180,7 +170,7 @@ export const useFetchMessages = () => {
    const fetchMessages = useCallback(async () => {
       try {
          const messageURL =
-            'http://hokoshokos-001-site1.etempurl.com/api/Catalog/GetAllSongs';
+            'http://hokoshokos-001-site1.etempurl.com/api/Catalog/GetAllMessages';
 
          // const messageURL = '/api/message';
 
@@ -246,7 +236,7 @@ export const getTransactions = async (address) => {
       const validDownloadDetails = await Promise.all(
          data.map(async (download) => {
             const ipfsHash = download.hash;
-            const pinataApiUrl = `https://purple-existing-woodpecker-520.mypinata.cloud/ipfs/${ipfsHash}`;
+            const pinataApiUrl = `https://gateway.pinata.cloud/ipfs/${ipfsHash}`;
 
             const pinataResponse = await axios.get(pinataApiUrl);
 

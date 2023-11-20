@@ -158,7 +158,7 @@ const ProductsDownload = ({ selectedFilter, filteredDownloadProduct }) => {
          'all',
          ...new Set(purchasedProducts.map((product) => product.type)),
       ];
-      //   console.log(buttons);
+      // console.log(buttons);
 
       return buttons.map((button) => (
          <button
@@ -204,9 +204,10 @@ const ProductsDownload = ({ selectedFilter, filteredDownloadProduct }) => {
          try {
             const newDurations = {};
 
-            for (const { recId, dataFile, type } of purchasedProducts) {
-               const audioFileURL = `http://kingdomcoin-001-site1.ctempurl.com/${type}/${dataFile}`; // Replace this with your audio file URL
+            http: for (const { recId, dataFile, type } of purchasedProducts) {
+               const audioFileURL = `http://hokoshokos-001-site1.etempurl.com/${type}/${dataFile}`; // Replace this with your audio file URL
                const audio = new Audio(audioFileURL);
+               // console.log(audio);
 
                // Promisify getting the duration
                const duration = await new Promise((resolve, reject) => {
@@ -224,6 +225,8 @@ const ProductsDownload = ({ selectedFilter, filteredDownloadProduct }) => {
                   audio.preload = 'metadata'; // Preload metadata for duration
                   audio.load();
                });
+
+               // console.log(duration);
 
                newDurations[recId] = duration;
             }
@@ -277,6 +280,7 @@ const ProductsDownload = ({ selectedFilter, filteredDownloadProduct }) => {
 
    const handlePlayClick = (recId, title, artist, imageUrl) => {
       const audio = audioRefs[recId];
+      console.log(audio);
 
       if (audio) {
          if (recId === activeSongId) {
@@ -425,7 +429,7 @@ const ProductsDownload = ({ selectedFilter, filteredDownloadProduct }) => {
                                  onEnded={() => handleSongEnd(recId)}
                               >
                                  <source
-                                    src={`http://kingdomcoin-001-site1.ctempurl.com/${type}/${dataFile}`}
+                                    src={`http://hokoshokos-001-site1.etempurl.com/${type}/${dataFile}`}
                                     type="audio/mpeg"
                                  />
                               </audio>

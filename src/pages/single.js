@@ -15,8 +15,9 @@ import {
    ProductLenghtLoadingSpinner,
 } from '@/components/utils';
 import Image from 'next/image';
+import axios from 'axios';
 
-const Single = () => {
+const Single = ({ kingdomBooksWithPrice }) => {
    const {
       approvedProducts,
       Approved,
@@ -30,6 +31,8 @@ const Single = () => {
    const { address } = useAccount();
    const [bookLoadingStates, setBookLoadingStates] = useState(false);
    const [bookDetails, setBookDetails] = useState(null);
+   const [individualPurchasedStatus, setIndividualPurchasedStatus] =
+      useState(false);
 
    const RMTestnetContractAddress =
       '0xF00Ab09b8FA49dD07da19024d6D213308314Ddb8';
@@ -48,16 +51,79 @@ const Single = () => {
       });
    };
 
+   // console.log(kingdomBooksWithPrice);
+
+   // useEffect(() => {
+   // const fetchData = async () => {
+   //    const response = await axios.get(
+   //       `http://hokoshokos-001-site1.etempurl.com/api/Catalog/GetTransactions/${address}`
+   //    );
+   //    try {
+   //       const bookDetails = await fetchBooks();
+   //       const foundBook = bookDetails.find((book) => book.recId === id);
+
+   //       const counterId = foundBook.counterId;
+
+   //       const purchasedProducts = response.data.data;
+
+   //       let purch = purchasedProducts.find((product) => product.counterId);
+
+   //       let purchasedId = purch.counterId;
+
+   //       let checkPurchased = purchasedId === counterId;
+   //       console.log(checkPurchased);
+
+   //       setBookDetails(foundBook);
+   //       setIndividualPurchasedStatus(checkPurchased);
+   //    } catch (error) {
+   //       console.error('Error checking purchase status:', error);
+   //    }
+   // };
+   // fetchData();
+
    useEffect(() => {
       const fetchData = async () => {
          const bookDetails = await fetchBooks();
          const foundBook = bookDetails.find((book) => book.recId === id);
 
          setBookDetails(foundBook);
+         console.log(foundBook);
       };
 
       fetchData();
    }, [id]);
+
+   // useEffect(() => {
+   //    const checkPurchasedStatus = async () => {
+   //       // const { counterId } = bookDetails;
+
+   //       try {
+   //          const response = await axios.get(
+   //             `http://hokoshokos-001-site1.etempurl.com/api/Catalog/GetTransactions/${address}`
+   //          );
+
+   //          const purchasedProducts = response.data.data;
+   //          console.log(purchasedProducts);
+
+   //          let purch = purchasedProducts.find((product) => product.counterId);
+
+   //          let purchasedId = purch.counterId;
+   //          console.log(purchasedId);
+
+   //          console.log(counterId);
+
+   //          let checkPurchased = purchasedId === counterId;
+
+   //          console.log(checkPurchased);
+
+   //          // setIndividualPurchasedStatus(purchasedMap);
+   //       } catch (error) {
+   //          console.error('Error checking purchase status:', error);
+   //       }
+   //    };
+
+   //    checkPurchasedStatus();
+   // }, [address, bookDetails]);
 
    const buyNow = async (product) => {
       try {
@@ -121,19 +187,19 @@ const Single = () => {
                      address: address, // Store the user's address with the purchased book
                   };
 
-                  console.log(purchasedBook);
+                  // console.log(purchasedBook);
 
-                  // Serialize the purchased product before storing it
-                  const serializedProduct = JSON.stringify(purchasedBook);
+                  // // Serialize the purchased product before storing it
+                  // const serializedProduct = JSON.stringify(purchasedBook);
 
-                  // Add the purchased product to localStorage
-                  const storedPurchasedBooks =
-                     JSON.parse(localStorage.getItem('purchasedBooks')) || [];
-                  storedPurchasedBooks.push(serializedProduct);
-                  localStorage.setItem(
-                     'purchasedBooks',
-                     JSON.stringify(storedPurchasedBooks)
-                  );
+                  // // Add the purchased product to localStorage
+                  // const storedPurchasedBooks =
+                  //    JSON.parse(localStorage.getItem('purchasedBooks')) || [];
+                  // storedPurchasedBooks.push(serializedProduct);
+                  // localStorage.setItem(
+                  //    'purchasedBooks',
+                  //    JSON.stringify(storedPurchasedBooks)
+                  // );
 
                   const purchasedBookTitle = purchasedBook.title;
 
@@ -153,7 +219,7 @@ const Single = () => {
                      transactionHash: receipt.transactionHash,
                   };
 
-                  console.log(transactionData);
+                  // console.log(transactionData);
 
                   // Make a POST request to the API endpoint
                   const addTransactionResponse = await axios.post(
@@ -284,11 +350,11 @@ const Single = () => {
                               ) : (
                                  <button
                                     onClick={() => {
-                                       buyNow(bookDetails);
+                                       Approved(bookDetails);
                                     }}
                                     className="text-white mt-1 bg-yellow-700 py-1 px-2 rounded-sm hover:bg-yellow-800 focus:outline-none focus:ring-1 focus:ring-yellow-500 focus:ring-opacity-50"
                                  >
-                                    {bookLoadingStates[bookDetails.recId] ? (
+                                    {approveLoadingStates[bookDetails.recId] ? (
                                        <LoadingSpinner />
                                     ) : (
                                        'Approve'

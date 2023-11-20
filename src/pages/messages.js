@@ -185,7 +185,7 @@ const Messages = () => {
       const checkPurchasedStatus = async () => {
          try {
             const response = await axios.get(
-               `http://kingdomcoin-001-site1.ctempurl.com/api/Catalog/GetTransactions/${address}`
+               `http://hokoshokos-001-site1.etempurl.com/api/Catalog/GetTransactions/${address}`
             );
 
             const purchasedProducts = response.data.data;
@@ -333,7 +333,7 @@ const Messages = () => {
                } else {
                   console.error('Transaction Not Successful');
                }
-               console.log('done');
+               // console.log('done');
             } else {
                console.error('User is not connected to a Web3 provider.');
             }

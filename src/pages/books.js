@@ -23,6 +23,7 @@ import {
    ProductLenghtLoadingSpinner,
    SearchIconWhenThereIsNoFilter,
 } from '@/components/utils';
+import Single from './single';
 
 const Books = () => {
    // const [filteredProducts, setFilteredProducts] = useState([...products]);

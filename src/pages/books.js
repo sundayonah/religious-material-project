@@ -24,8 +24,6 @@ import {
    SearchIconWhenThereIsNoFilter,
 } from '@/components/utils';
 
-// import { StateContext } from '@/Context/ReligiousContext';
-
 const Books = () => {
    // const [filteredProducts, setFilteredProducts] = useState([...products]);
    const [filteredProducts, setFilteredProducts] = useState([]);
@@ -78,6 +76,7 @@ const Books = () => {
 
          // Assuming the second value (index 1) represents the price
          const contentPrice = contentValues[1] ? parseInt(contentValues[1]) : 0;
+         // console.log(contentPrice);
 
          // // Assuming other values in 'contentData' correspond to other properties in 'book'
          const bookWithPrice = { ...book, contentPrice };
@@ -89,16 +88,172 @@ const Books = () => {
       // console.log(updatedMessages);
       return updatedMessages;
    }, [kingdomBook]);
+   // 465000000000000000;
+
+   useEffect(() => {
+      const fetchBooks = async () => {
+         try {
+            const response = await axios.get(
+               'http://hokoshokos-001-site1.etempurl.com/api/Catalog/GetAllBooks'
+            );
+            const data = response.data.data;
+
+            // console.log('Original Book Data:', data);
+
+            const bookDetails = await Promise.all(
+               data.map(async (book) => {
+                  try {
+                     const ipfsHash = book.hash;
+                     const pinataApiUrl = `https://purple-existing-woodpecker-520.mypinata.cloud/ipfs/${ipfsHash}`;
+
+                     console.log(
+                        'Fetching IPFS content for book',
+                        book.recId,
+                        '-',
+                        ipfsHash
+                     );
+
+                     const pinataResponse = await axios.get(pinataApiUrl);
+
+                     console.log(
+                        'Pinata Response for book',
+                        book.recId,
+                        '-',
+                        pinataResponse.data
+                     );
+
+                     if (pinataResponse.status === 200) {
+                        const ipfsContent = pinataResponse.data;
+
+                        console.log(book);
+
+                        const completeBookInfo = {
+                           recId: book.recId,
+                           hash: book.hash,
+                           counterId: book.counterId,
+                           category: book.category,
+                           bookFile: book.bookFile,
+                           ...ipfsContent,
+                        };
+
+                        console.log('Complete Book Info:', completeBookInfo);
+                        return completeBookInfo;
+                     } else {
+                        console.error(
+                           'Pinata API returned an error:',
+                           pinataResponse.status,
+                           pinataResponse.statusText
+                        );
+                        return null;
+                     }
+                  } catch (error) {
+                     console.error('Error processing book:', error);
+                     return null;
+                  }
+               })
+            );
+
+            // console.log('Book Details:', bookDetails);
+
+            const filteredBooks = bookDetails.filter((book) => book !== null);
+            // console.log('Filtered Books:', filteredBooks);
+            setKingdomBook(filteredBooks);
+         } catch (error) {
+            console.error('Error fetching books details:', error);
+         }
+      };
+
+      fetchBooks();
+   }, []);
+
+   // console.log(kingdomBook);
+
+   // const booksContent = async () => {
+   //    try {
+   //       const messageURL =
+   //          'http://hokoshokos-001-site1.etempurl.com/api/Catalog/GetAllBooks';
+   //       const response = await axios.get(messageURL);
+
+   //       const data = response.data.data;
+
+   //       // console.log('Original Data:', data);
+
+   //       const bookDetails = await Promise.all(
+   //          data.map(async (message) => {
+   //             try {
+   //                const ipfsHash = message.hash;
+   //                const pinataApiUrl = `https://gateway.pinata.cloud/ipfs/${ipfsHash}`;
+
+   //                const pinataResponse = await axios.get(pinataApiUrl);
+
+   //                // console.log(pinataResponse);
+   //                if (pinataResponse.status === 200) {
+   //                   const ipfsContent = pinataResponse.data;
+
+   //                   const completeMessageInfo = {
+   //                      recId: message.recId,
+   //                      hash: message.hash,
+   //                      counterId: message.counterId,
+   //                      category: message.category,
+   //                      bookFile: message.bookFile,
+   //                      type: message.type,
+   //                      ...ipfsContent,
+   //                   };
+
+   //                   // console.log('Complete Message Info:', completeMessageInfo);
+
+   //                   return completeMessageInfo;
+   //                } else {
+   //                   console.error(
+   //                      'Pinata API returned an error:',
+   //                      pinataResponse.status,
+   //                      pinataResponse.statusText
+   //                   );
+   //                   return null;
+   //                }
+   //             } catch (error) {
+   //                console.error('Error fetching IPFS content:', error);
+   //                return null;
+   //             }
+   //          })
+   //       );
+
+   //       // console.log('Message Details:', bookDetails);
+
+   //       // const filteredMessages = bookDetails.filter(
+   //       //    (detail) => detail !== null
+   //       // );
+   //       setKingdomBook(bookDetails);
+
+   //       // console.log('Filtered Messages:', bookDetails);
+
+   //       // Return the filteredDownloads as the API response
+   //       // res.status(200).json(filteredMessages);
+   //    } catch (error) {
+   //       console.error('Error fetching Message details:', error);
+   //    }
+   // };
 
    useEffect(() => {
       const fetchMessagesWithPrice = async () => {
-         const bookWithPrices = await fetchPrices();
-         setKingdomBooksWithPrice(bookWithPrices);
+         try {
+            const bookWithPrices = await fetchPrices();
+            setKingdomBooksWithPrice(bookWithPrices);
 
-         const bookDetails = await fetchBooks();
-         // console.log(bookDetails);
-         setKingdomBook(bookDetails);
+            const bookDetails = await fetchBooks();
+            setKingdomBook(bookDetails);
+            // console.log(bookDetails);
+
+            // const response = await axios.get('/api/book');
+            // const data = response.data;
+            // // console.log(data);
+
+            // setKingdomBook(data);
+         } catch (error) {
+            console.error('Error fetching books:', error);
+         }
       };
+      // booksContent();
       fetchMessagesWithPrice();
    }, [fetchPrices]);
 
@@ -173,56 +328,59 @@ const Books = () => {
    if (kingdomBooksWithPrice.length === 0) {
       return (
          <>
-            <ProductLenghtLoadingSpinner />
+            {/* <ProductLenghtLoadingSpinner /> */}
+            <div className="flex justify-center items-center mt-24">
+               <p className="text-2xl text-gray-400">Coming Soon</p>
+            </div>
          </>
       );
    }
    const displayProducts = () => {
       return (
          <>
-            {/* {filteredProducts.length === 0 ? (
+            {filteredProducts.length === 0 ? (
                <div className="flex justify-center items-center mt-24">
                   <p className="text-2xl text-gray-400">
                      No Messages 🔽 found matching the search.
                   </p>
                </div>
-            ) : ( */}
-            <>
-               {filteredProducts.map(
-                  ({ recId, title, image, author, id, contentPrice }) => (
-                     <div
-                        className="relative bg-transparent p-2  hover:bg-[#342b1c] rounded-tl-3xl rounded-br-3xl shadow-custom mb-4"
-                        key={recId}
-                     >
-                        <Link href={`/single?id=${recId}`} passHref>
-                           <Image
-                              src={`https://gateway.pinata.cloud/ipfs/${image}`}
-                              className="h-48 w-52 rounded-tl-3xl object-center "
-                              alt={title}
-                              width={300}
-                              height={150}
-                           />
-                        </Link>
-                        <div className="text-center mt-1 mb-3 ">
-                           <h5 className="text-gray-500 text-lg capitalize">
-                              {title}
-                           </h5>
-                           {/* <h5 className="text-gray-500 text-lg capitalize">
+            ) : (
+               <>
+                  {filteredProducts.map(
+                     ({ recId, title, image, author, id, contentPrice }) => (
+                        <div
+                           className="relative bg-transparent p-2  hover:bg-[#342b1c] rounded-tl-3xl rounded-br-3xl shadow-custom mb-4"
+                           key={recId}
+                        >
+                           <Link href={`/single?id=${recId}`} passHref>
+                              <Image
+                                 src={`https://gateway.pinata.cloud/ipfs/${image}`}
+                                 className="h-48 w-52 rounded-tl-3xl object-center "
+                                 alt={title}
+                                 width={300}
+                                 height={150}
+                              />
+                           </Link>
+                           <div className="text-center mt-1 mb-3 ">
+                              <h5 className="text-gray-500 text-lg capitalize">
+                                 {title}
+                              </h5>
+                              {/* <h5 className="text-gray-500 text-lg capitalize">
                               {id}
                            </h5> */}
-                           <h5 className="text-white text-lg capitalize">
-                              {author}
-                           </h5>
-                           {/* <span className="absolute bg-[#DAA851] my-1 px-4 py-1 text-gray-700 font-bold text-sm left-48 md:left-40 lg:left-40 xl:left-40 2xl:left-70 rounded-md"> */}
-                           <span className="absolute bg-[#DAA851] my-1 px-4 py-1 text-gray-700 font-bold text-sm  rounded-md">
-                              $TKC {contentPrice}
-                           </span>
+                              <h5 className="text-white text-lg capitalize">
+                                 {author}
+                              </h5>
+                              {/* <span className="absolute bg-[#DAA851] my-1 px-4 py-1 text-gray-700 font-bold text-sm left-48 md:left-40 lg:left-40 xl:left-40 2xl:left-70 rounded-md"> */}
+                              <span className="absolute bg-[#DAA851] my-1 px-4 py-1 text-gray-700 font-bold text-sm  rounded-md">
+                                 $TKC {contentPrice / 1e15}
+                              </span>
+                           </div>
                         </div>
-                     </div>
-                  )
-               )}
-            </>
-            {/* )} */}
+                     )
+                  )}
+               </>
+            )}
          </>
       );
    };

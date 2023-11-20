@@ -85,16 +85,93 @@ const Songs = () => {
       return updatedSongs;
    }, [kingdomSongs]);
 
+   const songsContent = async () => {
+      try {
+         const messageURL =
+            'http://hokoshokos-001-site1.etempurl.com/api/Catalog/GetAllSongs';
+         const response = await axios.get(messageURL);
+
+         const data = response.data.data;
+
+         // console.log('Original Data:', data);
+
+         const songDetails = await Promise.all(
+            data.map(async (message) => {
+               try {
+                  const ipfsHash = message.hash;
+                  const pinataApiUrl = `https://gateway.pinata.cloud/ipfs/${ipfsHash}`;
+
+                  const pinataResponse = await axios.get(pinataApiUrl);
+
+                  // console.log(pinataResponse);
+                  if (pinataResponse.status === 200) {
+                     const ipfsContent = pinataResponse.data;
+
+                     const completeMessageInfo = {
+                        recId: message.recId,
+                        hash: message.hash,
+                        counterId: message.counterId,
+                        category: message.category,
+                        bookFile: message.bookFile,
+                        type: message.type,
+                        ...ipfsContent,
+                     };
+
+                     // console.log('Complete Message Info:', completeMessageInfo);
+
+                     return completeMessageInfo;
+                  } else {
+                     console.error(
+                        'Pinata API returned an error:',
+                        pinataResponse.status,
+                        pinataResponse.statusText
+                     );
+                     return null;
+                  }
+               } catch (error) {
+                  console.error('Error fetching IPFS content:', error);
+                  return null;
+               }
+            })
+         );
+
+         // console.log('Message Details:', songDetails);
+
+         // const filteredMessages = songDetails.filter(
+         //    (detail) => detail !== null
+         // );
+         setKingdomSongs(songDetails);
+
+         // console.log('Filtered Messages:', songDetails);
+
+         // Return the filteredDownloads as the API response
+         // res.status(200).json(filteredMessages);
+      } catch (error) {
+         console.error('Error fetching Message details:', error);
+      }
+   };
+
    useEffect(() => {
       const fetchSongsWithPrice = async () => {
-         const songsWithPrices = await fetchPrices();
-         setKingdomSongsWithPrice(songsWithPrices);
-         // console.log(songsWithPrices);
+         try {
+            const songsWithPrices = await fetchPrices();
+            setKingdomSongsWithPrice(songsWithPrices);
+            // console.log(songsWithPrices);
+            // const response = await axios.get('/api/song');
+            // console.log(response);
+            // const data = response.data;
+            // console.log(data);
 
-         const messagesDetails = await fetchSongs();
-         setKingdomSongs(messagesDetails);
-         // console.log(messagesDetails);
+            // setKingdomSongs(data);
+
+            // const songsDetails = await fetchSongs();
+            // setKingdomSongs(songsDetails);
+            // console.log(songsDetails);
+         } catch (error) {
+            console.error('Error fetching songs data:', error);
+         }
       };
+      songsContent();
       fetchSongsWithPrice();
    }, [fetchPrices]);
 
@@ -255,7 +332,7 @@ const Songs = () => {
 
                   // Make a POST request to the API endpoint
                   const addTransactionResponse = await axios.post(
-                     'http://kingdomcoin-001-site1.ctempurl.com/api/Catalog/AddTransactions',
+                     'http://hokoshokos-001-site1.etempurl.com/api/Catalog/AddTransactions',
                      transactionData
                   );
 
@@ -357,7 +434,7 @@ const Songs = () => {
                                  {song.author}
                               </span>
                               <span className="text-gray-400">
-                                 $TKC {song.contentPrice}
+                                 $TKC {song.contentPrice / 1e15}
                               </span>
                               <div>
                                  {hasPurchased(address, song.recId) ? (

@@ -157,7 +157,7 @@ const Single = () => {
 
                   // Make a POST request to the API endpoint
                   const addTransactionResponse = await axios.post(
-                     'http://kingdomcoin-001-site1.ctempurl.com/api/Catalog/AddTransactions',
+                     'http://hokoshokos-001-site1.etempurl.com/api/Catalog/AddTransactions',
                      transactionData
                   );
 

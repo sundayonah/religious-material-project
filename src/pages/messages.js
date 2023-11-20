@@ -46,6 +46,74 @@ const Messages = () => {
    const [searchInput, setSearchInput] = useState('');
    const [filteredMessages, setFilteredMessages] = useState(kingdomMessages);
 
+   // const messagesFetchHook = useFetchMessages();
+
+   const messagesContent = async () => {
+      try {
+         const messageURL =
+            'http://hokoshokos-001-site1.etempurl.com/api/Catalog/GetAllMessages';
+         const response = await axios.get(messageURL);
+
+         const data = response.data.data;
+
+         // console.log('Original Data:', data);
+
+         const messageDetails = await Promise.all(
+            data.map(async (message) => {
+               try {
+                  const ipfsHash = message.hash;
+                  const pinataApiUrl = `https://gateway.pinata.cloud/ipfs/${ipfsHash}`;
+
+                  const pinataResponse = await axios.get(pinataApiUrl);
+
+                  // console.log(pinataResponse);
+                  if (pinataResponse.status === 200) {
+                     const ipfsContent = pinataResponse.data;
+
+                     const completeMessageInfo = {
+                        recId: message.recId,
+                        hash: message.hash,
+                        counterId: message.counterId,
+                        category: message.category,
+                        bookFile: message.bookFile,
+                        type: message.type,
+                        ...ipfsContent,
+                     };
+
+                     // console.log('Complete Message Info:', completeMessageInfo);
+
+                     return completeMessageInfo;
+                  } else {
+                     console.error(
+                        'Pinata API returned an error:',
+                        pinataResponse.status,
+                        pinataResponse.statusText
+                     );
+                     return null;
+                  }
+               } catch (error) {
+                  console.error('Error fetching IPFS content:', error);
+                  return null;
+               }
+            })
+         );
+
+         // console.log('Message Details:', messageDetails);
+
+         // const filteredMessages = messageDetails.filter(
+         //    (detail) => detail !== null
+         // );
+         setKingdomMessages(messageDetails);
+
+         // console.log('Filtered Messages:', messageDetails);
+
+         // Return the filteredDownloads as the API response
+         // res.status(200).json(filteredMessages);
+      } catch (error) {
+         console.error('Error fetching Message details:', error);
+      }
+   };
+
    // Function to fetch prices for each message
    const fetchPrices = useCallback(async () => {
       const provider = new ethers.providers.Web3Provider(window.ethereum);
@@ -60,18 +128,22 @@ const Messages = () => {
 
       const updatedMessages = [];
       for (const message of kingdomMessages) {
-         const contentId = message.id;
+         // const contentId = message.id;
+         const { counterId } = message;
+         // console.log(counterId);
 
-         const contentData = await contract.content(contentId);
+         const contentData = await contract.content(counterId);
          const contentSplit = contentData.toString();
-         // console.log(contentSplit);
          const contentValues = contentSplit.split(','); // Splitting the string by comma
 
          // Assuming the second value (index 1) represents the price
          const contentPrice = contentValues[1] ? parseInt(contentValues[1]) : 0;
 
+         const priceToNormal = contentPrice / 1e15;
+
          // // Assuming other values in 'contentData' correspond to other properties in 'message'
          const messageWithPrice = { ...message, contentPrice };
+         // console.log(messageWithPrice);
 
          updatedMessages.push(messageWithPrice);
       }
@@ -79,25 +151,24 @@ const Messages = () => {
       return updatedMessages;
    }, [kingdomMessages]);
 
-   // const messagesFetchHook = useFetchMessages();
-
    useEffect(() => {
       const FetchMessagesWithPrice = async () => {
-         try {
-            const messagesWithPrices = await fetchPrices();
-            setKingdomMessagesWithPrice(messagesWithPrices);
+         const messagesWithPrices = await fetchPrices();
+         setKingdomMessagesWithPrice(messagesWithPrices);
 
-            const response = await axios.get('/api/message');
-            const data = response.data;
-            // console.log(data);
+         // const response = await axios.get('/api/message');
+         // const data = response.data;
+         // // console.log(data);
 
-            setKingdomMessages(data);
-         } catch (error) {
-            console.error('Error fetching datas:', error);
-         }
+         // setKingdomMessages(data);
+
+         // const messagesDetails = await messagesFetchHook();
+         // // console.log(messagesDetails)
+         // setKingdomMessages(messagesDetails);
       };
+      messagesContent();
       FetchMessagesWithPrice();
-   }, [kingdomMessages]);
+   }, [kingdomMessages, fetchPrices]);
 
    // Filter the messages based on the search input
    useEffect(() => {
@@ -237,7 +308,7 @@ const Messages = () => {
 
                   // Make a POST request to the API endpoint
                   const addTransactionResponse = await axios.post(
-                     'http://kingdomcoin-001-site1.ctempurl.com/api/Catalog/AddTransactions',
+                     'http://hokoshokos-001-site1.etempurl.com/api/Catalog/AddTransactions',
                      transactionData
                   );
                   console.log(addTransactionResponse);
@@ -309,7 +380,7 @@ const Messages = () => {
       );
    }
 
-   // console.log(kingdomMessagesWithPrice);
+   // console.log(filteredMessages);
 
    return (
       <div className="w-[95%] m-auto mt-28 ">
@@ -357,7 +428,7 @@ const Messages = () => {
                               {message.author}
                            </span>
                            <span className="text-gray-300">
-                              $TKC {message.contentPrice}
+                              $TKC {message.contentPrice / 1e15}
                            </span>
                         </div>
                         <div className="flex justify-center items-center">

@@ -126,31 +126,31 @@ const ProductsDownload = ({ selectedFilter, filteredDownloadProduct }) => {
       setProductsModal(false);
    };
 
+   // useEffect(() => {
+   //    const getAllDownload = async () => {
+   //       try {
+   //          const response = await axios.get(
+   //             `/api/getAllDownload?address=${address}`
+   //          );
+   //          const data = response.data.data;
+   //          console.log(data);
+
+   //          setPurchasedProducts(data);
+   //       } catch (error) {
+   //          console.error('Error fetching datas:', error);
+   //       }
+   //    };
+   //    getAllDownload();
+   // }, [address]);
+
    useEffect(() => {
-      const getAllDownload = async () => {
-         try {
-            const response = await axios.get(
-               `/api/getAllDownload?address=${address}`
-            );
-            // console.log(response);
-            const data = response.data;
-
-            setPurchasedProducts(data);
-         } catch (error) {
-            console.error('Error fetching datas:', error);
-         }
+      const getDownloads = async () => {
+         const tx = await getTransactions(address);
+         setPurchasedProducts(tx);
+         // console.log(tx);
       };
-      getAllDownload();
+      getDownloads();
    }, [address]);
-
-   //    useEffect(() => {
-   //       const getDownloads = async () => {
-   //          const tx = await getTransactions(address);
-   //          setPurchasedProducts(tx);
-   //          //  console.log(tx);
-   //       };
-   //       getDownloads();
-   //    }, [address]);
 
    // Fiter Products by Types, author, title
    const displayButtons = () => {

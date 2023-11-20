@@ -2,63 +2,126 @@
 import React, { useCallback } from 'react';
 import axios from 'axios';
 
+// export const fetchBooks = async () => {
+//    const bookURL = '/api/book';
+
+//    try {
+//       const res = await axios.get(bookURL);
+//       const data = res.data.data;
+
+//       const bookDetails = await Promise.all(
+//          data.map(async (book) => {
+//             const ipfsHash = book.hash;
+//             const pinataApiUrl = `https://purple-existing-woodpecker-520.mypinata.cloud/ipfs/${ipfsHash}`;
+
+//             try {
+//                const pinataResponse = await axios.get(pinataApiUrl);
+
+//                if (pinataResponse.status === 200) {
+//                   const ipfsContent = pinataResponse.data;
+
+//                   const completeBookInfo = {
+//                      recId: book.recId,
+//                      hash: book.hash,
+//                      counterId: book.counterId,
+//                      category: book.category,
+//                      bookFile: book.bookFile,
+//                      ...ipfsContent,
+//                   };
+
+//                   return completeBookInfo;
+//                } else {
+//                   console.error(
+//                      'Pinata API returned an error:',
+//                      pinataResponse.status,
+//                      pinataResponse.statusText
+//                   );
+//                   return null;
+//                }
+//             } catch (error) {
+//                console.error('Error fetching IPFS content:', error);
+//                return null;
+//             }
+//          })
+//       );
+
+//       const filteredBooks = bookDetails.filter((book) => book !== null);
+//       return filteredBooks;
+//    } catch (error) {
+//       console.error('Error fetching book details:', error);
+//       return [];
+//    }
+// };
+
 export const fetchBooks = async () => {
-   // const bookURL =
-   //    'http://kingdomcoin-001-site1.ctempurl.com/api/Catalog/GetAllBooks';
-
-   const bookURL = '/api/book';
-   // const bookURL =
-   //    'http://kingdomcoin-001-site1.ctempurl.com/api/Catalog/GetAllBooks';
-
-   // const token =
-   //    'eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiMDc4NzJmNGMtNmQ0MC00M2IyLWE1Y2ItOGE1ZmQwZTA1NDBhIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbmFtZWlkZW50aWZpZXIiOiIweDk3NTZCNzA0OEJlMzRlNzA0QzI3RGVFYjdkQjM0QkUxQTkxMGFCOTIiLCJleHAiOjE3MDAyNDU0NTksImlzcyI6Imh0dHA6Ly9yb2Fkc3Rhci5jb20iLCJhdWQiOiJodHRwOi8vcm9hZHN0YXIuY29tIn0.NutJY74M-eLlkTIvvPsRAFe5Xye8bHy2B5k4EtE3wno';
-   // 'eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiMDgxNWQ1Y2YtNTg2ZS00ODgwLTk3MzktNWM2NmQxYzA2ZjRmIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbmFtZWlkZW50aWZpZXIiOiIweDMyRTgwRTE2YWFmZGJiYjIwQkE1NTY5MGYyNzVhMjYwOGUzRWNGYzAiLCJleHAiOjE3MDAyNDM5NDksImlzcyI6Imh0dHA6Ly9yb2Fkc3Rhci5jb20iLCJhdWQiOiJodHRwOi8vcm9hZHN0YXIuY29tIn0.2ely65EqGLmqMsxE2h35ozUSnKmOwNuJTiKmqjhJvuQ';
-   // const config = {
-   //    headers: {
-   //       Authorization: `Bearer ${token}`,
-   //    },
-   // };
+   // const bookURL = '/api/book';
 
    try {
-      const res = await axios.get(bookURL);
-      const data = res.data.data;
-      // console.log('Response:', res.data.data);
+      const bookURL =
+         'http://hokoshokos-001-site1.etempurl.com/api/Catalog/GetAllBooks';
+      const response = await axios.get(bookURL);
+
+      const data = response.data.data;
+
+      // console.log('Original Data:', data);
 
       const bookDetails = await Promise.all(
-         data.map(async (book) => {
-            const ipfsHash = book.hash;
-            const pinataApiUrl = `https://purple-existing-woodpecker-520.mypinata.cloud/ipfs/${ipfsHash}`;
+         data.map(async (message) => {
+            try {
+               const ipfsHash = message.hash;
+               const pinataApiUrl = `https://gateway.pinata.cloud/ipfs/${ipfsHash}`;
 
-            const pinataResponse = await axios.get(pinataApiUrl);
+               const pinataResponse = await axios.get(pinataApiUrl);
 
-            if (pinataResponse.status === 200) {
-               const ipfsContent = pinataResponse.data;
+               // console.log(pinataResponse);
+               if (pinataResponse.status === 200) {
+                  const ipfsContent = pinataResponse.data;
 
-               const completeBookInfo = {
-                  recId: book.recId,
-                  hash: book.hash,
-                  counterId: book.counterId,
-                  category: book.category,
-                  bookFile: book.bookFile,
-                  ...ipfsContent,
-               };
-               // console.log(completeBookInfo);
+                  const completeMessageInfo = {
+                     recId: message.recId,
+                     hash: message.hash,
+                     counterId: message.counterId,
+                     category: message.category,
+                     bookFile: message.bookFile,
+                     type: message.type,
+                     ...ipfsContent,
+                  };
 
-               return completeBookInfo;
-            } else {
-               console.error(
-                  'Pinata API returned an error:',
-                  pinataResponse.status,
-                  pinataResponse.statusText
-               );
+                  // console.log('Complete Message Info:', completeMessageInfo);
+
+                  return completeMessageInfo;
+               } else {
+                  console.error(
+                     'Pinata API returned an error:',
+                     pinataResponse.status,
+                     pinataResponse.statusText
+                  );
+                  return null;
+               }
+            } catch (error) {
+               console.error('Error fetching IPFS content:', error);
                return null;
             }
          })
       );
 
-      return bookDetails.filter((book) => book !== null);
+      // console.log('Message Details:', bookDetails);
+
+      // const filteredMessages = bookDetails.filter(
+      //    (detail) => detail !== null
+      // );
+
+      // console.log('Filtered Messages:', bookDetails);
+
+      // Return the filteredDownloads as the API response
+      // res.status(200).json(filteredMessages);
+      // console.log('Book Details:', bookDetails);
+
+      const filteredBooks = bookDetails.filter((book) => book !== null);
+      // console.log('Filtered Books:', filteredBooks);
+      return filteredBooks;
    } catch (error) {
-      console.error('Error fetching book details:', error);
+      console.error('Error fetching books details:', error);
       return [];
    }
 };
@@ -83,7 +146,7 @@ export const fetchSongs = async () => {
       const data = res.data.data;
       // console.log('Response:', res.data.data);
 
-      const bookDetails = await Promise.all(
+      const songDetails = await Promise.all(
          data.map(async (song) => {
             const ipfsHash = song.hash;
             const pinataApiUrl = `https://purple-existing-woodpecker-520.mypinata.cloud/ipfs/${ipfsHash}`;
@@ -115,7 +178,9 @@ export const fetchSongs = async () => {
          })
       );
 
-      return bookDetails.filter((song) => song !== null);
+      // console.log(songDetails);
+
+      return songDetails.filter((song) => song !== null);
    } catch (error) {
       console.error('Error fetching songs details:', error);
       return [];
@@ -125,8 +190,10 @@ export const fetchSongs = async () => {
 // export const useFetchMessages = () => {
 //    const fetchMessages = useCallback(async () => {
 //       try {
-//          const messageURL =
-//             'http://kingdomcoin-001-site1.ctempurl.com/api/Catalog/GetAllMessages';
+//          // const messageURL =
+//          //    'http://kingdomcoin-001-site1.ctempurl.com/api/Catalog/GetAllMessages';
+
+//          const messageURL = '/api/message';
 
 //          const res = await axios.get(messageURL);
 //          // console.log('Response:', res.data.data);
@@ -153,7 +220,7 @@ export const fetchSongs = async () => {
 //                      ...ipfsContent,
 //                   };
 
-//                   // console.log(completeMessageInfo);
+//                   console.log(completeMessageInfo);
 
 //                   return completeMessageInfo;
 //                } else {
@@ -177,62 +244,64 @@ export const fetchSongs = async () => {
 //    return fetchMessages;
 // };
 
-// export const getTransactions = async (address) => {
-//    // const downloadsUrl = `http://kingdomcoin-001-site1.ctempurl.com/api/Catalog/GetTransactions/${address}`;
+export const getTransactions = async (address) => {
+   const downloadsUrl = `http://hokoshokos-001-site1.etempurl.com/api/Catalog/GetTransactions/${address}`;
 
-//    const downloadsUrl = '/api/getAllDownload';
+   // const downloadsUrl = '/api/getAllDownload';
 
-//    try {
-//       const res = await axios.get(downloadsUrl);
-//       const data = res.data.data;
-//       // console.log(data);
+   try {
+      const res = await axios.get(downloadsUrl);
+      const data = res.data.data;
+      // console.log(data);
 
-//       const validDownloadDetails = await Promise.all(
-//          data.map(async (download) => {
-//             const ipfsHash = download.hash;
-//             const pinataApiUrl = `https://purple-existing-woodpecker-520.mypinata.cloud/ipfs/${ipfsHash}`;
+      const validDownloadDetails = await Promise.all(
+         data.map(async (download) => {
+            const ipfsHash = download.hash;
+            const pinataApiUrl = `https://purple-existing-woodpecker-520.mypinata.cloud/ipfs/${ipfsHash}`;
 
-//             const pinataResponse = await axios.get(pinataApiUrl);
+            const pinataResponse = await axios.get(pinataApiUrl);
 
-//             if (pinataResponse.status === 200) {
-//                const ipfsContent = pinataResponse.data;
+            if (pinataResponse.status === 200) {
+               const ipfsContent = pinataResponse.data;
 
-//                // Assuming ipfsContent is in JSON format
-//                const { author, title, image } = ipfsContent;
+               // Assuming ipfsContent is in JSON format
+               const { author, title, image } = ipfsContent;
 
-//                const completeDownloadInfo = {
-//                   recId: download.recId,
-//                   hash: download.hash,
-//                   counterId: download.counterId,
-//                   address: download.address,
-//                   type: download.type,
-//                   transactionHash: download.transactionHash,
-//                   dataFile: download.dataFile,
-//                   author,
-//                   title,
-//                   image,
-//                   // Add other fields as needed
-//                };
+               const completeDownloadInfo = {
+                  recId: download.recId,
+                  hash: download.hash,
+                  counterId: download.counterId,
+                  address: download.address,
+                  type: download.type,
+                  transactionHash: download.transactionHash,
+                  dataFile: download.dataFile,
+                  author,
+                  title,
+                  image,
+                  // Add other fields as needed
+               };
 
-//                // console.log(completeDownloadInfo);
-//                return completeDownloadInfo;
-//             } else {
-//                console.error(
-//                   'Pinata API returned an error:',
-//                   pinataResponse.status,
-//                   pinataResponse.statusText
-//                );
-//                return null;
-//             }
-//          })
-//       );
+               // console.log(completeDownloadInfo);
+               return completeDownloadInfo;
+            } else {
+               console.error(
+                  'Pinata API returned an error:',
+                  pinataResponse.status,
+                  pinataResponse.statusText
+               );
+               return null;
+            }
+         })
+      );
 
-//       // Remove null values (failed downloads) and update state with the array
-//       return validDownloadDetails.filter((detail) => detail !== null);
-//    } catch (error) {
-//       // console.error('Error fetching download details:', error);
-//    }
-// };
+      // console.log(validDownloadDetails);
+
+      // Remove null values (failed downloads) and update state with the array
+      return validDownloadDetails.filter((detail) => detail !== null);
+   } catch (error) {
+      // console.error('Error fetching download details:', error);
+   }
+};
 
 //  const buyNow = async (product, details) => {
 //     try {

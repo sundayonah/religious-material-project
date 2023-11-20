@@ -187,62 +187,62 @@ export const fetchSongs = async () => {
    }
 };
 
-// export const useFetchMessages = () => {
-//    const fetchMessages = useCallback(async () => {
-//       try {
-//          // const messageURL =
-//          //    'http://kingdomcoin-001-site1.ctempurl.com/api/Catalog/GetAllMessages';
+export const useFetchMessages = () => {
+   const fetchMessages = useCallback(async () => {
+      try {
+         // const messageURL =
+         //    'http://kingdomcoin-001-site1.ctempurl.com/api/Catalog/GetAllMessages';
 
-//          const messageURL = '/api/message';
+         const messageURL = '/api/message';
 
-//          const res = await axios.get(messageURL);
-//          // console.log('Response:', res.data.data);
+         const res = await axios.get(messageURL);
+         // console.log('Response:', res.data.data);
 
-//          const data = res.data.data;
+         const data = res.data.data;
 
-//          const messageDetails = await Promise.all(
-//             data.map(async (message) => {
-//                const ipfsHash = message.hash;
-//                const pinataApiUrl = `https://purple-existing-woodpecker-520.mypinata.cloud/ipfs/${ipfsHash}`;
+         const messageDetails = await Promise.all(
+            data.map(async (message) => {
+               const ipfsHash = message.hash;
+               const pinataApiUrl = `https://gateway.pinata.cloud/ipfs/${ipfsHash}`;
 
-//                const pinataResponse = await axios.get(pinataApiUrl);
+               const pinataResponse = await axios.get(pinataApiUrl);
 
-//                if (pinataResponse.status === 200) {
-//                   const ipfsContent = pinataResponse.data;
+               if (pinataResponse.status === 200) {
+                  const ipfsContent = pinataResponse.data;
 
-//                   const completeMessageInfo = {
-//                      recId: message.recId,
-//                      hash: message.hash,
-//                      counterId: message.counterId,
-//                      category: message.category,
-//                      bookFile: message.bookFile,
-//                      type: message.type,
-//                      ...ipfsContent,
-//                   };
+                  const completeMessageInfo = {
+                     recId: message.recId,
+                     hash: message.hash,
+                     counterId: message.counterId,
+                     category: message.category,
+                     bookFile: message.bookFile,
+                     type: message.type,
+                     ...ipfsContent,
+                  };
 
-//                   console.log(completeMessageInfo);
+                  // console.log(completeMessageInfo);
 
-//                   return completeMessageInfo;
-//                } else {
-//                   console.error(
-//                      'Pinata API returned an error:',
-//                      pinataResponse.status,
-//                      pinataResponse.statusText
-//                   );
-//                   return null;
-//                }
-//             })
-//          );
+                  return completeMessageInfo;
+               } else {
+                  console.error(
+                     'Pinata API returned an error:',
+                     pinataResponse.status,
+                     pinataResponse.statusText
+                  );
+                  return null;
+               }
+            })
+         );
 
-//          return messageDetails.filter((message) => message !== null);
-//       } catch (error) {
-//          console.error('Error fetching message details:', error);
-//          return [];
-//       }
-//    }, []);
+         return messageDetails.filter((message) => message !== null);
+      } catch (error) {
+         console.error('Error fetching message details:', error);
+         return [];
+      }
+   }, []);
 
-//    return fetchMessages;
-// };
+   return fetchMessages;
+};
 
 export const getTransactions = async (address) => {
    const downloadsUrl = `http://hokoshokos-001-site1.etempurl.com/api/Catalog/GetTransactions/${address}`;

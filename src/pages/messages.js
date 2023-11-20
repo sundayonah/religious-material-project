@@ -46,7 +46,7 @@ const Messages = () => {
    const [searchInput, setSearchInput] = useState('');
    const [filteredMessages, setFilteredMessages] = useState(kingdomMessages);
 
-   // const messagesFetchHook = useFetchMessages();
+   const messagesFetchHook = useFetchMessages();
 
    const messagesContent = async () => {
       try {
@@ -128,18 +128,18 @@ const Messages = () => {
 
       const updatedMessages = [];
       for (const message of kingdomMessages) {
-         // const contentId = message.id;
-         const { counterId } = message;
+         const contentId = message.counterId;
+         // const { counterId } = message;
          // console.log(counterId);
 
-         const contentData = await contract.content(counterId);
+         const contentData = await contract.content(contentId);
          const contentSplit = contentData.toString();
          const contentValues = contentSplit.split(','); // Splitting the string by comma
 
          // Assuming the second value (index 1) represents the price
          const contentPrice = contentValues[1] ? parseInt(contentValues[1]) : 0;
 
-         const priceToNormal = contentPrice / 1e15;
+         // const priceToNormal = contentPrice / 1e15;
 
          // // Assuming other values in 'contentData' correspond to other properties in 'message'
          const messageWithPrice = { ...message, contentPrice };
@@ -158,15 +158,15 @@ const Messages = () => {
 
          // const response = await axios.get('/api/message');
          // const data = response.data;
-         // // console.log(data);
+         // console.log(data);
 
          // setKingdomMessages(data);
 
-         // const messagesDetails = await messagesFetchHook();
-         // // console.log(messagesDetails)
-         // setKingdomMessages(messagesDetails);
+         const messagesDetails = await messagesFetchHook();
+         // console.log(messagesDetails);
+         setKingdomMessages(messagesDetails);
       };
-      messagesContent();
+      // messagesContent();
       FetchMessagesWithPrice();
    }, [kingdomMessages, fetchPrices]);
 

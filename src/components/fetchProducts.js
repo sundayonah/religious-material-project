@@ -127,19 +127,8 @@ export const fetchBooks = async () => {
 };
 
 export const fetchSongs = async () => {
-   // const songsURL =
-   //    'http://kingdomcoin-001-site1.ctempurl.com/api/Catalog/GetAllSongs';
-   const songsURL = '/api/song';
-
-   // const token =
-   //    'eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiMDc4NzJmNGMtNmQ0MC00M2IyLWE1Y2ItOGE1ZmQwZTA1NDBhIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbmFtZWlkZW50aWZpZXIiOiIweDk3NTZCNzA0OEJlMzRlNzA0QzI3RGVFYjdkQjM0QkUxQTkxMGFCOTIiLCJleHAiOjE3MDAyNDU0NTksImlzcyI6Imh0dHA6Ly9yb2Fkc3Rhci5jb20iLCJhdWQiOiJodHRwOi8vcm9hZHN0YXIuY29tIn0.NutJY74M-eLlkTIvvPsRAFe5Xye8bHy2B5k4EtE3wno';
-   // 'eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiMDgxNWQ1Y2YtNTg2ZS00ODgwLTk3MzktNWM2NmQxYzA2ZjRmIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbmFtZWlkZW50aWZpZXIiOiIweDMyRTgwRTE2YWFmZGJiYjIwQkE1NTY5MGYyNzVhMjYwOGUzRWNGYzAiLCJleHAiOjE3MDAyNDM5NDksImlzcyI6Imh0dHA6Ly9yb2Fkc3Rhci5jb20iLCJhdWQiOiJodHRwOi8vcm9hZHN0YXIuY29tIn0.2ely65EqGLmqMsxE2h35ozUSnKmOwNuJTiKmqjhJvuQ';
-
-   // const config = {
-   //    headers: {
-   //       Authorization: `Bearer ${token}`,
-   //    },
-   // };
+   const songsURL =
+      'http://hokoshokos-001-site1.etempurl.com/api/Catalog/GetAllSongs';
 
    try {
       const res = await axios.get(songsURL);
@@ -149,7 +138,7 @@ export const fetchSongs = async () => {
       const songDetails = await Promise.all(
          data.map(async (song) => {
             const ipfsHash = song.hash;
-            const pinataApiUrl = `https://purple-existing-woodpecker-520.mypinata.cloud/ipfs/${ipfsHash}`;
+            const pinataApiUrl = `https://gateway.pinata.cloud/ipfs/${ipfsHash}`;
 
             const pinataResponse = await axios.get(pinataApiUrl);
 
@@ -190,10 +179,10 @@ export const fetchSongs = async () => {
 export const useFetchMessages = () => {
    const fetchMessages = useCallback(async () => {
       try {
-         // const messageURL =
-         //    'http://kingdomcoin-001-site1.ctempurl.com/api/Catalog/GetAllMessages';
+         const messageURL =
+            'http://hokoshokos-001-site1.etempurl.com/api/Catalog/GetAllSongs';
 
-         const messageURL = '/api/message';
+         // const messageURL = '/api/message';
 
          const res = await axios.get(messageURL);
          // console.log('Response:', res.data.data);

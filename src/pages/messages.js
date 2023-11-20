@@ -48,71 +48,71 @@ const Messages = () => {
 
    const messagesFetchHook = useFetchMessages();
 
-   const messagesContent = async () => {
-      try {
-         const messageURL =
-            'http://hokoshokos-001-site1.etempurl.com/api/Catalog/GetAllMessages';
-         const response = await axios.get(messageURL);
+   // const messagesContent = async () => {
+   //    try {
+   //       const messageURL =
+   //          'http://hokoshokos-001-site1.etempurl.com/api/Catalog/GetAllMessages';
+   //       const response = await axios.get(messageURL);
 
-         const data = response.data.data;
+   //       const data = response.data.data;
 
-         // console.log('Original Data:', data);
+   //       // console.log('Original Data:', data);
 
-         const messageDetails = await Promise.all(
-            data.map(async (message) => {
-               try {
-                  const ipfsHash = message.hash;
-                  const pinataApiUrl = `https://gateway.pinata.cloud/ipfs/${ipfsHash}`;
+   //       const messageDetails = await Promise.all(
+   //          data.map(async (message) => {
+   //             try {
+   //                const ipfsHash = message.hash;
+   //                const pinataApiUrl = `https://gateway.pinata.cloud/ipfs/${ipfsHash}`;
 
-                  const pinataResponse = await axios.get(pinataApiUrl);
+   //                const pinataResponse = await axios.get(pinataApiUrl);
 
-                  // console.log(pinataResponse);
-                  if (pinataResponse.status === 200) {
-                     const ipfsContent = pinataResponse.data;
+   //                // console.log(pinataResponse);
+   //                if (pinataResponse.status === 200) {
+   //                   const ipfsContent = pinataResponse.data;
 
-                     const completeMessageInfo = {
-                        recId: message.recId,
-                        hash: message.hash,
-                        counterId: message.counterId,
-                        category: message.category,
-                        bookFile: message.bookFile,
-                        type: message.type,
-                        ...ipfsContent,
-                     };
+   //                   const completeMessageInfo = {
+   //                      recId: message.recId,
+   //                      hash: message.hash,
+   //                      counterId: message.counterId,
+   //                      category: message.category,
+   //                      bookFile: message.bookFile,
+   //                      type: message.type,
+   //                      ...ipfsContent,
+   //                   };
 
-                     // console.log('Complete Message Info:', completeMessageInfo);
+   //                   // console.log('Complete Message Info:', completeMessageInfo);
 
-                     return completeMessageInfo;
-                  } else {
-                     console.error(
-                        'Pinata API returned an error:',
-                        pinataResponse.status,
-                        pinataResponse.statusText
-                     );
-                     return null;
-                  }
-               } catch (error) {
-                  console.error('Error fetching IPFS content:', error);
-                  return null;
-               }
-            })
-         );
+   //                   return completeMessageInfo;
+   //                } else {
+   //                   console.error(
+   //                      'Pinata API returned an error:',
+   //                      pinataResponse.status,
+   //                      pinataResponse.statusText
+   //                   );
+   //                   return null;
+   //                }
+   //             } catch (error) {
+   //                console.error('Error fetching IPFS content:', error);
+   //                return null;
+   //             }
+   //          })
+   //       );
 
-         // console.log('Message Details:', messageDetails);
+   //       // console.log('Message Details:', messageDetails);
 
-         // const filteredMessages = messageDetails.filter(
-         //    (detail) => detail !== null
-         // );
-         setKingdomMessages(messageDetails);
+   //       // const filteredMessages = messageDetails.filter(
+   //       //    (detail) => detail !== null
+   //       // );
+   //       setKingdomMessages(messageDetails);
 
-         // console.log('Filtered Messages:', messageDetails);
+   //       // console.log('Filtered Messages:', messageDetails);
 
-         // Return the filteredDownloads as the API response
-         // res.status(200).json(filteredMessages);
-      } catch (error) {
-         console.error('Error fetching Message details:', error);
-      }
-   };
+   //       // Return the filteredDownloads as the API response
+   //       // res.status(200).json(filteredMessages);
+   //    } catch (error) {
+   //       console.error('Error fetching Message details:', error);
+   //    }
+   // };
 
    // Function to fetch prices for each message
    const fetchPrices = useCallback(async () => {

@@ -85,71 +85,71 @@ const Songs = () => {
       return updatedSongs;
    }, [kingdomSongs]);
 
-   const songsContent = async () => {
-      try {
-         const messageURL =
-            'http://hokoshokos-001-site1.etempurl.com/api/Catalog/GetAllSongs';
-         const response = await axios.get(messageURL);
+   // const songsContent = async () => {
+   //    try {
+   //       const messageURL =
+   //          'http://hokoshokos-001-site1.etempurl.com/api/Catalog/GetAllSongs';
+   //       const response = await axios.get(messageURL);
 
-         const data = response.data.data;
+   //       const data = response.data.data;
 
-         // console.log('Original Data:', data);
+   //       // console.log('Original Data:', data);
 
-         const songDetails = await Promise.all(
-            data.map(async (message) => {
-               try {
-                  const ipfsHash = message.hash;
-                  const pinataApiUrl = `https://gateway.pinata.cloud/ipfs/${ipfsHash}`;
+   //       const songDetails = await Promise.all(
+   //          data.map(async (message) => {
+   //             try {
+   //                const ipfsHash = message.hash;
+   //                const pinataApiUrl = `https://gateway.pinata.cloud/ipfs/${ipfsHash}`;
 
-                  const pinataResponse = await axios.get(pinataApiUrl);
+   //                const pinataResponse = await axios.get(pinataApiUrl);
 
-                  // console.log(pinataResponse);
-                  if (pinataResponse.status === 200) {
-                     const ipfsContent = pinataResponse.data;
+   //                // console.log(pinataResponse);
+   //                if (pinataResponse.status === 200) {
+   //                   const ipfsContent = pinataResponse.data;
 
-                     const completeMessageInfo = {
-                        recId: message.recId,
-                        hash: message.hash,
-                        counterId: message.counterId,
-                        category: message.category,
-                        bookFile: message.bookFile,
-                        type: message.type,
-                        ...ipfsContent,
-                     };
+   //                   const completeMessageInfo = {
+   //                      recId: message.recId,
+   //                      hash: message.hash,
+   //                      counterId: message.counterId,
+   //                      category: message.category,
+   //                      bookFile: message.bookFile,
+   //                      type: message.type,
+   //                      ...ipfsContent,
+   //                   };
 
-                     // console.log('Complete Message Info:', completeMessageInfo);
+   //                   // console.log('Complete Message Info:', completeMessageInfo);
 
-                     return completeMessageInfo;
-                  } else {
-                     console.error(
-                        'Pinata API returned an error:',
-                        pinataResponse.status,
-                        pinataResponse.statusText
-                     );
-                     return null;
-                  }
-               } catch (error) {
-                  console.error('Error fetching IPFS content:', error);
-                  return null;
-               }
-            })
-         );
+   //                   return completeMessageInfo;
+   //                } else {
+   //                   console.error(
+   //                      'Pinata API returned an error:',
+   //                      pinataResponse.status,
+   //                      pinataResponse.statusText
+   //                   );
+   //                   return null;
+   //                }
+   //             } catch (error) {
+   //                console.error('Error fetching IPFS content:', error);
+   //                return null;
+   //             }
+   //          })
+   //       );
 
-         // console.log('Message Details:', songDetails);
+   //       // console.log('Message Details:', songDetails);
 
-         // const filteredMessages = songDetails.filter(
-         //    (detail) => detail !== null
-         // );
-         setKingdomSongs(songDetails);
+   //       // const filteredMessages = songDetails.filter(
+   //       //    (detail) => detail !== null
+   //       // );
+   //       setKingdomSongs(songDetails);
 
-         // console.log('Filtered Messages:', songDetails);
+   //       // console.log('Filtered Messages:', songDetails);
 
-         // Return the filteredDownloads as the API response
-         // res.status(200).json(filteredMessages);
-      } catch (error) {
-         console.error('Error fetching Message details:', error);
-      }
-   };
+   //       // Return the filteredDownloads as the API response
+   //       // res.status(200).json(filteredMessages);
+   //    } catch (error) {
+   //       console.error('Error fetching Message details:', error);
+   //    }
+   // };
 
    useEffect(() => {
       const fetchSongsWithPrice = async () => {
@@ -164,14 +164,14 @@ const Songs = () => {
 
             // setKingdomSongs(data);
 
-            // const songsDetails = await fetchSongs();
-            // setKingdomSongs(songsDetails);
+            const songsDetails = await fetchSongs();
+            setKingdomSongs(songsDetails);
             // console.log(songsDetails);
          } catch (error) {
             console.error('Error fetching songs data:', error);
          }
       };
-      songsContent();
+      // songsContent();
       fetchSongsWithPrice();
    }, [fetchPrices]);
 

@@ -461,6 +461,34 @@ export const StateContextProvider = ({ children }) => {
       }));
    };
 
+   // useEffect(() => {
+   //    const checkPurchasedStatus = async () => {
+   //       try {
+   //          const response = await axios.get(
+   //             `http://kingdomcoin-001-site1.ctempurl.com/api/Catalog/GetTransactions/${address}`
+   //          );
+
+   //          const purchasedProducts = response.data.data;
+   //          const purchasedMap = {};
+
+   //          filteredMessages.forEach((message) => {
+   //             const isPurchased = purchasedProducts.some(
+   //                (product) => product.counterId === message.counterId
+   //             );
+   //             purchasedMap[message.counterId] = isPurchased;
+   //          });
+
+   //          // console.log(purchasedMap);
+
+   //          setIndividualPurchasedStatus(purchasedMap);
+   //       } catch (error) {
+   //          console.error('Error checking purchase status:', error);
+   //       }
+   //    };
+
+   //    checkPurchasedStatus();
+   // }, [address, filteredMessages]);
+
    return (
       <StateContext.Provider
          value={{

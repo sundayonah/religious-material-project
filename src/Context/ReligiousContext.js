@@ -70,6 +70,7 @@ export const StateContextProvider = ({ children }) => {
    const [isApproved, setIsApproved] = useState(false);
    const [approvedProducts, setApprovedProducts] = useState([]);
    const [approveLoadingStates, setApproveLoadingStates] = useState({});
+   const [isAllowance, setIsAllowance] = useState(false);
 
    //FETCH CONTRACT
    const Fetch_Contract = (PROVIDER) =>
@@ -432,16 +433,19 @@ export const StateContextProvider = ({ children }) => {
          }));
 
          const contentPrice = product.contentPrice;
-         console.log(product);
 
          const priceToString = contentPrice.toString();
          const price = ethers.utils.parseEther(priceToString, 'ether');
 
          let tx;
-         tx = await contractInstance.approve(RMTestnetContractAddress, price, {
-            gasLimit: 600000,
-            gasPrice: ethers.utils.parseUnits('10.0', 'gwei'),
-         });
+         tx = await contractInstance.approve(
+            RMTestnetContractAddress,
+            ethers.constants.MaxUint256,
+            {
+               gasLimit: 600000,
+               gasPrice: ethers.utils.parseUnits('10.0', 'gwei'),
+            }
+         );
 
          // setIsApproved(true);
          const receipt = await tx.wait();
@@ -473,6 +477,69 @@ export const StateContextProvider = ({ children }) => {
          ...prevStates,
          [product.recId]: false,
       }));
+   };
+
+   useEffect(() => {
+      const checkAllowance = async () => {
+         const provider = new ethers.providers.Web3Provider(window.ethereum);
+
+         const signer = provider.getSigner();
+
+         const contractInstance = new ethers.Contract(
+            TokenAddress,
+            ApproveAbi,
+            signer
+         );
+         const isAllowed = await contractInstance.allowance(
+            address,
+            RMTestnetContractAddress
+         );
+         if (isAllowed > ethers.utils.parseEther('1000', 'ether')) {
+            setIsAllowance(true);
+         }
+      };
+      checkAllowance();
+   }, [address]);
+
+   // console.log(isAllowance);
+
+   const fetchPrices = async (kingdomBook) => {
+      // const provider = new ethers.providers.getDefaultProvider('homestead', {
+      //    alchemy: 'o_O5LwKav_r5UECR-59GtRZsIqnhD0N8',
+      // });
+      const provider = new ethers.providers.Web3Provider(window.ethereum);
+
+      const signer = provider.getSigner();
+
+      const contract = new ethers.Contract(
+         RMTestnetContractAddress,
+         RMabi,
+         // provider
+         signer
+      );
+
+      const updatedMessages = [];
+      for (const book of kingdomBook) {
+         const contentId = book.id;
+
+         const contentData = await contract.content(contentId);
+         const contentSplit = contentData.toString();
+         // console.log(contentSplit);
+         const contentValues = contentSplit.split(','); // Splitting the string by comma
+
+         // Assuming the second value (index 1) represents the price
+         const contentPrice = contentValues[1] ? parseInt(contentValues[1]) : 0;
+         // console.log(contentPrice);
+
+         // // Assuming other values in 'contentData' correspond to other properties in 'book'
+         const bookWithPrice = { ...book, contentPrice };
+         // console.log(bookWithPrice);
+
+         updatedMessages.push(bookWithPrice);
+      }
+
+      // console.log(updatedMessages);
+      return updatedMessages;
    };
 
    // useEffect(() => {
@@ -507,9 +574,11 @@ export const StateContextProvider = ({ children }) => {
       <StateContext.Provider
          value={{
             // connectWallet,
+            fetchPrices,
             Purchase,
             // signIn,
             handlePlayClick,
+            isAllowance,
             songStates,
             activeSongId,
             audioRefs,

@@ -20,6 +20,7 @@ const Messages = () => {
       Approved,
       setApprovedProducts,
       approveLoadingStates,
+      isAllowance,
    } = useContext(StateContext);
 
    const ipfsHash = 'QmfMQiWGrcswgwc3BsjLuprEV95ZQhHQj6a4Ygy1NHhVs9';
@@ -298,13 +299,13 @@ const Messages = () => {
                   // Call the API to add the transaction
                   const transactionData = {
                      hash: product.hash,
-                     address: address,
                      counterId: product.counterId,
+                     address: address,
                      type: product.type,
                      transactionHash: receipt.transactionHash,
                   };
 
-                  console.log(transactionData);
+                  // console.log(transactionData);
 
                   // Make a POST request to the API endpoint
                   const addTransactionResponse = await axios.post(
@@ -339,7 +340,7 @@ const Messages = () => {
             }
             // Perform any other actions here if needed
          } else {
-            console.error('Product not found in Book Details.');
+            console.error('Product not found in Message Details.');
          }
       } catch (err) {
          console.error('Purchase failed:', err.message);
@@ -443,7 +444,8 @@ const Messages = () => {
                            ) : (
                               <>
                                  {/* {isApproved ? ( */}
-                                 {approvedProducts.includes(message.recId) ? (
+                                 {approvedProducts.includes(message.recId) ||
+                                 isAllowance ? (
                                     <button
                                        onClick={() => {
                                           setSelectedProduct(message);

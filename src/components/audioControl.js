@@ -39,7 +39,7 @@ import { getTransactions } from './fetchProducts';
 import { useAccount } from 'wagmi';
 import Image from 'next/image';
 
-const AudioPlayer = ({ audioRefs }) => {
+const AudioPlayer = ({ audioRefs, mp3PurchasedProducts }) => {
    const ref = useRef(null);
    const { address } = useAccount();
 
@@ -53,7 +53,7 @@ const AudioPlayer = ({ audioRefs }) => {
    } = useContext(StateContext);
    const [mousedown, setMouseDown] = useState(false);
    const [progressUpdateInterval, setProgressUpdateInterval] = useState(null);
-   const [purchasedProducts, setPurchasedProducts] = useState([]);
+   // const [mp3PurchasedProducts, setPurchasedProducts] = useState([]);
 
    // const [isLiked, setIsLiked] = useState(false);
    // const [isDisliked, setIsDisliked] = useState(false);
@@ -96,7 +96,7 @@ const AudioPlayer = ({ audioRefs }) => {
    const volume = useSelector((state) => state.audio.volume);
 
    // const purchasedSongs =
-   //    JSON.parse(localStorage.getItem('purchasedProducts')) || [];
+   //    JSON.parse(localStorage.getItem('mp3PurchasedProducts')) || [];
 
    // const purchasedMessages =
    //    JSON.parse(localStorage.getItem('purchasedMessages')) || [];
@@ -104,22 +104,22 @@ const AudioPlayer = ({ audioRefs }) => {
    // console.log(purchasedMessages);
 
    // Merge the purchasedSongs and purchasedMessages arrays
-   // const purchasedProducts = [...purchasedSongs, ...purchasedMessages];
-   // console.log(purchasedProducts);
+   // const mp3PurchasedProducts = [...purchasedSongs, ...purchasedMessages];
+   // console.log(mp3PurchasedProducts);
 
    // console.log(purchasedMessages);
 
    // console.log('Active Song ID:', activeSongId);
-   // console.log(purchasedProducts);
+   // console.log(mp3PurchasedProducts);
 
-   useEffect(() => {
-      const getDownloads = async () => {
-         const tx = await getTransactions(address);
-         setPurchasedProducts(tx);
-         // console.log(tx);
-      };
-      getDownloads();
-   }, [address]);
+   // useEffect(() => {
+   //    const getDownloads = async () => {
+   //       const tx = await getTransactions(address);
+   //       setPurchasedProducts(tx);
+   //       // console.log(tx);
+   //    };
+   //    getDownloads();
+   // }, [address]);
 
    const startProgressUpdateInterval = (audio) => {
       const interval = setInterval(() => {
@@ -169,7 +169,6 @@ const AudioPlayer = ({ audioRefs }) => {
 
    const handlePlayPause = () => {
       const audio = audioRefs[activeSongId];
-      console.log(activeSongId);
       // console.log(audio);
       // console.log(isPlaying);
       if (activeSongId) {
@@ -212,7 +211,7 @@ const AudioPlayer = ({ audioRefs }) => {
    };
 
    const playNextSong = () => {
-      const productIds = purchasedProducts.map((product) => {
+      const productIds = mp3PurchasedProducts.map((product) => {
          return product.recId;
       });
 
@@ -221,14 +220,14 @@ const AudioPlayer = ({ audioRefs }) => {
       if (currentIndex !== -1 && currentIndex < productIds.length - 1) {
          const nextSongId = productIds[currentIndex + 1];
 
-         // Find the index of the next song in purchasedProducts
-         const nextSongIndex = purchasedProducts.findIndex((product) => {
+         // Find the index of the next song in mp3PurchasedProducts
+         const nextSongIndex = mp3PurchasedProducts.findIndex((product) => {
             return product.recId === nextSongId;
          });
 
          if (nextSongIndex !== -1) {
             // Get the next song's details
-            const nextSongDetails = purchasedProducts[nextSongIndex];
+            const nextSongDetails = mp3PurchasedProducts[nextSongIndex];
 
             // Retrieve the audio element for the current and next songs
             const currentAudio = audioRefs[activeSongId];
@@ -258,7 +257,7 @@ const AudioPlayer = ({ audioRefs }) => {
    };
 
    const playPreviousSong = () => {
-      const productIds = purchasedProducts.map((product) => {
+      const productIds = mp3PurchasedProducts.map((product) => {
          return product.recId;
       });
 
@@ -267,14 +266,14 @@ const AudioPlayer = ({ audioRefs }) => {
       if (currentIndex > 0) {
          const previousSongId = productIds[currentIndex - 1];
 
-         // Find the index of the previous song in purchasedProducts
-         const previousSongIndex = purchasedProducts.findIndex((product) => {
+         // Find the index of the previous song in mp3PurchasedProducts
+         const previousSongIndex = mp3PurchasedProducts.findIndex((product) => {
             return product.recId === previousSongId;
          });
 
          if (previousSongIndex !== -1) {
             // Get the previous song's details
-            const previousSongDetails = purchasedProducts[previousSongIndex];
+            const previousSongDetails = mp3PurchasedProducts[previousSongIndex];
 
             // Retrieve the audio element for the current and previous songs
             const currentAudio = audioRefs[activeSongId];

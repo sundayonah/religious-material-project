@@ -1,56 +1,45 @@
 // fetchBooks.js
 import React, { useCallback } from 'react';
 import axios from 'axios';
+import { ethers } from 'ethers';
 
-// export const fetchBooks = async () => {
-//    const bookURL = '/api/book';
+// export const fetchPrices = async (kingdomBook) => {
+//    // const provider = new ethers.providers.getDefaultProvider('homestead', {
+//    //    alchemy: 'o_O5LwKav_r5UECR-59GtRZsIqnhD0N8',
+//    // });
+//    const provider = new ethers.providers.Web3Provider(window.ethereum);
 
-//    try {
-//       const res = await axios.get(bookURL);
-//       const data = res.data.data;
+//    const signer = provider.getSigner();
 
-//       const bookDetails = await Promise.all(
-//          data.map(async (book) => {
-//             const ipfsHash = book.hash;
-//             const pinataApiUrl = `https://purple-existing-woodpecker-520.mypinata.cloud/ipfs/${ipfsHash}`;
+//    const contract = new ethers.Contract(
+//       RMTestnetContractAddress,
+//       RMabi,
+//       // provider
+//       signer
+//    );
 
-//             try {
-//                const pinataResponse = await axios.get(pinataApiUrl);
+//    const updatedMessages = [];
+//    for (const book of kingdomBook) {
+//       const contentId = book.id;
 
-//                if (pinataResponse.status === 200) {
-//                   const ipfsContent = pinataResponse.data;
+//       const contentData = await contract.content(contentId);
+//       const contentSplit = contentData.toString();
+//       // console.log(contentSplit);
+//       const contentValues = contentSplit.split(','); // Splitting the string by comma
 
-//                   const completeBookInfo = {
-//                      recId: book.recId,
-//                      hash: book.hash,
-//                      counterId: book.counterId,
-//                      category: book.category,
-//                      bookFile: book.bookFile,
-//                      ...ipfsContent,
-//                   };
+//       // Assuming the second value (index 1) represents the price
+//       const contentPrice = contentValues[1] ? parseInt(contentValues[1]) : 0;
+//       // console.log(contentPrice);
 
-//                   return completeBookInfo;
-//                } else {
-//                   console.error(
-//                      'Pinata API returned an error:',
-//                      pinataResponse.status,
-//                      pinataResponse.statusText
-//                   );
-//                   return null;
-//                }
-//             } catch (error) {
-//                console.error('Error fetching IPFS content:', error);
-//                return null;
-//             }
-//          })
-//       );
+//       // // Assuming other values in 'contentData' correspond to other properties in 'book'
+//       const bookWithPrice = { ...book, contentPrice };
+//       // console.log(bookWithPrice);
 
-//       const filteredBooks = bookDetails.filter((book) => book !== null);
-//       return filteredBooks;
-//    } catch (error) {
-//       console.error('Error fetching book details:', error);
-//       return [];
+//       updatedMessages.push(bookWithPrice);
 //    }
+
+//    // console.log(updatedMessages);
+//    return updatedMessages;
 // };
 
 export const fetchBooks = async () => {
@@ -135,17 +124,19 @@ export const fetchSongs = async () => {
             if (pinataResponse.status === 200) {
                const ipfsContent = pinataResponse.data;
 
-               const completeBookInfo = {
+               const completeSongInfo = {
                   recId: song.recId,
-
                   hash: song.hash,
                   counterId: song.counterId,
                   category: song.category,
                   bookFile: song.bookFile,
+                  type: song.type,
                   ...ipfsContent,
                };
 
-               return completeBookInfo;
+               // console.log(completeSongInfo);
+
+               return completeSongInfo;
             } else {
                console.error(
                   'Pinata API returned an error:',
@@ -159,7 +150,11 @@ export const fetchSongs = async () => {
 
       // console.log(songDetails);
 
-      return songDetails.filter((song) => song !== null);
+      // return songDetails.filter((song) => song !== null);
+
+      const filteredSongs = songDetails.filter((song) => song !== null);
+      // console.log('Filtered songs:', filteredSongs);
+      return filteredSongs;
    } catch (error) {
       console.error('Error fetching songs details:', error);
       return [];
@@ -213,7 +208,11 @@ export const useFetchMessages = () => {
             })
          );
 
-         return messageDetails.filter((message) => message !== null);
+         const filteredMessages = messageDetails.filter(
+            (message) => message !== null
+         );
+         // console.log('Filtered message:', filteredMessages);
+         return filteredMessages;
       } catch (error) {
          console.error('Error fetching message details:', error);
          return [];

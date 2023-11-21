@@ -24,6 +24,7 @@ const Songs = () => {
       Approved,
       setApprovedProducts,
       approveLoadingStates,
+      isAllowance,
    } = useContext(StateContext); // Initialize purchasedSongs and activeSongIndex state variables
 
    const [purchasedSongs, setPurchasedSongs] = useState([]);
@@ -210,17 +211,18 @@ const Songs = () => {
       const checkPurchasedStatus = async () => {
          try {
             const response = await axios.get(
-               `http://kingdomcoin-001-site1.ctempurl.com/api/Catalog/GetTransactions/${address}`
+               `http://hokoshokos-001-site1.etempurl.com/api/Catalog/GetTransactions/${address}`
             );
 
             const purchasedProducts = response.data.data;
+            // console.log(purchasedProducts);
             const purchasedMap = {};
 
-            filteredSongs.forEach((message) => {
+            filteredSongs.forEach((song) => {
                const isPurchased = purchasedProducts.some(
-                  (product) => product.counterId === message.counterId
+                  (product) => product.counterId === song.counterId
                );
-               purchasedMap[message.counterId] = isPurchased;
+               purchasedMap[song.counterId] = isPurchased;
             });
 
             // console.log(purchasedMap);
@@ -310,13 +312,13 @@ const Songs = () => {
                   // Call the API to add the transaction
                   const transactionData = {
                      hash: product.hash,
-                     address: address,
                      counterId: product.counterId,
+                     address: address,
                      type: product.type,
                      transactionHash: receipt.transactionHash,
                   };
 
-                  console.log(transactionData);
+                  // console.log(transactionData);
 
                   // Make a POST request to the API endpoint
                   const addTransactionResponse = await axios.post(
@@ -351,7 +353,7 @@ const Songs = () => {
             }
             // Perform any other actions here if needed
          } else {
-            console.error('Product not found in Book Details.');
+            console.error('Product not found in Song Details.');
          }
       } catch (err) {
          console.error('Purchase failed:', err.message);
@@ -435,9 +437,8 @@ const Songs = () => {
                                     </button>
                                  ) : (
                                     <>
-                                       {approvedProducts.includes(
-                                          song.recId
-                                       ) ? (
+                                       {approvedProducts.includes(song.recId) ||
+                                       isAllowance ? (
                                           <button
                                              onClick={() => {
                                                 setSelectedProduct(song);

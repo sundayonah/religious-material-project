@@ -27,6 +27,7 @@ import {
    SearchIconWhenThereIsNoFilter,
 } from '@/components/utils';
 import Image from 'next/image';
+import { BooksDownload } from '@/components/downloads/booksDownload';
 
 const ProductsDownload = ({ selectedFilter, filteredDownloadProduct }) => {
    // }) => {
@@ -56,6 +57,9 @@ const ProductsDownload = ({ selectedFilter, filteredDownloadProduct }) => {
    const [productsModal, setProductsModal] = useState(false);
    const [productsFilter, setProductsFilter] = useState('');
    const [selectedType, setSelectedType] = useState('all');
+   const [pdfPurchasedProducts, setPdfPurchasedProducts] = useState([]);
+   const [mp3PurchasedProducts, setMp3PurchasedProducts] = useState([]);
+   const [productMerged, setProductMerged] = useState([]);
 
    //    useEffect(() => {
    //       const getTransactions = async () => {
@@ -145,18 +149,44 @@ const ProductsDownload = ({ selectedFilter, filteredDownloadProduct }) => {
 
    useEffect(() => {
       const getDownloads = async () => {
-         const tx = await getTransactions(address);
-         setPurchasedProducts(tx);
-         // console.log(tx);
+         try {
+            const tx = await getTransactions(address);
+
+            // setProductButton(tx);
+            // console.log(tx);
+
+            // Separate books from other types
+            const pdfProducts = tx.filter((product) => product.type === 'BOOK');
+            const mp3Products = tx.filter((product) => product.type !== 'BOOK');
+
+            // console.log(pdfProducts);
+            // console.log(mp3Products);
+
+            setPdfPurchasedProducts(pdfProducts);
+            setMp3PurchasedProducts(mp3Products);
+
+            const merged = [...pdfProducts, ...mp3Products];
+            setProductMerged(tx);
+
+            // console.log(merged);
+         } catch (error) {
+            console.error('Error fetching download details:', error);
+         }
       };
+
       getDownloads();
    }, [address]);
 
    // Fiter Products by Types, author, title
    const displayButtons = () => {
+      if (!productMerged.length) {
+         return null; // Handle the case where products are not loaded yet
+      }
+
       const buttons = [
          'all',
-         ...new Set(purchasedProducts.map((product) => product.type)),
+         // ...new Set(mp3PurchasedProducts.map((product) => product.type)),
+         ...new Set(productMerged.map((product) => product.type)),
       ];
       // console.log(buttons);
 
@@ -172,23 +202,48 @@ const ProductsDownload = ({ selectedFilter, filteredDownloadProduct }) => {
    };
    displayButtons();
 
+   // Filter the products based on the search input and type
+   // useEffect(() => {
+   //    if (!productMerged || !pdfPurchasedProducts) {
+   //       return;
+   //    }
+
+   //    let filtered = productMerged.filter(
+   //       (product) =>
+   //          product.type !== 'BOOK' &&
+   //          pdfPurchasedProducts.some(
+   //             (pdfProduct) => pdfProduct.recId === product.recId
+   //          ) &&
+   //          (product.author.toLowerCase().includes(searchInput.toLowerCase()) ||
+   //             product.title.toLowerCase().includes(searchInput.toLowerCase()))
+   //    );
+
+   //    if (selectedType !== 'all') {
+   //       filtered = filtered.filter((product) => product.type === selectedType);
+   //    }
+
+   //    setFilterProducts(filtered);
+   // }, [searchInput, productMerged, selectedType, pdfPurchasedProducts]);
+
    // Filter the messages based on the search input and type
    useEffect(() => {
       ///// let filtered = [...kingdomBooksWithPrice];
 
-      let filtered = purchasedProducts.filter(
+      let filtered = mp3PurchasedProducts.filter(
+         // let filtered = productMerged.filter(
          (message) =>
             message.author.toLowerCase().includes(searchInput.toLowerCase()) ||
             message.title.toLowerCase().includes(searchInput.toLowerCase())
       );
-      //   console.log(filtered);
+      // console.log(filtered);
 
       if (selectedType !== 'all') {
          filtered = filtered.filter((product) => product.type === selectedType);
       }
 
       setFilterProducts(filtered);
-   }, [searchInput, purchasedProducts, selectedType]);
+   }, [searchInput, mp3PurchasedProducts, selectedType]);
+   // }, [searchInput, productMerged, selectedType]);
 
    const formatTime = (time) => {
       const minutes = Math.floor(time / 60);
@@ -204,7 +259,7 @@ const ProductsDownload = ({ selectedFilter, filteredDownloadProduct }) => {
          try {
             const newDurations = {};
 
-            http: for (const { recId, dataFile, type } of purchasedProducts) {
+            for (const { recId, dataFile, type } of mp3PurchasedProducts) {
                const audioFileURL = `http://hokoshokos-001-site1.etempurl.com/${type}/${dataFile}`; // Replace this with your audio file URL
                const audio = new Audio(audioFileURL);
                // console.log(audio);
@@ -238,16 +293,16 @@ const ProductsDownload = ({ selectedFilter, filteredDownloadProduct }) => {
          }
       };
 
-      if (purchasedProducts.length > 0) {
+      if (mp3PurchasedProducts.length > 0) {
          fetchSongDurations();
       }
-   }, [purchasedProducts]);
+   }, [mp3PurchasedProducts]);
 
    //    useEffect(() => {
    //       const fetchSongDurations = async () => {
    //          const newDurations = {};
 
-   //          for (const { recId, dataFile } of purchasedProducts) {
+   //          for (const { recId, dataFile } of mp3PurchasedProducts) {
    //             console.log({ recId, dataFile });
    //             const audio = new Audio(dataFile);
    //             console.log(audio);
@@ -266,10 +321,10 @@ const ProductsDownload = ({ selectedFilter, filteredDownloadProduct }) => {
    //          setSongDurations(newDurations);
    //       };
 
-   //       if (purchasedProducts.length > 0) {
+   //       if (mp3PurchasedProducts.length > 0) {
    //          fetchSongDurations();
    //       }
-   //    }, [purchasedProducts]);
+   //    }, [mp3PurchasedProducts]);
 
    const handleSongEnd = (recId) => {
       // Check if the download should be repeated, if not, update its state
@@ -332,7 +387,7 @@ const ProductsDownload = ({ selectedFilter, filteredDownloadProduct }) => {
    };
 
    // Filter the purchased products based on the selected filter
-   purchasedProducts.filter((product) => {
+   mp3PurchasedProducts.filter((product) => {
       if (selectedFilter === 'All') {
          return true; // Show all products
       } else if (selectedFilter === 'Messages') {
@@ -344,7 +399,7 @@ const ProductsDownload = ({ selectedFilter, filteredDownloadProduct }) => {
 
    //    console.log(filteredProducts);
 
-   if (purchasedProducts.length === 0) {
+   if (mp3PurchasedProducts.length === 0) {
       return (
          <div className="flex flex-col justify-center items-center space-y-9 mt-28 text-gray-500 pl-5">
             {/* <ProductLenghtLoadingSpinner /> */}
@@ -407,7 +462,7 @@ const ProductsDownload = ({ selectedFilter, filteredDownloadProduct }) => {
                <>
                   <div className=" w-[90%] flex justify-start items-center text-gray-500 space-x-3 mb-3 ">
                      <span className="flex justify-center items-center border border-[#daa851] rounded-full px-2 py-1">
-                        {filterProducts.length}
+                        {productMerged.length}
                      </span>
                      <span className="">Item(s) Purchased 🛒 🛍️ </span>
                   </div>
@@ -526,9 +581,15 @@ const ProductsDownload = ({ selectedFilter, filteredDownloadProduct }) => {
             ) : (
                <>{SearchIconWhenThereIsNoFilter('Product')}</>
             )}
+            <div>
+               <BooksDownload pdfPurchasedProducts={pdfPurchasedProducts} />
+            </div>
          </div>
          {isPlaying || activeSongId ? (
-            <AudioControl audioRefs={audioRefs} />
+            <AudioControl
+               audioRefs={audioRefs}
+               mp3PurchasedProducts={mp3PurchasedProducts}
+            />
          ) : null}
       </>
    );

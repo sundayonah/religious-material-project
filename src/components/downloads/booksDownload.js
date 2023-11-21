@@ -9,34 +9,21 @@ import { toggleDislike, toggleLike } from '@/reduxToolkit/slices/bookSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import toast, { Toaster } from 'react-hot-toast';
 
-export const BooksDownload = () => {
+export const BooksDownload = ({ pdfPurchasedProducts }) => {
    const { address } = useAccount();
    const dispatch = useDispatch();
 
    const likedBook = useSelector((state) => state.book.likedBook);
    const dislikedBook = useSelector((state) => state.book.dislikedBook);
 
-   const [purchasedBooks, setPurchasedBooks] = useState([]);
+   // const [pdfPurchasedProducts, setPurchasedBooks] = useState([]);
    const [selectedBook, setSelectedBook] = useState(null);
 
-   useEffect(() => {
-      // Retrieve the list of purchased products from local storage
-      const storedPurchasedProducts =
-         JSON.parse(localStorage.getItem('purchasedBooks')) || [];
-      // console.log(storedPurchasedProducts);
-
-      // console.log(storedPurchasedProducts);
-
-      // Deserialize the stored products and filter them based on the current user's address
-      const userPurchasedProducts = storedPurchasedProducts
-         .map((serializedProduct) => JSON.parse(serializedProduct))
-         .filter((item) => item.address === address);
-      // console.log(userPurchasedProducts);
-      setPurchasedBooks(userPurchasedProducts);
-   }, [address, dispatch]);
-
    const handleBookSelect = (book) => {
-      setSelectedBook(book);
+      const { type, dataFile } = book;
+      const fiePath = `http://hokoshokos-001-site1.etempurl.com/${type}/${dataFile}`;
+      // console.log(fiePath);
+      setSelectedBook(fiePath);
    };
 
    const handleCloseBook = () => {
@@ -59,11 +46,13 @@ export const BooksDownload = () => {
       }
    };
 
+   // console.log(selectedBook);
+
    return (
       <div className="py-4">
          <h4 className="text-2xl font-bold my-4 text-white">Purchased Books</h4>
          <div className="grid grid-cols-2">
-            {purchasedBooks.map((book, index) => (
+            {pdfPurchasedProducts.map((book, index) => (
                <div
                   key={index}
                   className=" mx-12  px-2 py-3  rounded-md  shadow-custom"
@@ -110,7 +99,7 @@ export const BooksDownload = () => {
             ))}
          </div>
          {selectedBook && (
-            <div className="fixed top-0 left-0 w-full h-full mt-8 bg-black bg-opacity-80 flex justify-center items-center">
+            <div className="fixed top-0 left-auto right-auto w-[80%] h-full mt-14 bg-black bg-opacity-80 ">
                <div className="bg-white p-4 rounded-lg shadow-md">
                   <button
                      onClick={handleCloseBook}
@@ -121,8 +110,12 @@ export const BooksDownload = () => {
                   <h3 className="text-xl font-semibold">
                      {selectedBook.title}
                   </h3>
+                  {/* display title, justify the pdf content on all devices */}
 
-                  <PDFViewer src={selectedBook.file} />
+                  <PDFViewer src={selectedBook} />
+                  {/* <PDFViewer
+                     src={`http://hokoshokos-001-site1.etempurl.com/${type}/${dataFile}`}
+                  /> */}
                </div>
             </div>
          )}

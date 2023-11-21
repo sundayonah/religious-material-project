@@ -23,6 +23,8 @@ const Single = ({ kingdomBooksWithPrice }) => {
       Approved,
       setApprovedProducts,
       approveLoadingStates,
+      fetchPrices,
+      isAllowance,
    } = useContext(StateContext);
 
    const router = useRouter();
@@ -31,6 +33,8 @@ const Single = ({ kingdomBooksWithPrice }) => {
    const { address } = useAccount();
    const [bookLoadingStates, setBookLoadingStates] = useState(false);
    const [bookDetails, setBookDetails] = useState(null);
+   const [updatedPrices, setUpdatedPrices] = useState(null);
+
    const [individualPurchasedStatus, setIndividualPurchasedStatus] =
       useState(false);
 
@@ -82,48 +86,76 @@ const Single = ({ kingdomBooksWithPrice }) => {
    // fetchData();
 
    useEffect(() => {
-      const fetchData = async () => {
-         const bookDetails = await fetchBooks();
-         const foundBook = bookDetails.find((book) => book.recId === id);
+      const fetchBookDetails = async () => {
+         try {
+            const bookDetails = await fetchBooks();
+            const foundBook = bookDetails.find((book) => book.recId === id);
 
-         setBookDetails(foundBook);
-         console.log(foundBook);
+            // Fetch prices
+            const prices = await fetchPrices(bookDetails);
+
+            // Merge foundBook with prices
+            const bookWithPrice = {
+               ...foundBook,
+               contentPrice: prices.find((price) => price.id === foundBook.id)
+                  ?.contentPrice,
+            };
+
+            // console.log(bookWithPrice);
+
+            setBookDetails(bookWithPrice);
+         } catch (error) {
+            console.error('Error fetching book details:', error);
+         }
       };
 
-      fetchData();
-   }, [id]);
+      fetchBookDetails();
+   }, [id, fetchPrices]);
 
    // useEffect(() => {
-   //    const checkPurchasedStatus = async () => {
-   //       // const { counterId } = bookDetails;
+   //    const fetchData = async () => {
+   //       const bookDetails = await fetchBooks();
+   //       const foundBook = bookDetails.find((book) => book.recId === id);
 
-   //       try {
-   //          const response = await axios.get(
-   //             `http://hokoshokos-001-site1.etempurl.com/api/Catalog/GetTransactions/${address}`
-   //          );
-
-   //          const purchasedProducts = response.data.data;
-   //          console.log(purchasedProducts);
-
-   //          let purch = purchasedProducts.find((product) => product.counterId);
-
-   //          let purchasedId = purch.counterId;
-   //          console.log(purchasedId);
-
-   //          console.log(counterId);
-
-   //          let checkPurchased = purchasedId === counterId;
-
-   //          console.log(checkPurchased);
-
-   //          // setIndividualPurchasedStatus(purchasedMap);
-   //       } catch (error) {
-   //          console.error('Error checking purchase status:', error);
-   //       }
+   //       setBookDetails(foundBook);
+   //       console.log(foundBook);
    //    };
 
-   //    checkPurchasedStatus();
-   // }, [address, bookDetails]);
+   //    fetchData();
+   // }, [id]);
+
+   useEffect(() => {
+      const checkPurchasedStatus = async () => {
+         try {
+            const response = await axios.get(
+               `http://hokoshokos-001-site1.etempurl.com/api/Catalog/GetTransactions/${address}`
+            );
+
+            // console.log(bookDetails.counterId);
+
+            const purchasedProducts = response.data.data;
+            // console.log(purchasedProducts);
+            const purchasedMap = {};
+
+            // bookDetails.forEach((book) => {
+            const isPurchased = purchasedProducts.some(
+               (product) => product.counterId === bookDetails.counterId
+            );
+
+            // console.log(isPurchased);
+            purchasedMap[bookDetails.counterId] = isPurchased;
+            // });
+
+            // console.log(purchasedMap);
+
+            setIndividualPurchasedStatus(purchasedMap);
+         } catch (error) {
+            console.error('Error checking purchase status:', error);
+         }
+      };
+
+      checkPurchasedStatus();
+   }, [address, bookDetails]);
 
    const buyNow = async (product) => {
       try {
@@ -168,7 +200,7 @@ const Single = ({ kingdomBooksWithPrice }) => {
                });
 
                const receipt = await tx.wait();
-               console.log(receipt);
+               // console.log(receipt);
 
                if (receipt.status === 1) {
                   // Update the approvedProducts state
@@ -325,7 +357,7 @@ const Single = ({ kingdomBooksWithPrice }) => {
                         >
                            Buy Now
                         </button> */}
-                        {hasPurchased(address, bookDetails.recId) ? (
+                        {individualPurchasedStatus[bookDetails.counterId] ? (
                            <button
                               disabled
                               className="text-white mt-1 bg-gray-500 py-1 px-2 rounded-sm"
@@ -334,7 +366,8 @@ const Single = ({ kingdomBooksWithPrice }) => {
                            </button>
                         ) : (
                            <>
-                              {approvedProducts.includes(bookDetails.recId) ? (
+                              {approvedProducts.includes(bookDetails.recId) ||
+                              isAllowance ? (
                                  <button
                                     onClick={() => {
                                        buyNow(bookDetails);

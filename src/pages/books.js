@@ -23,9 +23,11 @@ import {
    ProductLenghtLoadingSpinner,
    SearchIconWhenThereIsNoFilter,
 } from '@/components/utils';
-import Single from './single';
+import { StateContext } from '@/Context/ReligiousContext';
 
 const Books = () => {
+   const { fetchPrices } = useContext(StateContext);
+
    // const [filteredProducts, setFilteredProducts] = useState([...products]);
    const [filteredProducts, setFilteredProducts] = useState([]);
    const [searchInput, setSearchInput] = useState('');
@@ -48,48 +50,47 @@ const Books = () => {
       setBookModalOpen(false);
    };
 
-   const publicProvider =
-      'https://polygon-mumbai.g.alchemy.com/v2/o_O5LwKav_r5UECR-59GtRZsIqnhD0N8';
+   // const publicProvider =
+   //    'https://polygon-mumbai.g.alchemy.com/v2/o_O5LwKav_r5UECR-59GtRZsIqnhD0N8';
    // Function to fetch prices for each book
-   const fetchPrices = useCallback(async () => {
-      // const provider = new ethers.providers.getDefaultProvider('homestead', {
-      //    alchemy: 'o_O5LwKav_r5UECR-59GtRZsIqnhD0N8',
-      // });
-      const provider = new ethers.providers.Web3Provider(window.ethereum);
+   // const fetchPrices = useCallback(async () => {
+   //    // const provider = new ethers.providers.getDefaultProvider('homestead', {
+   //    //    alchemy: 'o_O5LwKav_r5UECR-59GtRZsIqnhD0N8',
+   //    // });
+   //    const provider = new ethers.providers.Web3Provider(window.ethereum);
 
-      const signer = provider.getSigner();
+   //    const signer = provider.getSigner();
 
-      const contract = new ethers.Contract(
-         RMTestnetContractAddress,
-         RMabi,
-         // provider
-         signer
-      );
+   //    const contract = new ethers.Contract(
+   //       RMTestnetContractAddress,
+   //       RMabi,
+   //       // provider
+   //       signer
+   //    );
 
-      const updatedMessages = [];
-      for (const book of kingdomBook) {
-         const contentId = book.id;
+   //    const updatedMessages = [];
+   //    for (const book of kingdomBook) {
+   //       const contentId = book.id;
 
-         const contentData = await contract.content(contentId);
-         const contentSplit = contentData.toString();
-         // console.log(contentSplit);
-         const contentValues = contentSplit.split(','); // Splitting the string by comma
+   //       const contentData = await contract.content(contentId);
+   //       const contentSplit = contentData.toString();
+   //       // console.log(contentSplit);
+   //       const contentValues = contentSplit.split(','); // Splitting the string by comma
 
-         // Assuming the second value (index 1) represents the price
-         const contentPrice = contentValues[1] ? parseInt(contentValues[1]) : 0;
-         // console.log(contentPrice);
+   //       // Assuming the second value (index 1) represents the price
+   //       const contentPrice = contentValues[1] ? parseInt(contentValues[1]) : 0;
+   //       // console.log(contentPrice);
 
-         // // Assuming other values in 'contentData' correspond to other properties in 'book'
-         const bookWithPrice = { ...book, contentPrice };
-         // console.log(bookWithPrice);
+   //       // // Assuming other values in 'contentData' correspond to other properties in 'book'
+   //       const bookWithPrice = { ...book, contentPrice };
+   //       // console.log(bookWithPrice);
 
-         updatedMessages.push(bookWithPrice);
-      }
+   //       updatedMessages.push(bookWithPrice);
+   //    }
 
-      // console.log(updatedMessages);
-      return updatedMessages;
-   }, [kingdomBook]);
-   // 465000000000000000;
+   //    // console.log(updatedMessages);
+   //    return updatedMessages;
+   // }, [kingdomBook]);
 
    // console.log(kingdomBook);
 
@@ -162,8 +163,9 @@ const Books = () => {
    useEffect(() => {
       const fetchMessagesWithPrice = async () => {
          try {
-            const bookWithPrices = await fetchPrices();
+            const bookWithPrices = await fetchPrices(kingdomBook);
             setKingdomBooksWithPrice(bookWithPrices);
+            // console.log(bookWithPrices);
 
             const bookDetails = await fetchBooks();
             setKingdomBook(bookDetails);
@@ -180,7 +182,7 @@ const Books = () => {
       };
       // booksContent();
       fetchMessagesWithPrice();
-   }, [fetchPrices]);
+   }, [fetchPrices, kingdomBook]);
 
    // console.log(kingdomBooksWithPrice);
 
@@ -253,10 +255,10 @@ const Books = () => {
    if (kingdomBooksWithPrice.length === 0) {
       return (
          <>
-            {/* <ProductLenghtLoadingSpinner /> */}
-            <div className="flex justify-center items-center mt-24">
+            <ProductLenghtLoadingSpinner />
+            {/* <div className="flex justify-center items-center mt-24">
                <p className="text-2xl text-gray-400">Coming Soon</p>
-            </div>
+            </div> */}
          </>
       );
    }
@@ -384,3 +386,42 @@ const Books = () => {
    );
 };
 export default Books;
+
+// export const fetchPrices = useCallback(async () => {
+//    // const provider = new ethers.providers.getDefaultProvider('homestead', {
+//    //    alchemy: 'o_O5LwKav_r5UECR-59GtRZsIqnhD0N8',
+//    // });
+//    const provider = new ethers.providers.Web3Provider(window.ethereum);
+
+//    const signer = provider.getSigner();
+
+//    const contract = new ethers.Contract(
+//       RMTestnetContractAddress,
+//       RMabi,
+//       // provider
+//       signer
+//    );
+
+//    const updatedMessages = [];
+//    for (const book of kingdomBook) {
+//       const contentId = book.id;
+
+//       const contentData = await contract.content(contentId);
+//       const contentSplit = contentData.toString();
+//       // console.log(contentSplit);
+//       const contentValues = contentSplit.split(','); // Splitting the string by comma
+
+//       // Assuming the second value (index 1) represents the price
+//       const contentPrice = contentValues[1] ? parseInt(contentValues[1]) : 0;
+//       // console.log(contentPrice);
+
+//       // // Assuming other values in 'contentData' correspond to other properties in 'book'
+//       const bookWithPrice = { ...book, contentPrice };
+//       // console.log(bookWithPrice);
+
+//       updatedMessages.push(bookWithPrice);
+//    }
+
+//    // console.log(updatedMessages);
+//    return updatedMessages;
+// }, [kingdomBook]);

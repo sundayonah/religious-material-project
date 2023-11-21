@@ -261,10 +261,6 @@ const Single = ({ kingdomBooksWithPrice }) => {
 
                   // Check the response from the API
                   if (addTransactionResponse.status === 200) {
-                     console.log(
-                        'Transaction added successfully:',
-                        addTransactionResponse.data
-                     );
                   } else {
                      console.error(
                         'Failed to add transaction:',

@@ -335,7 +335,6 @@ const ProductsDownload = ({ selectedFilter, filteredDownloadProduct }) => {
 
    const handlePlayClick = (recId, title, artist, imageUrl) => {
       const audio = audioRefs[recId];
-      console.log(audio);
 
       if (audio) {
          if (recId === activeSongId) {
@@ -363,8 +362,6 @@ const ProductsDownload = ({ selectedFilter, filteredDownloadProduct }) => {
          dispatch(togglePlayback(recId));
       }
    };
-
-   //    console.log(audioRefs);
 
    const handleToggleLike = (recId) => {
       if (likedSongs[recId]) {
@@ -460,7 +457,7 @@ const ProductsDownload = ({ selectedFilter, filteredDownloadProduct }) => {
 
             {filterProducts.length !== 0 ? (
                <>
-                  <div className=" w-[90%] flex justify-start items-center text-gray-500 space-x-3 mb-3 ">
+                  <div className=" w-[90%] flex justify-start items-center text-gray-200 space-x-3 mb-3 ">
                      <span className="flex justify-center items-center border border-[#daa851] rounded-full px-2 py-1">
                         {productMerged.length}
                      </span>
@@ -522,16 +519,18 @@ const ProductsDownload = ({ selectedFilter, filteredDownloadProduct }) => {
                                  </div>
                               ) : null}
                            </div>
-                           <span className="w-[150px] text-white text-sm overflow-hidden whitespace-nowrap">
-                              {title.length > 20
-                                 ? `${title.slice(0, 20)}...`
-                                 : title}
-                           </span>
-                           <span className="w-[150px] text-gray-600 text-sm overflow-hidden whitespace-nowrap">
-                              {author.length > 20
-                                 ? `${author.slice(0, 20)}...`
-                                 : author}
-                           </span>
+                           <div className="w-[50%] flex justify-between px-4 ">
+                              <span className="w-[150px] text-white  text-sm overflow-hidden whitespace-nowrap">
+                                 {title.length > 20
+                                    ? `${title.slice(0, 20)}...`
+                                    : title}
+                              </span>
+                              <span className="w-[150px] text-gray-600 text-sm overflow-hidden whitespace-nowrap">
+                                 {author.length > 20
+                                    ? `${author.slice(0, 20)}...`
+                                    : author}
+                              </span>
+                           </div>
                            {/* <span>{type}</span> */}
                            <div className="w-[50px] flex items-center space-x-4">
                               {hoveredItemId === recId ? (

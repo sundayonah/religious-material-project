@@ -433,8 +433,8 @@ const AudioPlayer = ({ audioRefs, mp3PurchasedProducts }) => {
                      <NextIcon />
                   </button>
 
-                  <div className="flex items-center justify-between">
-                     <span className="text-gray-500 text-xs px-3">
+                  <div className="hidden sm:flex items-center justify-between">
+                     <span className=" text-gray-500 text-xs px-3">
                         {formatTime(currentTime)} / {formatTime(duration)}
                      </span>
                   </div>
@@ -450,10 +450,15 @@ const AudioPlayer = ({ audioRefs, mp3PurchasedProducts }) => {
                   />
                   <div className="flex flex-col text-xs px-2">
                      <span className="text-white">{songDetails.title}</span>
-                     <span className="text-gray-500">{songDetails.author}</span>
+
+                     <span className="text-gray-500">
+                        {songDetails.author.length > 15
+                           ? `${songDetails.author.slice(0, 15)}...`
+                           : songDetails.author}
+                     </span>
                   </div>
 
-                  <div className="flex justify-center items-center mx-4">
+                  <div className="hidden sm:flex justify-center items-center mx-4">
                      <button
                         onClick={handleLikes}
                         className={`px-3 relative group ${

@@ -8,6 +8,7 @@ import { CloseIcon, ThumbsDown, ThumbsUp } from '../icons';
 import { toggleDislike, toggleLike } from '@/reduxToolkit/slices/bookSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import toast, { Toaster } from 'react-hot-toast';
+import Image from 'next/image';
 
 export const BooksDownload = ({ pdfPurchasedProducts }) => {
    const { address } = useAccount();
@@ -51,26 +52,28 @@ export const BooksDownload = ({ pdfPurchasedProducts }) => {
    return (
       <div className="py-4">
          <h4 className="text-2xl font-bold my-4 text-white">Purchased Books</h4>
-         <div className="grid grid-cols-2">
+
+         <div className="flex flex-wrap justify-center items-center md:flex-row md:items-center sm:flex-col sm:items-start space-x-4 space-y-4">
             {pdfPurchasedProducts.map((book, index) => (
                <div
                   key={index}
-                  className=" mx-12  px-2 py-3  rounded-md  shadow-custom"
+                  className="  px-2 py-3  rounded-md  shadow-custom"
+                  // className="  shadow-custom"
                >
-                  <img
+                  <Image
                      src={`https://gateway.pinata.cloud/ipfs/${book.image}`}
                      alt={book.title}
                      className="m-auto object-cover rounded-md"
-                     width={250}
-                     height={200}
+                     width={150}
+                     height={150}
                   />
-                  <h3 className="text-lg font-semibold mt-2 text-gray-400 italic">
+                  <h3 className="text-md font-semibold mt-2 text-gray-400 italic">
                      {book.title}
                   </h3>
-                  <div className="flex justify-between items-center space-x-3">
+                  <div className="flex justify-between items-center space-x-1">
                      <button
                         onClick={() => handleBookSelect(book)}
-                        className="bg-yellow-700 text-white py-2 px-4 mt-2 rounded-md"
+                        className="bg-yellow-700 text-white py-1 px-3 mt-2 rounded-md"
                      >
                         Read Book
                      </button>

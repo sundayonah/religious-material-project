@@ -169,7 +169,7 @@ const Messages = () => {
       };
       // messagesContent();
       FetchMessagesWithPrice();
-   }, [kingdomMessages, fetchPrices]);
+   }, [kingdomMessages, fetchPrices, messagesFetchHook]);
 
    // Filter the messages based on the search input
    useEffect(() => {

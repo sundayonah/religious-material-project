@@ -19,7 +19,7 @@ const SignInToConnect = () => {
             SignIn
          </button>
          {isSuccess && <div className="text-white">Signature: {data}</div>}
-         {isError && <div className="text-white">Error signing message</div>}
+         {/* {isError && <div className="text-white">Error signing message</div>} */}
       </div>
    );
 };

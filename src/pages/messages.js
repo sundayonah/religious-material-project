@@ -10,6 +10,7 @@ import axios from 'axios';
 import { useFetchMessages } from '@/components/fetchProducts';
 import {
    LoadingSpinner,
+   ProductLenghtLoadingSpinner,
    SearchIconWhenThereIsNoFilter,
 } from '@/components/utils';
 import Image from 'next/image';
@@ -186,7 +187,7 @@ const Messages = () => {
       const checkPurchasedStatus = async () => {
          try {
             const response = await axios.get(
-               `http://hokoshokos-001-site1.etempurl.com/api/Catalog/GetTransactions/${address}`
+               `https://hokoshokos-001-site1.etempurl.com/api/Catalog/GetTransactions/${address}`
             );
 
             const purchasedProducts = response.data.data;
@@ -309,7 +310,7 @@ const Messages = () => {
 
                   // Make a POST request to the API endpoint
                   const addTransactionResponse = await axios.post(
-                     'http://hokoshokos-001-site1.etempurl.com/api/Catalog/AddTransactions',
+                     'https://hokoshokos-001-site1.etempurl.com/api/Catalog/AddTransactions',
                      transactionData
                   );
                   console.log(addTransactionResponse);
@@ -358,25 +359,7 @@ const Messages = () => {
    if (kingdomMessagesWithPrice.length === 0) {
       return (
          <>
-            <div class="flex items-center justify-center   mt-80">
-               <div class="flex items-center justify-center  w-6 h-6">
-                  <div class="w-24 h-24 p-5 bg-[#DAA851] rounded-full animate-pulse delay-500">
-                     Lo
-                  </div>
-                  <div class="w-24 h-24 p-5 bg-[#DAA851] rounded-full animate-ping delay-100">
-                     ad
-                  </div>
-                  <div class="w-24 h-24 p-5 bg-[#DAA851] rounded-full animate-pulse delay-500">
-                     i
-                  </div>
-                  <div class="w-24 h-24 p-5 bg-[#DAA851] rounded-full animate-ping delay-700">
-                     n
-                  </div>
-                  <div class="w-24 h-24 p-5 bg-[#DAA851] rounded-full animate-pulse delay-1000">
-                     g
-                  </div>
-               </div>
-            </div>
+            <ProductLenghtLoadingSpinner />
          </>
       );
    }

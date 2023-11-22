@@ -24,21 +24,34 @@ import {
    SearchIconWhenThereIsNoFilter,
 } from '@/components/utils';
 import { StateContext } from '@/Context/ReligiousContext';
+import { useAccount } from 'wagmi';
 
 const Books = () => {
-   const { fetchPrices } = useContext(StateContext);
+   const {
+      approvedProducts,
+      Approved,
+      setApprovedProducts,
+      approveLoadingStates,
+      fetchPrices,
+      isAllowance,
+   } = useContext(StateContext);
+   const { address } = useAccount();
 
-   // const [filteredProducts, setFilteredProducts] = useState([...products]);
-   const [filteredProducts, setFilteredProducts] = useState([]);
+   const [filteredBooks, setFilteredBooks] = useState([]);
    const [searchInput, setSearchInput] = useState('');
    const [selectedCompany, setSelectedCompany] = useState('all');
    const [selectedProductId, setSelectedProductId] = useState(null);
    const [kingdomBook, setKingdomBook] = useState([]);
    const [bookModalOpen, setBookModalOpen] = useState(false);
    const [kingdomBooksWithPrice, setKingdomBooksWithPrice] = useState([]);
+   const [individualPurchasedStatus, setIndividualPurchasedStatus] =
+      useState(false);
+   const [bookLoadingStates, setBookLoadingStates] = useState(false);
+   const [selectedProduct, setSelectedProduct] = useState(null);
 
    const RMTestnetContractAddress =
       '0xF00Ab09b8FA49dD07da19024d6D213308314Ddb8';
+   const TokenAddress = '0x8dFaC13397e766f892bFA55790798A60eaB52921';
 
    const sidebarRef = useRef(null);
 
@@ -159,6 +172,174 @@ const Books = () => {
    //       console.error('Error fetching Message details:', error);
    //    }
    // };
+   useEffect(() => {
+      const checkPurchasedStatus = async () => {
+         try {
+            const response = await axios.get(
+               `https://hokoshokos-001-site1.etempurl.com/api/Catalog/GetTransactions/${address}`
+            );
+
+            const purchasedProducts = response.data.data;
+            // console.log(purchasedProducts);
+            const purchasedMap = {};
+
+            filteredBooks.forEach((song) => {
+               const isPurchased = purchasedProducts.some(
+                  (product) => product.counterId === song.counterId
+               );
+               purchasedMap[song.counterId] = isPurchased;
+            });
+
+            // console.log(purchasedMap);
+
+            setIndividualPurchasedStatus(purchasedMap);
+         } catch (error) {
+            console.error('Error checking purchase status:', error);
+         }
+      };
+
+      checkPurchasedStatus();
+   }, [address, filteredBooks]);
+
+   const buyNow = async (product) => {
+      console.log(product);
+      try {
+         if (product) {
+            if (window.ethereum) {
+               const provider = new ethers.providers.Web3Provider(
+                  window.ethereum
+               );
+               const signer = provider.getSigner();
+
+               if (address === undefined) {
+                  toast.success(`Please Connect Your Wallet.`, {
+                     duration: 4000,
+                     position: 'top-right',
+                     icon: '❌',
+                     style: {
+                        background: '#fff',
+                        border: '1px solid #a16206',
+                     },
+                  });
+                  return;
+               }
+
+               setBookLoadingStates((prevStates) => ({
+                  ...prevStates,
+                  [product.id]: true,
+               }));
+               const contract = new ethers.Contract(
+                  RMTestnetContractAddress,
+                  RMabi,
+                  signer
+               );
+
+               // Make the purchase through the smart contract
+               const contentId = product.counterId;
+               const token = TokenAddress;
+
+               let tx;
+               tx = await contract.purchase(contentId, token, {
+                  gasLimit: 400000, // Adjust the gas limit as needed
+                  gasPrice: ethers.utils.parseUnits('10.0', 'gwei'), // Adjust the gas price as needed
+               });
+
+               const receipt = await tx.wait();
+               // console.log(receipt);
+
+               if (receipt.status === 1) {
+                  // Update the approvedProducts state
+                  setApprovedProducts((prevProducts) => [
+                     ...prevProducts,
+                     product.recId,
+                  ]);
+                  // Create a product details object
+                  const purchasedBook = {
+                     id: product.recId,
+                     author: product.recId,
+                     title: product.title,
+                     image: product.image,
+                     category: product.category,
+                     bookFile: product.bookFile,
+                     address: address, // Store the user's address with the purchased book
+                  };
+
+                  // console.log(purchasedBook);
+
+                  // // Serialize the purchased product before storing it
+                  // const serializedProduct = JSON.stringify(purchasedBook);
+
+                  // // Add the purchased product to localStorage
+                  // const storedPurchasedBooks =
+                  //    JSON.parse(localStorage.getItem('purchasedBooks')) || [];
+                  // storedPurchasedBooks.push(serializedProduct);
+                  // localStorage.setItem(
+                  //    'purchasedBooks',
+                  //    JSON.stringify(storedPurchasedBooks)
+                  // );
+
+                  const purchasedBookTitle = purchasedBook.title;
+
+                  // Display a success toast notification
+                  toast.success(`${purchasedBookTitle}, Purchase successful`, {
+                     duration: 4000,
+                     position: 'bottom-right',
+                     icon: '✅',
+                  });
+
+                  // Call the API to add the transaction
+                  const transactionData = {
+                     hash: product.hash,
+                     address: address,
+                     counterId: product.counterId,
+                     type: product.type,
+                     transactionHash: receipt.transactionHash,
+                  };
+
+                  // console.log(transactionData);
+
+                  // Make a POST request to the API endpoint
+                  const addTransactionResponse = await axios.post(
+                     'https://hokoshokos-001-site1.etempurl.com/api/Catalog/AddTransactions',
+                     transactionData
+                  );
+
+                  // Check the response from the API
+                  if (addTransactionResponse.status === 200) {
+                  } else {
+                     console.error(
+                        'Failed to add transaction:',
+                        addTransactionResponse.statusText
+                     );
+                  }
+
+                  setBookLoadingStates((prevStates) => ({
+                     ...prevStates,
+                     [product.id]: false,
+                  }));
+               } else {
+                  console.error('Transaction Not Successful');
+               }
+               console.log('done');
+            } else {
+               console.error('User is not connected to a Web3 provider.');
+            }
+            // Perform any other actions here if needed
+         } else {
+            console.error('Product not found in Book Details.');
+         }
+      } catch (err) {
+         console.error('Purchase failed:', err.message);
+         setBookLoadingStates((prevStates) => ({
+            ...prevStates,
+            [product.id]: false,
+         }));
+      }
+      setBookLoadingStates((prevStates) => ({
+         ...prevStates,
+         [product.id]: false,
+      }));
+   };
 
    useEffect(() => {
       const fetchMessagesWithPrice = async () => {
@@ -216,8 +397,8 @@ const Books = () => {
       // console.log(filtered);
 
       // fetchBooks();
-      setFilteredProducts(filtered);
-      // setFilteredProducts(filtered);
+      setFilteredBooks(filtered);
+      // setFilteredBooks(filtered);
    }, [searchInput, selectedCompany, kingdomBooksWithPrice]);
 
    const router = useRouter();
@@ -232,7 +413,7 @@ const Books = () => {
    const displayProducts = () => {
       return (
          <>
-            {filteredProducts.length === 0 ? (
+            {filteredBooks.length === 0 ? (
                <div className="flex justify-center items-center mt-24">
                   <p className="text-2xl text-gray-400">
                      No Messages 🔽 found matching the search.
@@ -240,36 +421,82 @@ const Books = () => {
                </div>
             ) : (
                <>
-                  {filteredProducts.map(
-                     ({ recId, title, image, author, id, contentPrice }) => (
-                        <div
-                           className="relative bg-transparent p-2  hover:bg-[#342b1c] rounded-tl-3xl rounded-br-3xl shadow-custom mb-4"
-                           key={recId}
-                        >
-                           <Link href={`/single?id=${recId}`} passHref>
-                              <Image
-                                 src={`https://gateway.pinata.cloud/ipfs/${image}`}
-                                 className="h-48 w-52 rounded-tl-3xl object-center "
-                                 alt={title}
-                                 width={300}
-                                 height={150}
-                              />
-                           </Link>
-                           <div className="text-center mt-1 mb-3 ">
-                              <h5 className="text-gray-500 text-lg capitalize">
-                                 {title}
-                              </h5>
+                  {filteredBooks.map((book) => (
+                     <div
+                        className="relative bg-transparent p-2  hover:bg-[#342b1c] rounded-tl-3xl rounded-br-3xl shadow-custom mb-4"
+                        key={book.recId}
+                     >
+                        <Link href={`/single?id=${book.recId}`} passHref>
+                           <Image
+                              src={`https://gateway.pinata.cloud/ipfs/${book.image}`}
+                              className="h-48 w-52 rounded-tl-3xl object-center "
+                              alt={book.title}
+                              width={300}
+                              height={150}
+                           />
+                        </Link>
+                        <div className="text-center mt-1 mb-3 ">
+                           <h5 className="text-gray-500 text-lg capitalize">
+                              {book.title}
+                           </h5>
 
-                              <h5 className="text-white text-lg capitalize">
-                                 {author}
-                              </h5>
-                              <span className="absolute bg-[#DAA851] my-1 px-4 py-1 text-gray-700 font-bold text-sm  rounded-md">
-                                 $TKC {contentPrice / 1e15}
+                           <h5 className="text-white text-lg mb-2 capitalize">
+                              {book.author}
+                           </h5>
+                           <div className=" absolute">
+                              <span className=" bg-[#DAA851] my-1 mr-2 px-4 py-2 text-gray-700 font-bold text-sm   rounded-sm">
+                                 $TKC {book.contentPrice / 1e15}
+                              </span>
+                              {/* <span className="  bg-yellow-700 my-1 px-4 py-2 text-white font-bold text-sm  rounded-md hover:bg-yellow-800 focus:outline-none focus:ring-1 focus:ring-yellow-500 focus:ring-opacity-50"> */}
+                              <span className="    ">
+                                 {individualPurchasedStatus[book.counterId] ? (
+                                    <button
+                                       disabled
+                                       className="text-white mt-1 bg-gray-500 py-1 px-2 rounded-sm"
+                                    >
+                                       Purchased
+                                    </button>
+                                 ) : (
+                                    <>
+                                       {approvedProducts.includes(book.recId) ||
+                                       isAllowance ? (
+                                          <button
+                                             onClick={() => {
+                                                // setSelectedProduct(song);
+
+                                                buyNow(book);
+                                             }}
+                                             className="text-white px-4 py-1 bg-yellow-700  rounded-sm hover:bg-yellow-800 focus:outline-none focus:ring-1 focus:ring-yellow-500 focus:ring-opacity-50"
+                                          >
+                                             {bookLoadingStates[book.recId] ? (
+                                                <LoadingSpinner />
+                                             ) : (
+                                                'Buy Now'
+                                             )}
+                                          </button>
+                                       ) : (
+                                          <button
+                                             onClick={() => {
+                                                Approved(book);
+                                             }}
+                                             // className="text-white mt-1 bg-yellow-700 py-1 px-2 rounded-sm hover:bg-yellow-800 focus:outline-none focus:ring-1 focus:ring-yellow-500 focus:ring-opacity-50"
+                                          >
+                                             {approveLoadingStates[
+                                                book.recId
+                                             ] ? (
+                                                <LoadingSpinner />
+                                             ) : (
+                                                'Approve'
+                                             )}
+                                          </button>
+                                       )}
+                                    </>
+                                 )}
                               </span>
                            </div>
                         </div>
-                     )
-                  )}
+                     </div>
+                  ))}
                </>
             )}
          </>
@@ -334,7 +561,7 @@ const Books = () => {
                )}
             </div>
             {/* <div className="w-[95%] justify-center items-center m-auto"> */}
-            {filteredProducts.length !== 0 ? (
+            {filteredBooks.length !== 0 ? (
                <div className="flex m-auto flex-col justify-center items-center">
                   <div className=" grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
                      <>{displayProducts()}</>

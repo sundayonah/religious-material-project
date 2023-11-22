@@ -47,7 +47,7 @@ export const fetchBooks = async () => {
 
    try {
       const bookURL =
-         'http://hokoshokos-001-site1.etempurl.com/api/Catalog/GetAllBooks';
+         'https://hokoshokos-001-site1.etempurl.com/api/Catalog/GetAllBooks';
       const response = await axios.get(bookURL);
 
       const data = response.data.data;
@@ -107,7 +107,7 @@ export const fetchBooks = async () => {
 
 export const fetchSongs = async () => {
    const songsURL =
-      'http://hokoshokos-001-site1.etempurl.com/api/Catalog/GetAllSongs';
+      'https://hokoshokos-001-site1.etempurl.com/api/Catalog/GetAllSongs';
 
    try {
       const res = await axios.get(songsURL);
@@ -165,7 +165,7 @@ export const useFetchMessages = () => {
    const fetchMessages = useCallback(async () => {
       try {
          const messageURL =
-            'http://hokoshokos-001-site1.etempurl.com/api/Catalog/GetAllMessages';
+            'https://hokoshokos-001-site1.etempurl.com/api/Catalog/GetAllMessages';
 
          // const messageURL = '/api/message';
 
@@ -223,7 +223,7 @@ export const useFetchMessages = () => {
 };
 
 export const getTransactions = async (address) => {
-   const downloadsUrl = `http://hokoshokos-001-site1.etempurl.com/api/Catalog/GetTransactions/${address}`;
+   const downloadsUrl = `https://hokoshokos-001-site1.etempurl.com/api/Catalog/GetTransactions/${address}`;
 
    // const downloadsUrl = '/api/getAllDownload';
 

@@ -138,7 +138,7 @@ const Single = ({ kingdomBooksWithPrice }) => {
       const checkPurchasedStatus = async () => {
          try {
             const response = await axios.get(
-               `http://hokoshokos-001-site1.etempurl.com/api/Catalog/GetTransactions/${address}`
+               `https://hokoshokos-001-site1.etempurl.com/api/Catalog/GetTransactions/${address}`
             );
 
             // console.log(bookDetails.counterId);
@@ -272,7 +272,7 @@ const Single = ({ kingdomBooksWithPrice }) => {
 
                   // Make a POST request to the API endpoint
                   const addTransactionResponse = await axios.post(
-                     'http://hokoshokos-001-site1.etempurl.com/api/Catalog/AddTransactions',
+                     'https://hokoshokos-001-site1.etempurl.com/api/Catalog/AddTransactions',
                      transactionData
                   );
 
@@ -419,7 +419,7 @@ const Single = ({ kingdomBooksWithPrice }) => {
             )}
          </div>
          {/* DISPLAY BOOKS BASED ON CATEGORY */}
-         <div className="mt-20 w-[90%] m-auto">
+         <div className="mt-20 mb-8 w-[90%] m-auto">
             <div>
                <h2 className="text-[#DAA851]  my-8">
                   Related items Based On Category
@@ -461,145 +461,3 @@ const Single = ({ kingdomBooksWithPrice }) => {
 };
 
 export default Single;
-
-// import { useRouter } from 'next/router';
-// import Link from 'next/link';
-// import { useEffect, useMemo, useState } from 'react';
-// // Assuming dummyItems array is already defined here...
-
-// const SinglePage = () => {
-//    const router = useRouter();
-//    const { id } = router.query;
-
-//    const dummyItems = useMemo(() => {
-//       return [
-//          {
-//             id: 1,
-//             title: 'Book 1',
-//             image: 'https://via.placeholder.com/150',
-//             category: 'Healing',
-//          },
-//          {
-//             id: 2,
-//             title: 'Book 2',
-//             image: 'https://via.placeholder.com/150',
-//             category: 'Fiction',
-//          },
-//          {
-//             id: 3,
-//             title: 'Book 3',
-//             image: 'https://via.placeholder.com/150',
-//             category: 'Fantasy',
-//          },
-//          {
-//             id: 4,
-//             title: 'Book 4',
-//             image: 'https://via.placeholder.com/150',
-//             category: 'Healing',
-//          },
-//          {
-//             id: 5,
-//             title: 'Book 5',
-//             image: 'https://via.placeholder.com/150',
-//             category: 'Fiction',
-//          },
-//          {
-//             id: 6,
-//             title: 'Book 6',
-//             image: 'https://via.placeholder.com/150',
-//             category: 'Fantasy',
-//          },
-//          {
-//             id: 7,
-//             title: 'Book 7',
-//             image: 'https://via.placeholder.com/150',
-//             category: 'Healing',
-//          },
-//          {
-//             id: 8,
-//             title: 'Book 8',
-//             image: 'https://via.placeholder.com/150',
-//             category: 'Fiction',
-//          },
-//          {
-//             id: 9,
-//             title: 'Book 9',
-//             image: 'https://via.placeholder.com/150',
-//             category: 'Fantasy',
-//          },
-//          {
-//             id: 10,
-//             title: 'Book 10',
-//             image: 'https://via.placeholder.com/150',
-//             category: 'Healing',
-//          },
-//          {
-//             id: 11,
-//             title: 'Book 11',
-//             image: 'https://via.placeholder.com/150',
-//             category: 'Fiction',
-//          },
-//          {
-//             id: 12,
-//             title: 'Book 12',
-//             image: 'https://via.placeholder.com/150',
-//             category: 'Fantasy',
-//          },
-//       ];
-//    }, []);
-
-//    const [selectedItem, setSelectedItem] = useState(null);
-//    const [filteredCategories, setFilteredCategories] = useState([]);
-
-//    useEffect(() => {
-//       if (id && dummyItems) {
-//          const foundItem = dummyItems.find((item) => item.id === parseInt(id));
-//          setSelectedItem(foundItem);
-
-//          // Filter categories based on the selected item's category
-//          if (foundItem) {
-//             const filtered = dummyItems.filter(
-//                (item) => item.category === foundItem.category
-//             );
-//             setFilteredCategories(filtered);
-//          }
-//       }
-//    }, [id, dummyItems]);
-
-//    if (!selectedItem) {
-//       return <p>Loading...</p>; // Handle loading state if needed
-//    }
-//    return (
-//       <div className="container mx-auto mt-28">
-//          <div className="grid grid-cols-2 gap-4">
-//             <div className="col-span-1">
-//                <img
-//                   src={selectedItem.image}
-//                   alt={selectedItem.title}
-//                   className="rounded-md"
-//                />
-//                <h2 className="text-2xl font-bold mt-4">{selectedItem.title}</h2>
-//                <p className="text-gray-600">{selectedItem.category}</p>
-//             </div>
-//             <div className="col-span-1">
-//                <h3 className="text-xl font-bold mb-4">Categories</h3>
-//                <div className="flex flex-wrap">
-//                   {filteredCategories.map((item) => (
-//                      <Link
-//                         key={item.id}
-//                         href={`/single?id=${item.id}`}
-//                         passHref
-//                      >
-//                         <span className="mr-4 mb-2 text-blue-500 hover:text-blue-700">
-//                            {item.category}
-//                         </span>
-//                      </Link>
-//                   ))}
-//                </div>
-//             </div>
-//          </div>
-//       </div>
-//    );
-// };
-
-// export default SinglePage;

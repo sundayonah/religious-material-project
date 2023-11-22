@@ -26,7 +26,7 @@ import axios from 'axios';
 export default async function handler(req, res) {
    try {
       const messageURL =
-         'http://hokoshokos-001-site1.etempurl.com/api/Catalog/GetAllBooks';
+         'https://hokoshokos-001-site1.etempurl.com/api/Catalog/GetAllBooks';
 
       const response = await axios.get(messageURL);
 

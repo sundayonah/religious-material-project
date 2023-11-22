@@ -195,23 +195,11 @@ const Songs = () => {
       return ethers.utils.formatEther(balance);
    };
 
-   const hasPurchased = (userAddress, contentId) => {
-      const purchasedProducts =
-         JSON.parse(localStorage.getItem('purchasedProducts')) || [];
-      return purchasedProducts.some((product) => {
-         const parsedProduct = JSON.parse(product);
-         return (
-            parsedProduct.address === userAddress &&
-            parsedProduct.id === contentId
-         );
-      });
-   };
-
    useEffect(() => {
       const checkPurchasedStatus = async () => {
          try {
             const response = await axios.get(
-               `http://hokoshokos-001-site1.etempurl.com/api/Catalog/GetTransactions/${address}`
+               `https://hokoshokos-001-site1.etempurl.com/api/Catalog/GetTransactions/${address}`
             );
 
             const purchasedProducts = response.data.data;
@@ -322,7 +310,7 @@ const Songs = () => {
 
                   // Make a POST request to the API endpoint
                   const addTransactionResponse = await axios.post(
-                     'http://hokoshokos-001-site1.etempurl.com/api/Catalog/AddTransactions',
+                     'https://hokoshokos-001-site1.etempurl.com/api/Catalog/AddTransactions',
                      transactionData
                   );
                   console.log(addTransactionResponse);

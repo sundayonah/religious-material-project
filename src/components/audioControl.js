@@ -450,12 +450,13 @@ const AudioPlayer = ({ audioRefs, mp3PurchasedProducts }) => {
                   />
                   <div className="flex flex-col text-xs px-2">
                      <span className="text-white">{songDetails.title}</span>
-
+                     <span className="text-gray-500">{songDetails.author}</span>
+                     {/* 
                      <span className="text-gray-500">
                         {songDetails.author.length > 15
                            ? `${songDetails.author.slice(0, 15)}...`
                            : songDetails.author}
-                     </span>
+                     </span> */}
                   </div>
 
                   <div className="hidden sm:flex justify-center items-center mx-4">

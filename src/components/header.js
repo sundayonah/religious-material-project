@@ -11,6 +11,7 @@ import { useWeb3Modal } from '@web3modal/wagmi/react';
 import { useAccount } from 'wagmi';
 import { useRouter } from 'next/router';
 import { CloseIcon, OpenIcon } from './icons';
+import SignInToConnect from './signInMessage';
 
 const Header = () => {
    const {

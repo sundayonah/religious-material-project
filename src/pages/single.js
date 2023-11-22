@@ -325,7 +325,7 @@ const Single = ({ kingdomBooksWithPrice }) => {
 
    // Render the product details
    return (
-      <div className="mt-20">
+      <div className="mt-16">
          <Toaster />
 
          <Link href="/books">
@@ -344,7 +344,7 @@ const Single = ({ kingdomBooksWithPrice }) => {
                />
             </svg>
          </Link>
-         <div className="md:flex w-[70%] flex-row m-auto pt-16 justify-around items-center gap-4">
+         <div className="md:flex w-[70%] flex-row m-auto pt-8 justify-around items-center gap-4">
             {bookDetails ? (
                <>
                   <Image

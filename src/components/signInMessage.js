@@ -1,10 +1,8 @@
-import { useNetwork, useSignMessage, useSignTypedData } from 'wagmi';
+import { useSignMessage } from 'wagmi';
 
 import React from 'react';
 
 const SignInToConnect = () => {
-   const { chain, chains } = useNetwork();
-
    const { data, isError, isLoading, isSuccess, signMessage } = useSignMessage({
       message: 'Sign-in to web3 kigdom-coin e-comerce',
    });

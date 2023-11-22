@@ -222,43 +222,10 @@ const Books = () => {
 
    const router = useRouter();
 
-   // useEffect(() => {
-   //    const checkPurchasedStatus = async () => {
-   //       try {
-   //          const response = await axios.get(
-   //             `http://kingdomcoin-001-site1.ctempurl.com/api/Catalog/GetTransactions/${address}`
-   //          );
-
-   //          const purchasedProducts = response.data.data;
-   //          const purchasedMap = {};
-
-   //          filteredMessages.forEach((message) => {
-   //             const isPurchased = purchasedProducts.some(
-   //                (product) => product.counterId === message.counterId
-   //             );
-   //             purchasedMap[message.counterId] = isPurchased;
-   //          });
-
-   //          // console.log(purchasedMap);
-
-   //          setIndividualPurchasedStatus(purchasedMap);
-   //       } catch (error) {
-   //          console.error('Error checking purchase status:', error);
-   //       }
-   //    };
-
-   //    checkPurchasedStatus();
-   // }, [address]);
-
-   // console.log(kingdomBook);
-
    if (kingdomBooksWithPrice.length === 0) {
       return (
          <>
             <ProductLenghtLoadingSpinner />
-            {/* <div className="flex justify-center items-center mt-24">
-               <p className="text-2xl text-gray-400">Coming Soon</p>
-            </div> */}
          </>
       );
    }
@@ -292,13 +259,10 @@ const Books = () => {
                               <h5 className="text-gray-500 text-lg capitalize">
                                  {title}
                               </h5>
-                              {/* <h5 className="text-gray-500 text-lg capitalize">
-                              {id}
-                           </h5> */}
+
                               <h5 className="text-white text-lg capitalize">
                                  {author}
                               </h5>
-                              {/* <span className="absolute bg-[#DAA851] my-1 px-4 py-1 text-gray-700 font-bold text-sm left-48 md:left-40 lg:left-40 xl:left-40 2xl:left-70 rounded-md"> */}
                               <span className="absolute bg-[#DAA851] my-1 px-4 py-1 text-gray-700 font-bold text-sm  rounded-md">
                                  $TKC {contentPrice / 1e15}
                               </span>
@@ -387,41 +351,100 @@ const Books = () => {
 };
 export default Books;
 
-// export const fetchPrices = useCallback(async () => {
-//    // const provider = new ethers.providers.getDefaultProvider('homestead', {
-//    //    alchemy: 'o_O5LwKav_r5UECR-59GtRZsIqnhD0N8',
-//    // });
-//    const provider = new ethers.providers.Web3Provider(window.ethereum);
+// import React from 'react';
 
-//    const signer = provider.getSigner();
+// const books = () => {
+//    const dummyItems = [
+//       {
+//          id: 1,
+//          title: 'Book 1',
+//          image: 'https://via.placeholder.com/150',
+//          category: 'Healing',
+//       },
+//       {
+//          id: 2,
+//          title: 'Book 2',
+//          image: 'https://via.placeholder.com/150',
+//          category: 'Fiction',
+//       },
+//       {
+//          id: 3,
+//          title: 'Book 3',
+//          image: 'https://via.placeholder.com/150',
+//          category: 'Fantasy',
+//       },
+//       {
+//          id: 4,
+//          title: 'Book 4',
+//          image: 'https://via.placeholder.com/150',
+//          category: 'Healing',
+//       },
+//       {
+//          id: 5,
+//          title: 'Book 5',
+//          image: 'https://via.placeholder.com/150',
+//          category: 'Fiction',
+//       },
+//       {
+//          id: 6,
+//          title: 'Book 6',
+//          image: 'https://via.placeholder.com/150',
+//          category: 'Fantasy',
+//       },
+//       {
+//          id: 7,
+//          title: 'Book 7',
+//          image: 'https://via.placeholder.com/150',
+//          category: 'Healing',
+//       },
+//       {
+//          id: 8,
+//          title: 'Book 8',
+//          image: 'https://via.placeholder.com/150',
+//          category: 'Fiction',
+//       },
+//       {
+//          id: 9,
+//          title: 'Book 9',
+//          image: 'https://via.placeholder.com/150',
+//          category: 'Fantasy',
+//       },
+//       {
+//          id: 10,
+//          title: 'Book 10',
+//          image: 'https://via.placeholder.com/150',
+//          category: 'Healing',
+//       },
+//       {
+//          id: 11,
+//          title: 'Book 11',
+//          image: 'https://via.placeholder.com/150',
+//          category: 'Fiction',
+//       },
+//       {
+//          id: 12,
+//          title: 'Book 12',
+//          image: 'https://via.placeholder.com/150',
+//          category: 'Fantasy',
+//       },
+//    ];
 
-//    const contract = new ethers.Contract(
-//       RMTestnetContractAddress,
-//       RMabi,
-//       // provider
-//       signer
+//    return (
+//       <div className="w-[95%] m-28 grid grid-cols-3 gap-4 ">
+//          {dummyItems.map((item) => (
+//             <div key={item.id} className=" rounded-md p-4">
+//                <Link href={`/single?id=${item.id}`} passHref>
+//                   <img
+//                      src={item.image}
+//                      alt={item.title}
+//                      className="rounded-md"
+//                   />
+//                   <p className="text-center mt-2">{item.title}</p>
+//                </Link>
+//             </div>
+//          ))}
+//       </div>
 //    );
+// };
 
-//    const updatedMessages = [];
-//    for (const book of kingdomBook) {
-//       const contentId = book.id;
-
-//       const contentData = await contract.content(contentId);
-//       const contentSplit = contentData.toString();
-//       // console.log(contentSplit);
-//       const contentValues = contentSplit.split(','); // Splitting the string by comma
-
-//       // Assuming the second value (index 1) represents the price
-//       const contentPrice = contentValues[1] ? parseInt(contentValues[1]) : 0;
-//       // console.log(contentPrice);
-
-//       // // Assuming other values in 'contentData' correspond to other properties in 'book'
-//       const bookWithPrice = { ...book, contentPrice };
-//       // console.log(bookWithPrice);
-
-//       updatedMessages.push(bookWithPrice);
-//    }
-
-//    // console.log(updatedMessages);
-//    return updatedMessages;
-// }, [kingdomBook]);
+// export default books;

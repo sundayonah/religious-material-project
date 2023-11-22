@@ -53,7 +53,8 @@ export const BooksDownload = ({ pdfPurchasedProducts }) => {
       <div className="py-4">
          <h4 className="text-2xl font-bold my-4 text-white">Purchased Books</h4>
 
-         <div className="flex flex-wrap justify-center items-center md:flex-row md:items-center sm:flex-col sm:items-start space-x-4 space-y-4">
+         {/* <div className="flex flex-wrap justify-center items-center md:flex-row md:items-center sm:flex-col sm:items-start space-x-4 space-y-4"> */}
+         <div className="flex flex-wrap gap-3 p-2 justify-center md:justify-start items-center">
             {pdfPurchasedProducts.map((book, index) => (
                <div
                   key={index}

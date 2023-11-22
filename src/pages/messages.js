@@ -398,6 +398,7 @@ const Messages = () => {
                />
             </form>
          </div>
+         {/* <div className="flex flex-wrap gap-3 p-2 justify-center md:justify-start items-center"> */}
          <div className="flex flex-wrap gap-3 p-2 justify-center items-center">
             {filteredMessages.length === 0 ? (
                <div className="flex justify-center items-center mt-24">

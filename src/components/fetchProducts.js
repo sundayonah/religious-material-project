@@ -99,9 +99,15 @@ export const fetchBooks = async () => {
       const filteredBooks = bookDetails.filter((book) => book !== null);
       // console.log('Filtered Books:', filteredBooks);
       return filteredBooks;
+      // Inside the catch block for IPFS content retrieval
    } catch (error) {
-      console.error('Error fetching books details:', error);
-      return [];
+      if (axios.isAxiosError(error)) {
+         // Handle Axios errors (e.g., network errors) differently
+         console.error('Axios error fetching IPFS content:', error);
+      } else {
+         console.error('Error fetching IPFS content:', error);
+      }
+      return null;
    }
 };
 

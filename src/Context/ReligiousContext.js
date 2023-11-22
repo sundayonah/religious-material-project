@@ -509,13 +509,13 @@ export const StateContextProvider = ({ children }) => {
       // });
       const provider = new ethers.providers.Web3Provider(window.ethereum);
 
-      const signer = provider.getSigner();
+      // const signer = provider.getSigner();
 
       const contract = new ethers.Contract(
          RMTestnetContractAddress,
          RMabi,
-         // provider
-         signer
+         provider
+         // signer
       );
 
       const updatedMessages = [];

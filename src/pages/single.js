@@ -430,7 +430,7 @@ const Single = ({ kingdomBooksWithPrice }) => {
                      <div
                         key={relatedBook.recId}
                         // className="flex transition duration-500 ease-in-out transform hover:-translate-y-1 hover:scale-110 "
-                        className="transition transform hover:-translate-y-1 duration-700  motion-reduce:transition-none motion-reduce:transform-none "
+                        className="transition transform hover:-translate-y-1 duration-300  motion-reduce:transition-none motion-reduce:transform-none shadow-newCustom py-1 px-2 rounded-lg "
                      >
                         <Link href={`/single?id=${relatedBook.recId}`} passHref>
                            <img

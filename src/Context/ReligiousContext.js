@@ -481,21 +481,28 @@ export const StateContextProvider = ({ children }) => {
 
    useEffect(() => {
       const checkAllowance = async () => {
-         const provider = new ethers.providers.Web3Provider(window.ethereum);
+         if (window.ethereum) {
+            const provider = new ethers.providers.Web3Provider(window.ethereum);
 
-         const signer = provider.getSigner();
+            const signer = provider.getSigner();
 
-         const contractInstance = new ethers.Contract(
-            TokenAddress,
-            ApproveAbi,
-            signer
-         );
-         const isAllowed = await contractInstance.allowance(
-            address,
-            RMTestnetContractAddress
-         );
-         if (isAllowed > ethers.utils.parseEther('1000', 'ether')) {
-            setIsAllowance(true);
+            const contractInstance = new ethers.Contract(
+               TokenAddress,
+               ApproveAbi,
+               signer
+            );
+            const isAllowed = await contractInstance.allowance(
+               address,
+               RMTestnetContractAddress
+            );
+            if (isAllowed > ethers.utils.parseEther('1000', 'ether')) {
+               setIsAllowance(true);
+            }
+         } else {
+            // Handle the case where Ethereum provider is not available
+            console.error(
+               'Ethereum provider (window.ethereum) is not available'
+            );
          }
       };
       checkAllowance();

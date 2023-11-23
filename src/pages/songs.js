@@ -401,17 +401,19 @@ const Songs = () => {
                            className="flex justify-between items-center mx-1  px-2 py-3  rounded-md  shadow-custom"
                            // className="flex flex-col w-[calc(50% - 1rem)] md:w-[calc(33.33% - 1rem)] lg:w-[calc(25% - 1rem)] 2xl:w-[calc(20% - 1rem)] mb-3 p-2 rounded-md  shadow-custom"
                         >
-                           <div className="md:flex-shrink-0">
+                           {/* <div className="md:flex-shrink-0"> */}
+                           {/* <div className=""> */}
+                           <div className="flex items-center w-1/2">
                               <Image
                                  src={`https://gateway.pinata.cloud/ipfs/${song.image}`}
                                  alt={song.title}
-                                 className="rounded-md"
                                  width={150}
                                  height={150}
+                                 className="h-42 w-52 md:w-52 rounded-md object-center"
                               />
                            </div>
 
-                           <div className="flex flex-col ml-6 text-sm">
+                           <div className=" flex flex-col ml-6 w-1/2 text-sm">
                               <span className=" text-gray-500 text-sm pt-1 pb-1 overflow-hidden whitespace-nowrap">
                                  {song.title.length > 15
                                     ? `${song.title.slice(0, 15)}...`
@@ -427,7 +429,7 @@ const Songs = () => {
                                  {individualPurchasedStatus[song.counterId] ? (
                                     <button
                                        disabled
-                                       className="text-white mt-1 bg-gray-500 py-1 px-2 rounded-sm"
+                                       className="w-full text-white mt-1 bg-gray-500 py-1 px-2 rounded-sm"
                                     >
                                        Purchased
                                     </button>

@@ -409,9 +409,9 @@ const Messages = () => {
                            <Image
                               src={`https://gateway.pinata.cloud/ipfs/${message.image}`}
                               alt={message.title}
-                              className="rounded-md"
                               width={200}
                               height={150}
+                              className="h-42 w-72 md:w-52 rounded-md object-center"
                            />
                         </div>
                         <div className="flex flex-col justify-center items-start pt-1">

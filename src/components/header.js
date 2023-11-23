@@ -12,6 +12,7 @@ import { useAccount } from 'wagmi';
 import { useRouter } from 'next/router';
 import { CloseIcon, OpenIcon } from './icons';
 import SignInToConnect from './signInMessage';
+import Image from 'next/image';
 
 const Header = () => {
    const {
@@ -238,7 +239,16 @@ const Header = () => {
          )}
          <main className="flex justify-between px-6 py-2 items-center fixed left-0 top-0 w-full bg-opacity-10 backdrop-blur-md shadow-md h-14 z-20">
             <div className="">
-               <span className="text-white bold">LOGO</span>
+               {/* <span className="text-white bold">LOGO</span> */}
+               <Link href="/">
+                  <Image
+                     alt="logo"
+                     src="/images/logo.png"
+                     className=""
+                     width={40}
+                     height={40}
+                  />
+               </Link>
             </div>
             <div className="md:hidden ">
                {isMenuOpen ? (

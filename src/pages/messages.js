@@ -14,6 +14,8 @@ import {
    SearchIconWhenThereIsNoFilter,
 } from '@/components/utils';
 import Image from 'next/image';
+import MessageModalContent from '@/components/messageModalContent';
+import { CloseIcon } from '@/components/icons';
 
 const Messages = () => {
    const {
@@ -36,7 +38,8 @@ const Messages = () => {
    const [individualPurchasedStatus, setIndividualPurchasedStatus] =
       useState(false);
 
-   const [userAccounts, setUserAccounts] = useState(null);
+   const [isModalOpen, setIsModalOpen] = useState(false);
+   const [modalContent, setModalContent] = useState(null);
 
    // const [approveLoadingStates, setApproveLoadingStates] = useState({});
    // const [isApproved, setIsApproved] = useState(false);
@@ -365,6 +368,16 @@ const Messages = () => {
       }));
    };
 
+   const openModal = (product) => {
+      setModalContent(product);
+      setIsModalOpen(true);
+   };
+
+   const closeModal = () => {
+      setModalContent(null);
+      setIsModalOpen(false);
+   };
+
    if (kingdomMessagesWithPrice.length === 0) {
       return (
          <>
@@ -373,7 +386,7 @@ const Messages = () => {
       );
    }
 
-   // console.log(filteredMessages);
+   // console.log(selectedProduct);
 
    return (
       <div className="w-[95%] m-auto mt-28 ">
@@ -405,7 +418,10 @@ const Messages = () => {
                         // className="border rounded-md p-2"
                         className=" rounded-md p-3 m-2 shadow-custom"
                      >
-                        <div class="md:flex-shrink-0">
+                        <div
+                           class="md:flex-shrink-0 cursor-pointer"
+                           onClick={() => openModal(message)}
+                        >
                            <Image
                               src={`https://gateway.pinata.cloud/ipfs/${message.image}`}
                               alt={message.title}
@@ -475,7 +491,53 @@ const Messages = () => {
                </>
             )}
          </div>
-         {/* <button onClick={Connect}>Connect</button> */}
+         {/* Modal */}
+         {/* <MessageModalContent filteredMessages={filteredMessages} /> */}
+
+         {isModalOpen && (
+            <div className="fixed top-0 left-0 z-50 w-full h-full bg-black bg-opacity-50 flex justify-center items-center">
+               <div className="bg-white p-5 rounded-md max-w-md w-full">
+                  {modalContent && (
+                     <>
+                        <div className="flex justify-end">
+                           <button
+                              onClick={closeModal}
+                              className="text-gray-600 hover:text-gray-800"
+                           >
+                              <CloseIcon />
+                           </button>
+                        </div>
+                        <div className="flex flex-col items-center justify-center">
+                           <Image
+                              src={`https://gateway.pinata.cloud/ipfs/${modalContent.image}`}
+                              alt={modalContent.title}
+                              width={400}
+                              height={300}
+                              className="rounded-md mb-4"
+                           />
+                           <h2 className="text-xl font-bold">
+                              {modalContent.title}
+                           </h2>
+                           <p className="text-gray-600">
+                              {modalContent.author}
+                           </p>
+                           <p className="text-gray-600">
+                              {modalContent.description}
+                           </p>
+                           <div className="w-full flex justify-center items-center  mt-3">
+                              <b className="border border-yellow-700 bg-transparent py-1 px-2 rounded-sm hover:bg-yellow-300 focus:outline-none focus:ring-1 focus:ring-yellow-500 focus:ring-opacity-50 text-black">
+                                 $TKC {modalContent.contentPrice / 1e15}
+                              </b>
+                              <button className="w-full text-white mt-1 bg-yellow-700 py-1 px-2 rounded-sm hover:bg-yellow-800 focus:outline-none focus:ring-1 focus:ring-yellow-500 focus:ring-opacity-50">
+                                 Approve
+                              </button>
+                           </div>
+                        </div>
+                     </>
+                  )}
+               </div>
+            </div>
+         )}
       </div>
    );
 };

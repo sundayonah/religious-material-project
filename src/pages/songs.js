@@ -430,7 +430,7 @@ const Songs = () => {
                                  {individualPurchasedStatus[song.counterId] ? (
                                     <button
                                        disabled
-                                       className="w-full text-white mt-1 bg-gray-500 py-1 px-2 rounded-sm"
+                                       className="w-full text-white mt-1 bg-gray-500 py-1 px-2 rounded-sm cursor-not-allowed"
                                     >
                                        Purchased
                                     </button>

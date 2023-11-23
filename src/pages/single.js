@@ -33,7 +33,7 @@ const Single = ({ kingdomBooksWithPrice }) => {
    const { address } = useAccount();
    const [bookLoadingStates, setBookLoadingStates] = useState(false);
    const [bookDetails, setBookDetails] = useState(null);
-   const [updatedPrices, setUpdatedPrices] = useState(null);
+   const [addPricesToCategories, setAddPricesToCategories] = useState([]);
 
    const [individualPurchasedStatus, setIndividualPurchasedStatus] =
       useState(false);
@@ -90,7 +90,7 @@ const Single = ({ kingdomBooksWithPrice }) => {
                   ?.contentPrice,
             };
 
-            // console.log(bookWithPrice);
+            setAddPricesToCategories(prices);
 
             setViewBooksBasedOnCategory(showBookDetails);
 
@@ -111,16 +111,19 @@ const Single = ({ kingdomBooksWithPrice }) => {
       if (bookDetails) {
          const filtered = viewBooksBasedOnCategory
             .filter((item) => item.category === bookDetails.category)
-            .map((filteredItem) => ({
-               ...filteredItem,
-               contentPrice: bookDetails.contentPrice,
-            }));
-
-         console.log(filtered);
+            .map((filteredItem) => {
+               const priceItem = addPricesToCategories.find(
+                  (price) => price.id === filteredItem.id
+               );
+               return {
+                  ...filteredItem,
+                  contentPrice: priceItem ? priceItem.contentPrice : null,
+               };
+            });
 
          setFilteredCategories(filtered);
       }
-   }, [id, viewBooksBasedOnCategory, bookDetails]);
+   }, [id, viewBooksBasedOnCategory, bookDetails, addPricesToCategories]);
 
    // useEffect(() => {
    //    const fetchData = async () => {
@@ -365,7 +368,7 @@ const Single = ({ kingdomBooksWithPrice }) => {
                      <p className="text-white">{bookDetails.description}</p>
 
                      <div className="w-full flex justify-between items-center space-x-4 ">
-                        <div className="w-[50%] flex justify-center text-yellow-600 mt-1 border  border-yellow-700 py-1 px-2 rounded-sm hover:bg-yellow-800 focus:outline-none focus:ring-1 focus:ring-yellow-500 focus:ring-opacity-50">
+                        <div className="w-[50%] flex justify-center text-yellow-600 mt-1 border  border-yellow-700 py-1 px-2 rounded-sm  focus:outline-none focus:ring-1 focus:ring-yellow-500 focus:ring-opacity-50">
                            <span>
                               {' '}
                               TKC${' '}
@@ -378,7 +381,7 @@ const Single = ({ kingdomBooksWithPrice }) => {
                            {individualPurchasedStatus[bookDetails.counterId] ? (
                               <button
                                  disabled
-                                 className="w-full text-white mt-1 bg-gray-500 py-1 px-2 rounded-sm"
+                                 className="w-full text-white mt-1 bg-gray-500 py-1 px-2 rounded-sm cursor-not-allowed"
                               >
                                  Purchased
                               </button>

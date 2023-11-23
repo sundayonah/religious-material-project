@@ -72,26 +72,26 @@ export const StateContextProvider = ({ children }) => {
    const [approveLoadingStates, setApproveLoadingStates] = useState({});
    const [isAllowance, setIsAllowance] = useState(false);
 
-   //FETCH CONTRACT
-   const Fetch_Contract = (PROVIDER) =>
-      new ethers.Contract(contractAddress, contractAbi, PROVIDER);
+   // //FETCH CONTRACT
+   // const Fetch_Contract = (PROVIDER) =>
+   //    new ethers.Contract(contractAddress, contractAbi, PROVIDER);
 
-   // CONNECTING WITH WITH CONTRACT
-   const connectWithSmartContract = async (contrat_Address, contract_ABI) => {
-      try {
-         const web3modal = new useWeb3Modal();
-         const connection = await web3modal.connect();
-         const provider = new ethers.providers.Web3Provider(connection);
-         const signer = provider.getSigner();
+   // // CONNECTING WITH WITH CONTRACT
+   // const connectWithSmartContract = async (contrat_Address, contract_ABI) => {
+   //    try {
+   //       const web3modal = new useWeb3Modal();
+   //       const connection = await web3modal.connect();
+   //       const provider = new ethers.providers.Web3Provider(connection);
+   //       const signer = provider.getSigner();
 
-         const contract = Fetch_Contract(signer);
-         console.log(contract);
+   //       const contract = Fetch_Contract(signer);
+   //       console.log(contract);
 
-         return contract;
-      } catch (error) {
-         console.log(error);
-      }
-   };
+   //       return contract;
+   //    } catch (error) {
+   //       console.log(error);
+   //    }
+   // };
 
    // const [walletConnected, setWalletConnected] = useState(false);
 
@@ -514,7 +514,12 @@ export const StateContextProvider = ({ children }) => {
       // const provider = new ethers.providers.getDefaultProvider('homestead', {
       //    alchemy: 'o_O5LwKav_r5UECR-59GtRZsIqnhD0N8',
       // });
-      const provider = new ethers.providers.Web3Provider(window.ethereum);
+      // const provider = new ethers.providers.Web3Provider(window.ethereum);
+
+      const alchemyApiKey = 'o_O5LwKav_r5UECR-59GtRZsIqnhD0N8';
+      const provider = new ethers.providers.JsonRpcProvider(
+         `https://polygon-mumbai.g.alchemyapi.io/v2/${alchemyApiKey}`
+      );
 
       // const signer = provider.getSigner();
 
@@ -525,7 +530,7 @@ export const StateContextProvider = ({ children }) => {
          // signer
       );
 
-      const updatedMessages = [];
+      const updatedBooks = [];
       for (const book of kingdomBook) {
          const contentId = book.id;
 
@@ -542,11 +547,11 @@ export const StateContextProvider = ({ children }) => {
          const bookWithPrice = { ...book, contentPrice };
          // console.log(bookWithPrice);
 
-         updatedMessages.push(bookWithPrice);
+         updatedBooks.push(bookWithPrice);
       }
 
-      // console.log(updatedMessages);
-      return updatedMessages;
+      // console.log(updatedBooks);
+      return updatedBooks;
    };
 
    // useEffect(() => {

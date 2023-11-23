@@ -22,6 +22,7 @@ const Messages = () => {
       setApprovedProducts,
       approveLoadingStates,
       isAllowance,
+      Connect,
    } = useContext(StateContext);
 
    const ipfsHash = 'QmfMQiWGrcswgwc3BsjLuprEV95ZQhHQj6a4Ygy1NHhVs9';
@@ -34,6 +35,8 @@ const Messages = () => {
    const [kingdomMessagesWithPrice, setKingdomMessagesWithPrice] = useState([]);
    const [individualPurchasedStatus, setIndividualPurchasedStatus] =
       useState(false);
+
+   const [userAccounts, setUserAccounts] = useState(null);
 
    // const [approveLoadingStates, setApproveLoadingStates] = useState({});
    // const [isApproved, setIsApproved] = useState(false);
@@ -118,16 +121,21 @@ const Messages = () => {
 
    // Function to fetch prices for each message
    const fetchPrices = useCallback(async () => {
-      const provider = new ethers.providers.Web3Provider(window.ethereum);
+      // const provider = new ethers.providers.Web3Provider(window.ethereum);
 
-      const signer = provider.getSigner();
+      const alchemyApiKey = 'o_O5LwKav_r5UECR-59GtRZsIqnhD0N8';
+      const provider = new ethers.providers.JsonRpcProvider(
+         `https://polygon-mumbai.g.alchemyapi.io/v2/${alchemyApiKey}`
+      );
+
+      // const signer = provider.getSigner();
 
       const contract = new ethers.Contract(
          RMTestnetContractAddress,
          RMabi,
-         signer
+         provider
+         // signer
       );
-
       const updatedMessages = [];
       for (const message of kingdomMessages) {
          const contentId = message.counterId;
@@ -218,6 +226,7 @@ const Messages = () => {
                const provider = new ethers.providers.Web3Provider(
                   window.ethereum
                );
+
                const signer = provider.getSigner();
 
                if (address === undefined) {
@@ -433,7 +442,7 @@ const Messages = () => {
                                     <button
                                        onClick={() => {
                                           setSelectedProduct(message);
-                                          buyNow(message, address);
+                                          buyNow(message);
                                        }}
                                        className="w-full text-white mt-1 bg-yellow-700 py-1 px-2 rounded-sm hover:bg-yellow-800 focus:outline-none focus:ring-1 focus:ring-yellow-500 focus:ring-opacity-50"
                                     >
@@ -466,6 +475,7 @@ const Messages = () => {
                </>
             )}
          </div>
+         {/* <button onClick={Connect}>Connect</button> */}
       </div>
    );
 };

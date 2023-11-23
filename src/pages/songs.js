@@ -61,13 +61,21 @@ const Songs = () => {
    const [filteredSongs, setFilteredSongs] = useState(kingdomSongs);
 
    const fetchPrices = useCallback(async () => {
-      const provider = new ethers.providers.Web3Provider(window.ethereum);
-      const signer = provider.getSigner();
+      // const provider = new ethers.providers.Web3Provider(window.ethereum);
+      // const signer = provider.getSigner();
+
+      const alchemyApiKey = 'o_O5LwKav_r5UECR-59GtRZsIqnhD0N8';
+      const provider = new ethers.providers.JsonRpcProvider(
+         `https://polygon-mumbai.g.alchemy.com/v2/${alchemyApiKey}`
+      );
+
+      // const signer = provider.getSigner();
 
       const contract = new ethers.Contract(
          RMTestnetContractAddress,
          RMabi,
-         signer
+         provider
+         // signer
       );
 
       const updatedSongs = [];

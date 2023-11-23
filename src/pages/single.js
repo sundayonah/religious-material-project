@@ -366,7 +366,13 @@ const Single = ({ kingdomBooksWithPrice }) => {
 
                      <div className="w-full flex justify-between items-center space-x-4 ">
                         <div className="w-[50%] flex justify-center text-yellow-600 mt-1 border  border-yellow-700 py-1 px-2 rounded-sm hover:bg-yellow-800 focus:outline-none focus:ring-1 focus:ring-yellow-500 focus:ring-opacity-50">
-                           <span> TKC$ {bookDetails.contentPrice / 1e15}</span>
+                           <span>
+                              {' '}
+                              TKC${' '}
+                              {(
+                                 bookDetails.contentPrice / 1e15
+                              ).toLocaleString()}
+                           </span>
                         </div>
                         <div className="w-[50%]">
                            {individualPurchasedStatus[bookDetails.counterId] ? (
@@ -454,7 +460,10 @@ const Single = ({ kingdomBooksWithPrice }) => {
                            </div>
                            <div className=" flex justify-center text-white mt-1   bg-yellow-700 py-1 px-2 rounded-sm hover:bg-yellow-800 focus:outline-none focus:ring-1 focus:ring-yellow-500 focus:ring-opacity-50">
                               <span className="text-sm">
-                                 TKC$ {relatedBook.contentPrice / 1e15}
+                                 TKC${' '}
+                                 {(
+                                    relatedBook.contentPrice / 1e15
+                                 ).toLocaleString()}
                               </span>
                            </div>
                         </Link>

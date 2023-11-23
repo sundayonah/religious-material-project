@@ -379,7 +379,8 @@ const Books = () => {
                            </h5>
                            <div className="absolute">
                               <span className=" bg-[#DAA851]  md:mr-2 mr-20 px-4 py-2 text-gray-700 font-bold text-sm   rounded-sm">
-                                 $TKC {book.contentPrice / 1e15}
+                                 $TKC{' '}
+                                 {(book.contentPrice / 1e15).toLocaleString()}
                               </span>
                               {/* <span className="bg-yellow-700 my-1 px-4 py-2 text-white font-bold text-sm  rounded-md hover:bg-yellow-800 focus:outline-none focus:ring-1 focus:ring-yellow-500 focus:ring-opacity-50"> */}
                               <span className="">

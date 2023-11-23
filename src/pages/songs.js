@@ -423,7 +423,8 @@ const Songs = () => {
                                  {song.author}
                               </span>
                               <span className="text-gray-400">
-                                 $TKC {song.contentPrice / 1e15}
+                                 $TKC{' '}
+                                 {(song.contentPrice / 1e15).toLocaleString()}
                               </span>
                               <div>
                                  {individualPurchasedStatus[song.counterId] ? (

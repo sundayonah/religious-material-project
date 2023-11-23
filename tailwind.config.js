@@ -17,6 +17,7 @@ module.exports = {
             'custom-inset':
                '0.4rem 0.4rem 1rem #111 inset, -0.4rem -0.4rem 1rem #333 inset',
             newCustom: '10px 15px 20px rgba(0, 0, 0, 1)',
+            generate: '0px 5px 22px -5px rgba(9,8,8,1) inset',
          },
          textColor: {
             likeColor: '#DAA851',

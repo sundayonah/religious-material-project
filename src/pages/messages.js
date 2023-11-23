@@ -14,8 +14,8 @@ import {
    SearchIconWhenThereIsNoFilter,
 } from '@/components/utils';
 import Image from 'next/image';
-import MessageModalContent from '@/components/messageModalContent';
-import { CloseIcon } from '@/components/icons';
+// import MessageModalContent from '@/components/messageModalContent';
+import Modal from '@/components/messageModalContent';
 
 const Messages = () => {
    const {
@@ -416,7 +416,7 @@ const Messages = () => {
                      <div
                         key={message.recId}
                         // className="border rounded-md p-2"
-                        className=" rounded-md p-3 m-2 shadow-custom"
+                        className=" rounded-md p-3 m-2 transition duration-500 ease-in-out transform hover:-translate-y-1 hover:scale-110 shadow-custom"
                      >
                         <div
                            class="md:flex-shrink-0 cursor-pointer"
@@ -438,7 +438,8 @@ const Messages = () => {
                               {message.author}
                            </span>
                            <span className="text-gray-300">
-                              $TKC {message.contentPrice / 1e15}
+                              $TKC{' '}
+                              {(message.contentPrice / 1e15).toLocaleString()}
                            </span>
                         </div>
                         <div className="flex justify-center items-center">
@@ -492,10 +493,14 @@ const Messages = () => {
             )}
          </div>
          {/* Modal */}
-         {/* <MessageModalContent filteredMessages={filteredMessages} /> */}
+         <Modal
+            isOpen={isModalOpen}
+            closeModal={closeModal}
+            content={modalContent}
+         />
 
-         {isModalOpen && (
-            <div className="fixed top-0 left-0 z-50 w-full h-full bg-black bg-opacity-50 flex justify-center items-center">
+         {/* {isModalOpen && (
+            <div className="fixed top-0 left-0 z-50 w-full h-full bg-black bg-opacity-70 flex justify-center items-center">
                <div className="bg-white p-5 rounded-md max-w-md w-full">
                   {modalContent && (
                      <>
@@ -524,11 +529,11 @@ const Messages = () => {
                            <p className="text-gray-600">
                               {modalContent.description}
                            </p>
-                           <div className="w-full flex justify-center items-center  mt-3">
-                              <b className="border border-yellow-700 bg-transparent py-1 px-2 rounded-sm hover:bg-yellow-300 focus:outline-none focus:ring-1 focus:ring-yellow-500 focus:ring-opacity-50 text-black">
+                           <div className="w-full flex justify-center items-center  mt-3 space-x-4">
+                              <b className="border border-yellow-700 bg-transparent py-1 px-2 rounded-sm hover:bg-gray-300 focus:outline-none focus:ring-1 focus:ring-yellow-500 focus:ring-opacity-50 text-black">
                                  $TKC {modalContent.contentPrice / 1e15}
                               </b>
-                              <button className="w-full text-white mt-1 bg-yellow-700 py-1 px-2 rounded-sm hover:bg-yellow-800 focus:outline-none focus:ring-1 focus:ring-yellow-500 focus:ring-opacity-50">
+                              <button className="w-[50%] text-white  bg-yellow-700 py-1 px-2 rounded-sm hover:bg-yellow-800 focus:outline-none focus:ring-1 focus:ring-yellow-500 focus:ring-opacity-50">
                                  Approve
                               </button>
                            </div>
@@ -537,7 +542,7 @@ const Messages = () => {
                   )}
                </div>
             </div>
-         )}
+         )} */}
       </div>
    );
 };

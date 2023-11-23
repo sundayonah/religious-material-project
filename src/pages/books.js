@@ -358,13 +358,13 @@ const Books = () => {
                <>
                   {filteredBooks.map((book) => (
                      <div
-                        className="relative bg-transparent p-2  hover:bg-[#342b1c] rounded-tl-3xl rounded-br-3xl shadow-custom mb-4"
+                        className=" relative bg-transparent p-2  hover:bg-[#342b1c] rounded-tl-3xl rounded-br-3xl shadow-custom mb-4"
                         key={book.recId}
                      >
                         <Link href={`/single?id=${book.recId}`} passHref>
                            <img
                               src={`https://gateway.pinata.cloud/ipfs/${book.image}`}
-                              className="h-48 w-52 rounded-tl-3xl object-center "
+                              className="h-48 w-72 md:w-52 rounded-tl-3xl object-center "
                               alt={book.title}
                               width={300}
                               height={150}
@@ -378,7 +378,7 @@ const Books = () => {
                               {book.author}
                            </h5>
                            <div className="absolute">
-                              <span className=" bg-[#DAA851] my-1 mr-2 px-4 py-2 text-gray-700 font-bold text-sm   rounded-sm">
+                              <span className=" bg-[#DAA851]  md:mr-2 mr-20 px-4 py-2 text-gray-700 font-bold text-sm   rounded-sm">
                                  $TKC {book.contentPrice / 1e15}
                               </span>
                               {/* <span className="bg-yellow-700 my-1 px-4 py-2 text-white font-bold text-sm  rounded-md hover:bg-yellow-800 focus:outline-none focus:ring-1 focus:ring-yellow-500 focus:ring-opacity-50"> */}
@@ -492,7 +492,7 @@ const Books = () => {
             </div>
             {/* <div className="w-[95%] justify-center items-center m-auto"> */}
             {filteredBooks.length !== 0 ? (
-               <div className="flex m-auto flex-col justify-center items-center">
+               <div className=" flex m-auto flex-col justify-center items-center">
                   <div className=" grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
                      <>{displayProducts()}</>
                   </div>

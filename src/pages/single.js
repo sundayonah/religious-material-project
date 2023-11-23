@@ -107,19 +107,19 @@ const Single = ({ kingdomBooksWithPrice }) => {
    const [filteredCategories, setFilteredCategories] = useState([]);
 
    useEffect(() => {
-      // if (id && viewBooksBasedOnCategory) {
-      //    const foundItem = viewBooksBasedOnCategory.find((item) => item.id === parseInt(id));
-      //    setSelectedItem(foundItem);
-
       // Filter categories based on the selected item's category
       if (bookDetails) {
-         const filtered = viewBooksBasedOnCategory.filter(
-            (item) => item.category === bookDetails.category
-         );
+         const filtered = viewBooksBasedOnCategory
+            .filter((item) => item.category === bookDetails.category)
+            .map((filteredItem) => ({
+               ...filteredItem,
+               contentPrice: bookDetails.contentPrice,
+            }));
+
+         console.log(filtered);
 
          setFilteredCategories(filtered);
       }
-      // }
    }, [id, viewBooksBasedOnCategory, bookDetails]);
 
    // useEffect(() => {
@@ -168,9 +168,9 @@ const Single = ({ kingdomBooksWithPrice }) => {
    }, [address, bookDetails]);
 
    // Filter books based on category
-   const relatedBooksByCategory = viewBooksBasedOnCategory.filter(
-      (book) => book.category === bookDetails.category && book.recId !== id
-   );
+   // const relatedBooksByCategory = viewBooksBasedOnCategory.filter(
+   //    (book) => book.category === bookDetails.category && book.recId !== id
+   // );
 
    // console.log(relatedBooksByCategory);
 
@@ -321,29 +321,31 @@ const Single = ({ kingdomBooksWithPrice }) => {
       );
    }
 
-   // console.log(bookDetails);
+   // console.log(filteredCategories);
 
    // Render the product details
    return (
       <div className="mt-16">
          <Toaster />
 
-         <Link href="/books">
-            <svg
-               xmlns="http://www.w3.org/2000/svg"
-               fill="none"
-               viewBox="0 0 24 24"
-               strokeWidth={1.5}
-               stroke="currentColor"
-               className="text-[#DAA851] ml-8 w-12 h-12"
-            >
-               <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M6.75 15.75L3 12m0 0l3.75-3.75M3 12h18"
-               />
-            </svg>
-         </Link>
+         <div className=" w-[5%] ml-8">
+            <Link href="/books">
+               <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth={1.5}
+                  stroke="currentColor"
+                  className="text-[#DAA851]  w-12 h-10"
+               >
+                  <path
+                     strokeLinecap="round"
+                     strokeLinejoin="round"
+                     d="M6.75 15.75L3 12m0 0l3.75-3.75M3 12h18"
+                  />
+               </svg>
+            </Link>
+         </div>
          <div className="md:flex w-[70%] flex-row m-auto pt-8 justify-around items-center gap-4">
             {bookDetails ? (
                <>
@@ -362,55 +364,54 @@ const Single = ({ kingdomBooksWithPrice }) => {
                      <h4 className="text-gray-500">{bookDetails.category}</h4>
                      <p className="text-white">{bookDetails.description}</p>
 
-                     <div className="flex flex-col">
-                        {/* <span className="text-gray-500 pb-3 ">
-                           TKC$ {bookDetails.price}
-                        </span> */}
-                        {/* <button
-                           onClick={() => buyNow(bookDetails, address)}
-                           className="w-full text-white mt-1 bg-yellow-700 py-1 px-2 rounded-sm hover:bg-yellow-800 focus:outline-none focus:ring-1 focus:ring-yellow-500 focus:ring-opacity-50"
-                        >
-                           Buy Now
-                        </button> */}
-                        {individualPurchasedStatus[bookDetails.counterId] ? (
-                           <button
-                              disabled
-                              className="text-white mt-1 bg-gray-500 py-1 px-2 rounded-sm"
-                           >
-                              Purchased
-                           </button>
-                        ) : (
-                           <>
-                              {approvedProducts.includes(bookDetails.recId) ||
-                              isAllowance ? (
-                                 <button
-                                    onClick={() => {
-                                       buyNow(bookDetails);
-                                    }}
-                                    className="text-white mt-1 bg-yellow-700 py-1 px-2 rounded-sm hover:bg-yellow-800 focus:outline-none focus:ring-1 focus:ring-yellow-500 focus:ring-opacity-50"
-                                 >
-                                    {bookLoadingStates[bookDetails.recId] ? (
-                                       <LoadingSpinner />
-                                    ) : (
-                                       'Buy Now'
-                                    )}
-                                 </button>
-                              ) : (
-                                 <button
-                                    onClick={() => {
-                                       Approved(bookDetails);
-                                    }}
-                                    className="text-white mt-1 bg-yellow-700 py-1 px-2 rounded-sm hover:bg-yellow-800 focus:outline-none focus:ring-1 focus:ring-yellow-500 focus:ring-opacity-50"
-                                 >
-                                    {approveLoadingStates[bookDetails.recId] ? (
-                                       <LoadingSpinner />
-                                    ) : (
-                                       'Approve'
-                                    )}
-                                 </button>
-                              )}
-                           </>
-                        )}
+                     <div className="w-full flex justify-between items-center space-x-4 ">
+                        <div className="w-[50%] flex justify-center text-yellow-600 mt-1 border  border-yellow-700 py-1 px-2 rounded-sm hover:bg-yellow-800 focus:outline-none focus:ring-1 focus:ring-yellow-500 focus:ring-opacity-50">
+                           <span> TKC$ {bookDetails.contentPrice / 1e15}</span>
+                        </div>
+                        <div className="w-[50%]">
+                           {individualPurchasedStatus[bookDetails.counterId] ? (
+                              <button
+                                 disabled
+                                 className="w-full text-white mt-1 bg-gray-500 py-1 px-2 rounded-sm"
+                              >
+                                 Purchased
+                              </button>
+                           ) : (
+                              <>
+                                 {approvedProducts.includes(
+                                    bookDetails.recId
+                                 ) || isAllowance ? (
+                                    <button
+                                       onClick={() => {
+                                          buyNow(bookDetails);
+                                       }}
+                                       className="w-full text-white mt-1 bg-yellow-700 py-1 px-2 rounded-sm hover:bg-yellow-800 focus:outline-none focus:ring-1 focus:ring-yellow-500 focus:ring-opacity-50"
+                                    >
+                                       {bookLoadingStates[bookDetails.recId] ? (
+                                          <LoadingSpinner />
+                                       ) : (
+                                          'Buy Now'
+                                       )}
+                                    </button>
+                                 ) : (
+                                    <button
+                                       onClick={() => {
+                                          Approved(bookDetails);
+                                       }}
+                                       className="w-full  text-white mt-1 bg-yellow-700 py-1 px-2 rounded-sm hover:bg-yellow-800 focus:outline-none focus:ring-1 focus:ring-yellow-500 focus:ring-opacity-50"
+                                    >
+                                       {approveLoadingStates[
+                                          bookDetails.recId
+                                       ] ? (
+                                          <LoadingSpinner />
+                                       ) : (
+                                          'Approve'
+                                       )}
+                                    </button>
+                                 )}
+                              </>
+                           )}
+                        </div>
                      </div>
                   </div>
                </>
@@ -424,6 +425,7 @@ const Single = ({ kingdomBooksWithPrice }) => {
                <h2 className="text-[#DAA851]  my-8">
                   Related items Based On Category
                </h2>
+
                {/* <div className="md:flex w-[85%] flex-row m-auto pt-16 justify-around items-center gap-4"> */}
                <div className="flex flex-wrap gap-3 p-2 justify-center md:justify-start items-center">
                   {filteredCategories.map((relatedBook) => (
@@ -448,6 +450,11 @@ const Single = ({ kingdomBooksWithPrice }) => {
                               </span>
                               <span className="text-white">
                                  {relatedBook.title}
+                              </span>
+                           </div>
+                           <div className=" flex justify-center text-white mt-1   bg-yellow-700 py-1 px-2 rounded-sm hover:bg-yellow-800 focus:outline-none focus:ring-1 focus:ring-yellow-500 focus:ring-opacity-50">
+                              <span className="text-sm">
+                                 TKC$ {relatedBook.contentPrice / 1e15}
                               </span>
                            </div>
                         </Link>

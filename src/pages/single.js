@@ -352,15 +352,44 @@ const Single = ({ kingdomBooksWithPrice }) => {
          <div className="md:flex w-[70%] flex-row m-auto pt-8 justify-around items-center gap-4">
             {bookDetails ? (
                <>
-                  <Image
-                     src={`https://gateway.pinata.cloud/ipfs/${bookDetails.image}`}
-                     className="m-auto object-cover rounded-md"
-                     width={300}
-                     height={200}
-                     alt="single image"
-                  />
+                  {/* <div className="relative w-full h-full">
+                     <Image
+                        src={`https://gateway.pinata.cloud/ipfs/${bookDetails.image}`}
+                        className="m-auto object-cover rounded-md"
+                        width={300}
+                        height={200}
+                        alt="single image"
+                     />
+                     <div className="absolute top-0 left-0  bg-black bg-opacity-50 rounded-md p-1 text-yellow-600">
+                        <span>
+                           TKC$
+                           {(bookDetails.contentPrice / 1e15).toLocaleString()}
+                        </span>
+                     </div>
+                  </div> */}
+                  <div className="relative">
+                     {/* <div className="w-full h-full"> */}
+                     {/* <div class="md:flex-shrink-0 "> */}
+                     <Image
+                        src={`https://gateway.pinata.cloud/ipfs/${bookDetails.image}`}
+                        // className="object-center w-80 h-48 rounded-md"
+                        alt="single image"
+                        // width={300}
+                        // height={200}
+                        width={200}
+                        height={150}
+                        className="h-72 w-[100%] md:w-full rounded-md object-center"
+                     />
+                     {/* </div> */}
+                     {/* <div className="absolute right-0 bottom-0 bg-black bg-opacity-70 rounded-md p-1 text-yellow-600"> */}
+                     <span className="absolute right-0 bottom-0 bg-black bg-opacity-70 rounded-md p-1 text-yellow-600">
+                        TKC${' '}
+                        {(bookDetails.contentPrice / 1e15).toLocaleString()}
+                     </span>
+                     {/* </div> */}
+                  </div>
 
-                  <div className="m-4">
+                  <div className="w-full">
                      <h2 className="text-white text-2xl">
                         {bookDetails.title}
                      </h2>
@@ -368,16 +397,15 @@ const Single = ({ kingdomBooksWithPrice }) => {
                      <p className="text-white">{bookDetails.description}</p>
 
                      <div className="w-full flex justify-between items-center space-x-4 ">
-                        <div className="w-[50%] flex justify-center text-yellow-600 mt-1 border  border-yellow-700 py-1 px-2 rounded-sm  focus:outline-none focus:ring-1 focus:ring-yellow-500 focus:ring-opacity-50">
-                           <span>
-                              {' '}
+                        {/* <div className="w-[50%] flex justify-center text-yellow-600 mt-1 border  border-yellow-700 py-1 px-2 rounded-sm  focus:outline-none focus:ring-1 focus:ring-yellow-500 focus:ring-opacity-50"> */}
+                        {/* <span>
                               TKC${' '}
                               {(
                                  bookDetails.contentPrice / 1e15
                               ).toLocaleString()}
-                           </span>
-                        </div>
-                        <div className="w-[50%]">
+                           </span> */}
+                        {/* </div> */}
+                        <div className="w-full">
                            {individualPurchasedStatus[bookDetails.counterId] ? (
                               <button
                                  disabled

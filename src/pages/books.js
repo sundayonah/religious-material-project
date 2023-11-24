@@ -358,36 +358,38 @@ const Books = () => {
                <>
                   {filteredBooks.map((book) => (
                      <div
-                        className=" relative bg-transparent p-2  hover:bg-[#342b1c] rounded-tl-3xl rounded-br-3xl shadow-custom mb-4"
+                        // className=" relative bg-transparent p-2  hover:bg-[#342b1c] rounded-tl-3xl rounded-br-3xl shadow-custom mb-4"
+                        className=" bg-transparent p-2  hover:bg-[#342b1c] rounded-tl-3xl rounded-br-3xl shadow-custom mb-4"
                         key={book.recId}
                      >
                         <Link href={`/single?id=${book.recId}`} passHref>
                            <img
                               src={`https://gateway.pinata.cloud/ipfs/${book.image}`}
-                              className="h-48 w-72 md:w-52 rounded-tl-3xl object-center "
+                              className="h-32 w-72 md:w-52 rounded-tl-3xl object-center "
                               alt={book.title}
                               width={300}
                               height={150}
                            />
                         </Link>
-                        <div className="text-center mt-1 mb-3 ">
+                        <div className=" mt-1 mb-1 ">
                            <h5 className="text-white text-md capitalize">
                               {book.title}
                            </h5>
                            <h5 className="text-gray-400 text-sm mb-2 capitalize">
                               {book.author}
                            </h5>
-                           <div className="absolute">
-                              <span className=" bg-[#DAA851]  md:mr-2 mr-20 px-4 py-2 text-gray-700 font-bold text-sm   rounded-sm">
+                           {/* <div className="absolute"> */}
+                           <div className="w-full flex justify-center items-center">
+                              <span className="md:w-[70%] w-[40%] bg-[#DAA851] mr-auto px-2 py-1 text-gray-700 font-bold text-sm rounded-sm space-x-3">
                                  $TKC{' '}
                                  {(book.contentPrice / 1e15).toLocaleString()}
                               </span>
                               {/* <span className="bg-yellow-700 my-1 px-4 py-2 text-white font-bold text-sm  rounded-md hover:bg-yellow-800 focus:outline-none focus:ring-1 focus:ring-yellow-500 focus:ring-opacity-50"> */}
-                              <span className="">
+                              <div className="w-full">
                                  {individualPurchasedStatus[book.counterId] ? (
                                     <button
                                        disabled
-                                       className="text-white mt-1 bg-gray-500 py-1 px-2 rounded-sm"
+                                       className="w-[95%] text-white ml-2 bg-gray-500 py-1 px-4 rounded-sm"
                                     >
                                        Purchased
                                     </button>
@@ -400,7 +402,7 @@ const Books = () => {
                                                 // setSelectedProduct(song);
                                                 buyNow(book);
                                              }}
-                                             className="text-white px-4 py-1 bg-yellow-700  rounded-sm hover:bg-yellow-800 focus:outline-none focus:ring-1 focus:ring-yellow-500 focus:ring-opacity-50"
+                                             className="w-[95%] text-white px-4 py-1 bg-yellow-700  rounded-sm hover:bg-yellow-800 focus:outline-none focus:ring-1 focus:ring-yellow-500 focus:ring-opacity-50"
                                           >
                                              {bookLoadingStates[book.recId] ? (
                                                 <LoadingSpinner />
@@ -413,7 +415,7 @@ const Books = () => {
                                              onClick={() => {
                                                 Approved(book);
                                              }}
-                                             className="text-white ml-2 bg-yellow-700 py-1 px-4 rounded-sm"
+                                             className="w-[95%] text-white ml-2 bg-yellow-700 py-1 px-4 rounded-sm"
                                           >
                                              {approveLoadingStates[
                                                 book.recId
@@ -426,7 +428,7 @@ const Books = () => {
                                        )}
                                     </>
                                  )}
-                              </span>
+                              </div>
                            </div>
                         </div>
                      </div>
@@ -491,7 +493,7 @@ const Books = () => {
                   </div>
                )}
             </div>
-            {/* <div className="w-[95%] justify-center items-center m-auto"> */}
+            {/* <div className="w-[90%] justify-center items-center m-auto"> */}
             {filteredBooks.length !== 0 ? (
                <div className=" flex m-auto flex-col justify-center items-center">
                   <div className=" grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
@@ -508,99 +510,3 @@ const Books = () => {
    );
 };
 export default Books;
-
-// import Link from 'next/link';
-// import React from 'react';
-// const books = () => {
-// const dummyItems = [
-//    {
-//       id: '45a39ee0-24e5-4095-8cfd-e6046780919e',
-//       title: 'Book 1',
-//       image: 'https://via.placeholder.com/150',
-//       category: 'Healing',
-//    },
-//    {
-//       id: 2,
-//       title: 'Book 2',
-//       image: 'https://via.placeholder.com/150',
-//       category: 'Fiction',
-//    },
-//    {
-//       id: 3,
-//       title: 'Book 3',
-//       image: 'https://via.placeholder.com/150',
-//       category: 'Fantasy',
-//    },
-//    {
-//       id: 4,
-//       title: 'Book 4',
-//       image: 'https://via.placeholder.com/150',
-//       category: 'Healing',
-//    },
-//    {
-//       id: 5,
-//       title: 'Book 5',
-//       image: 'https://via.placeholder.com/150',
-//       category: 'Fiction',
-//    },
-//    {
-//       id: 6,
-//       title: 'Book 6',
-//       image: 'https://via.placeholder.com/150',
-//       category: 'Fantasy',
-//    },
-//    {
-//       id: 7,
-//       title: 'Book 7',
-//       image: 'https://via.placeholder.com/150',
-//       category: 'Healing',
-//    },
-//    {
-//       id: 8,
-//       title: 'Book 8',
-//       image: 'https://via.placeholder.com/150',
-//       category: 'Fiction',
-//    },
-//    {
-//       id: 9,
-//       title: 'Book 9',
-//       image: 'https://via.placeholder.com/150',
-//       category: 'Fantasy',
-//    },
-//    {
-//       id: 10,
-//       title: 'Book 10',
-//       image: 'https://via.placeholder.com/150',
-//       category: 'Healing',
-//    },
-//    {
-//       id: 11,
-//       title: 'Book 11',
-//       image: 'https://via.placeholder.com/150',
-//       category: 'Fiction',
-//    },
-//    {
-//       id: 12,
-//       title: 'Book 12',
-//       image: 'https://via.placeholder.com/150',
-//       category: 'Fantasy',
-//    },
-// ];
-//    return (
-//       <div className="w-[95%] m-28 grid grid-cols-3 gap-4 ">
-//          {dummyItems.map((item) => (
-//             <div key={item.id} className=" rounded-md p-4">
-//                <Link href={`/single?id=${item.id}`} passHref>
-//                   <img
-//                      src={item.image}
-//                      alt={item.title}
-//                      className="rounded-md"
-//                   />
-//                   <p className="text-center mt-2">{item.title}</p>
-//                </Link>
-//             </div>
-//          ))}
-//       </div>
-//    );
-// };
-// export default books;

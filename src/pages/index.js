@@ -103,7 +103,7 @@ export default function Home() {
                </p>
                <div className=" ">
                   <button className="flex w-[90%] justify-center text-white mt-1 bg-yellow-700 py-1 px-2 rounded-sm hover:bg-yellow-800 focus:outline-none focus:ring-1 focus:ring-yellow-500 focus:ring-opacity-50 mb-3">
-                     Get Stared
+                     Get Started
                   </button>
                </div>
             </div>

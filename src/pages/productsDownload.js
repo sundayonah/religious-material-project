@@ -7,7 +7,9 @@ import {
    PauseIcon,
    PlayIcon,
    ThumbsDown,
+   ThumbsDownSolid,
    ThumbsUp,
+   ThumbsUpSolid,
 } from '../components/icons';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -27,7 +29,7 @@ import {
    SearchIconWhenThereIsNoFilter,
 } from '@/components/utils';
 import Image from 'next/image';
-import { BooksDownload } from '@/components/downloads/booksDownload';
+import { BooksDownload } from '@/components/booksDownload';
 
 const ProductsDownload = ({ selectedFilter, filteredDownloadProduct }) => {
    // }) => {
@@ -543,7 +545,12 @@ const ProductsDownload = ({ selectedFilter, filteredDownloadProduct }) => {
                                              : 'text-white'
                                        }`}
                                     >
-                                       <ThumbsUp />
+                                       {/* <ThumbsUp /> */}
+                                       {likedSongs[recId] ? (
+                                          <ThumbsUpSolid />
+                                       ) : (
+                                          <ThumbsUp />
+                                       )}
                                     </button>
                                     <button
                                        className={`${
@@ -556,14 +563,22 @@ const ProductsDownload = ({ selectedFilter, filteredDownloadProduct }) => {
                                           handleToggleDislike(recId)
                                        }
                                     >
-                                       <ThumbsDown />
+                                       {dislikedSongs[recId] ? (
+                                          <ThumbsDownSolid />
+                                       ) : (
+                                          <ThumbsDown />
+                                       )}
                                     </button>
                                  </>
                               ) : (
                                  <>
                                     <button className="text-likeColor">
-                                       {likedSongs[recId] && <ThumbsUp />}
-                                       {dislikedSongs[recId] && <ThumbsDown />}
+                                       {/* {likedSongs[recId] && <ThumbsUp />}
+                                       {dislikedSongs[recId] && <ThumbsDown />} */}
+                                       {likedSongs[recId] && <ThumbsUpSolid />}
+                                       {dislikedSongs[recId] && (
+                                          <ThumbsDownSolid />
+                                       )}
                                     </button>
                                  </>
                               )}

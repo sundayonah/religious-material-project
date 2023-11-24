@@ -8,7 +8,7 @@ import { ethers } from 'ethers';
 import axios from 'axios';
 import logo from '../../public/images/yolva.png';
 import { useWeb3Modal } from '@web3modal/wagmi/react';
-import { useAccount } from 'wagmi';
+import { useAccount, useSignMessage } from 'wagmi';
 import { useRouter } from 'next/router';
 import { CloseIcon, OpenIcon } from './icons';
 import SignInToConnect from './signInMessage';
@@ -29,12 +29,13 @@ const Header = () => {
 
    const [accounts, setAccounts] = useState('');
    const [isConnected, setIsConnected] = useState(false);
-   const [isLoading, setIsLoading] = useState(false);
+   // const [isLoading, setIsLoading] = useState(false);
    const [isSignInCompleted, setSignInCompleted] = useState(false);
    const [isInitialLoad, setIsInitialLoad] = useState(false);
 
    const [isMenuOpen, setIsMenuOpen] = useState(false);
    const [walletConnected, setWalletConnected] = useState(false);
+   const [isComponentMounted, setComponentMounted] = useState(false);
 
    const [account, setAccount] = useState('');
 
@@ -62,6 +63,48 @@ const Header = () => {
 
    const { address, isConnecting, isDisconnected } = useAccount();
 
+   const { data, isError, isLoading, isSuccess, signMessage } = useSignMessage({
+      message: 'Sign-in to web3 kigdom-coin e-commerce',
+   });
+   // const handleAuthenticate = async () => {
+   //    try {
+   //       if (address && data) {
+   //          const res = await axios.post(
+   //             authURL,
+   //             {
+   //                address: address,
+   //                signature: data,
+   //             },
+   //             {
+   //                headers: {
+   //                   'Content-Type': 'application/json',
+   //                },
+   //             }
+   //          );
+   //          // Handle the response from the authentication API
+   //          console.log('Authentication response:', res.data);
+   //       }
+   //    } catch (error) {
+   //       // Handle any errors during the authentication process
+   //       console.error('Error during authentication:', error);
+   //    }
+   // };
+
+   // useEffect(() => {
+   //    setComponentMounted(true);
+   //    // Cleanup function to set isComponentMounted to false on component unmount
+   //    return () => setComponentMounted(false);
+   // }, []);
+
+   // useEffect(() => {
+   //    // Check if the component is mounted and there is an address
+   //    if (isComponentMounted && address && !isDisconnected) {
+   //       signMessage();
+   //    }
+   // }, [isComponentMounted, address, isDisconnected, signMessage]);
+
+   // console.log({ address, data });
+
    // const signIn = useCallback(async () => {
    //    try {
    //       // if (isConnected && !isSignInCompleted) {
@@ -87,21 +130,21 @@ const Header = () => {
    // });
 
    // if (userSignature) {
-   //    const authURL =
-   //       'http://hokoshokos-001-site1.etempurl.com/api/Account/AuthenticateUser';
+   // const authURL =
+   //    'http://hokoshokos-001-site1.etempurl.com/api/Account/AuthenticateUser';
 
-   //    const res = await axios.post(
-   //       authURL,
-   //       {
-   //          address: address,
-   //          signature: userSignature,
+   // const res = await axios.post(
+   //    authURL,
+   //    {
+   //       address: address,
+   //       signature: userSignature,
+   //    },
+   //    {
+   //       headers: {
+   //          'Content-Type': 'application/json',
    //       },
-   //       {
-   //          headers: {
-   //             'Content-Type': 'application/json',
-   //          },
-   //       }
-   //    );
+   //    }
+   // );
    // console.log(res);
    // Log the entire response
    // if (res.data) {
@@ -250,6 +293,9 @@ const Header = () => {
                   />
                </Link>
             </div>
+
+            {/* <SignInToConnect /> */}
+
             <div className="md:hidden ">
                {isMenuOpen ? (
                   ''

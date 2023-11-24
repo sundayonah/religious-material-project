@@ -414,12 +414,12 @@ const Songs = () => {
                            </div>
 
                            <div className=" flex flex-col ml-6 w-1/2 text-sm">
-                              <span className=" text-gray-500 text-sm pt-1 pb-1 overflow-hidden whitespace-nowrap">
-                                 {song.title.length > 15
+                              <span className=" text-white text-md pt-1 pb-1 overflow-hidden whitespace-nowrap">
+                                 {song.title.lengt > 15
                                     ? `${song.title.slice(0, 15)}...`
                                     : song.title}
                               </span>
-                              <span className="text-white text-sm">
+                              <span className="text-gray-500 text-sm">
                                  {song.author}
                               </span>
                               <span className="text-gray-400">

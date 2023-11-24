@@ -371,10 +371,10 @@ const Books = () => {
                            />
                         </Link>
                         <div className="text-center mt-1 mb-3 ">
-                           <h5 className="text-gray-500 text-lg capitalize">
+                           <h5 className="text-white text-md capitalize">
                               {book.title}
                            </h5>
-                           <h5 className="text-white text-lg mb-2 capitalize">
+                           <h5 className="text-gray-400 text-sm mb-2 capitalize">
                               {book.author}
                            </h5>
                            <div className="absolute">

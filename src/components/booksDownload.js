@@ -3,8 +3,14 @@ import { useAccount } from 'wagmi';
 // import pdfjs from 'pdfjs-dist/build/pdf';
 import { Document } from 'react-pdf';
 
-import PDFViewer from './pdfViewer'; // Import the PDFViewer component
-import { CloseIcon, ThumbsDown, ThumbsUp } from '../icons';
+import PDFViewer from './downloads/pdfViewer'; // Import the PDFViewer component
+import {
+   CloseIcon,
+   ThumbsDown,
+   ThumbsDownSolid,
+   ThumbsUp,
+   ThumbsUpSolid,
+} from './icons';
 import { toggleDislike, toggleLike } from '@/reduxToolkit/slices/bookSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import toast, { Toaster } from 'react-hot-toast';
@@ -85,7 +91,7 @@ export const BooksDownload = ({ pdfPurchasedProducts }) => {
                               likedBook[index] ? 'text-likeColor' : 'text-white'
                            }`}
                         >
-                           <ThumbsUp />
+                           {likedBook[index] ? <ThumbsUpSolid /> : <ThumbsUp />}
                         </button>
                         <button
                            onClick={() => handleToggleDislike(index)} // Pass the book ID here
@@ -95,7 +101,11 @@ export const BooksDownload = ({ pdfPurchasedProducts }) => {
                                  : 'text-white'
                            }`}
                         >
-                           <ThumbsDown />
+                           {dislikedBook[index] ? (
+                              <ThumbsDownSolid />
+                           ) : (
+                              <ThumbsDown />
+                           )}
                         </button>
                      </div>
                   </div>

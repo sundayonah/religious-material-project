@@ -373,11 +373,11 @@ const Books = () => {
                   {filteredBooks.map((book) => (
                      <div
                         // className=" relative bg-transparent p-2  hover:bg-[#342b1c] rounded-tl-3xl rounded-br-3xl shadow-custom mb-4"
-                        className=" bg-transparent p-2  hover:bg-[#342b1c] rounded-tl-3xl  shadow-custom mb-4"
+                        className=" bg-transparent p-2 transition duration-500 ease-in-out transform hover:-translate-y-1 hover:scale-110 rounded-tl-3xl  shadow-custom mb-4"
                         key={book.recId}
                      >
                         <Link href={`/singleBook?id=${book.recId}`} passHref>
-                           <img
+                           <Image
                               src={`https://gateway.pinata.cloud/ipfs/${book.image}`}
                               className="h-32 w-72 md:w-52 rounded-tl-3xl object-center "
                               alt={book.title}

@@ -473,7 +473,10 @@ const Single = ({ kingdomBooksWithPrice }) => {
 
                         className="transition duration-500 ease-in-out transform hover:-translate-y-1 hover:scale-110 shadow-newCustom rounded-lg py-2 px-2"
                      >
-                        <Link href={`/single?id=${relatedBook.recId}`} passHref>
+                        <Link
+                           href={`/singleBook?id=${relatedBook.recId}`}
+                           passHref
+                        >
                            <Image
                               src={`https://gateway.pinata.cloud/ipfs/${relatedBook.image}`}
                               className="object-cover w-auto h-24 rounded-md"

@@ -414,7 +414,7 @@ const Songs = () => {
                      {filteredSongs.map((song, index) => (
                         <div
                            key={song.recId}
-                           className="flex justify-between items-center mx-1  px-2 py-3  rounded-md  shadow-custom"
+                           className="flex justify-between items-center mx-1  px-2 py-3  rounded-md transition duration-500 ease-in-out transform hover:-translate-y-1 hover:scale-110 shadow-custom"
                            // className="flex flex-col w-[calc(50% - 1rem)] md:w-[calc(33.33% - 1rem)] lg:w-[calc(25% - 1rem)] 2xl:w-[calc(20% - 1rem)] mb-3 p-2 rounded-md  shadow-custom"
                         >
                            {/* <div className="md:flex-shrink-0"> */}

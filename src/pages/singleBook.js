@@ -16,6 +16,7 @@ import {
 } from '@/components/utils';
 import Image from 'next/image';
 import axios from 'axios';
+import CommentsSection from '@/components/commentsSection';
 
 const Single = ({ kingdomBooksWithPrice }) => {
    const {
@@ -349,7 +350,10 @@ const Single = ({ kingdomBooksWithPrice }) => {
                </svg>
             </Link>
          </div>
-         <div className="md:flex w-[70%] flex-row m-auto pt-8 justify-around items-center gap-4">
+         <div className="">
+            <CommentsSection />
+         </div>
+         <div className="md:flex w-[90%] flex-row m-auto pt-8 justify-around  gap-4">
             {bookDetails ? (
                <>
                   {/* <div className="relative w-full h-full">
@@ -367,7 +371,7 @@ const Single = ({ kingdomBooksWithPrice }) => {
                         </span>
                      </div>
                   </div> */}
-                  <div className="relative">
+                  <div className=" relative">
                      {/* <div className="w-full h-full"> */}
                      {/* <div class="md:flex-shrink-0 "> */}
                      <Image

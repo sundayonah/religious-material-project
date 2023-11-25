@@ -23,6 +23,7 @@ import {
 } from '@/components/utils';
 import { StateContext } from '@/Context/ReligiousContext';
 import { useAccount } from 'wagmi';
+import BookModal from '@/components/modal/bookModalContent';
 const Books = () => {
    const {
       approvedProducts,
@@ -49,12 +50,25 @@ const Books = () => {
    const TokenAddress = '0x8dFaC13397e766f892bFA55790798A60eaB52921';
    const sidebarRef = useRef(null);
 
+   const [isApprovalModalOpen, setIsApprovalModalOpen] = useState(false);
+   const [approvalmodalContent, setApprovalModalContent] = useState(null);
+
    const openBookModal = () => {
       setBookModalOpen(true);
    };
 
    const closeBookModal = () => {
       setBookModalOpen(false);
+   };
+
+   const openApprovalModal = (product) => {
+      setApprovalModalContent(product);
+      setIsApprovalModalOpen(true);
+   };
+
+   const closeApprovalModal = () => {
+      setApprovalModalContent(null);
+      setIsApprovalModalOpen(false);
    };
 
    // const booksContent = async () => {
@@ -133,7 +147,7 @@ const Books = () => {
          }
       };
       checkPurchasedStatus();
-   }, [address]);
+   }, [address, filteredBooks]);
 
    const buyNow = async (product) => {
       console.log(product);
@@ -351,7 +365,7 @@ const Books = () => {
             {filteredBooks.length === 0 ? (
                <div className="flex justify-center items-center mt-24">
                   <p className="text-2xl text-gray-400">
-                     No Messages 🔽 found matching the search.
+                     No Messages 🔽 found matching the search...
                   </p>
                </div>
             ) : (
@@ -359,10 +373,10 @@ const Books = () => {
                   {filteredBooks.map((book) => (
                      <div
                         // className=" relative bg-transparent p-2  hover:bg-[#342b1c] rounded-tl-3xl rounded-br-3xl shadow-custom mb-4"
-                        className=" bg-transparent p-2  hover:bg-[#342b1c] rounded-tl-3xl rounded-br-3xl shadow-custom mb-4"
+                        className=" bg-transparent p-2  hover:bg-[#342b1c] rounded-tl-3xl  shadow-custom mb-4"
                         key={book.recId}
                      >
-                        <Link href={`/single?id=${book.recId}`} passHref>
+                        <Link href={`/singleBook?id=${book.recId}`} passHref>
                            <img
                               src={`https://gateway.pinata.cloud/ipfs/${book.image}`}
                               className="h-32 w-72 md:w-52 rounded-tl-3xl object-center "
@@ -386,7 +400,27 @@ const Books = () => {
                               </span>
                               {/* <span className="bg-yellow-700 my-1 px-4 py-2 text-white font-bold text-sm  rounded-md hover:bg-yellow-800 focus:outline-none focus:ring-1 focus:ring-yellow-500 focus:ring-opacity-50"> */}
                               <div className="w-full">
-                                 {individualPurchasedStatus[book.counterId] ? (
+                                 <button
+                                    onClick={() => {
+                                       openApprovalModal(book);
+                                    }}
+                                    className="w-[95%] text-white ml-2 bg-yellow-700 py-1 px-5 rounded-sm"
+                                 >
+                                    Approve
+                                 </button>
+
+                                 <BookModal
+                                    isOpen={isApprovalModalOpen}
+                                    closeModal={closeApprovalModal}
+                                    book={approvalmodalContent}
+                                    individualPurchasedStatus={
+                                       individualPurchasedStatus
+                                    }
+                                    buyNow={buyNow}
+                                    bookLoadingStates={bookLoadingStates}
+                                    // approvedProducts={approvedProducts}
+                                 />
+                                 {/* {individualPurchasedStatus[book.counterId] ? (
                                     <button
                                        disabled
                                        className="w-[95%] text-white ml-2 bg-gray-500 py-1 px-4 rounded-sm"
@@ -402,7 +436,7 @@ const Books = () => {
                                                 // setSelectedProduct(song);
                                                 buyNow(book);
                                              }}
-                                             className="w-[95%] text-white px-4 py-1 bg-yellow-700  rounded-sm hover:bg-yellow-800 focus:outline-none focus:ring-1 focus:ring-yellow-500 focus:ring-opacity-50"
+                                             className="w-[95%] text-white px-4 ml-2 py-1 bg-yellow-700  rounded-sm hover:bg-yellow-800 focus:outline-none focus:ring-1 focus:ring-yellow-500 focus:ring-opacity-50"
                                           >
                                              {bookLoadingStates[book.recId] ? (
                                                 <LoadingSpinner />
@@ -427,7 +461,7 @@ const Books = () => {
                                           </button>
                                        )}
                                     </>
-                                 )}
+                                 )} */}
                               </div>
                            </div>
                         </div>

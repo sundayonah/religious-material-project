@@ -289,119 +289,89 @@ export const StateContextProvider = ({ children }) => {
    //    }
    // }, []);
 
-   const Connect = async () => {
-      try {
-         if (window.ethereum) {
-            const accounts = await window.ethereum.request({
-               method: 'eth_requestAccounts',
-            });
+   // const Connect = async () => {
+   //    try {
+   //       if (window.ethereum) {
+   //          const accounts = await window.ethereum.request({
+   //             method: 'eth_requestAccounts',
+   //          });
 
-            const provider = new ethers.providers.Web3Provider(window.ethereum);
-            const signer = provider.getSigner();
+   //          const provider = new ethers.providers.Web3Provider(window.ethereum);
+   //          const signer = provider.getSigner();
 
-            console.log(accounts);
+   //          console.log(accounts);
 
-            setIsLoading(true);
+   //          setIsLoading(true);
 
-            const messageHash = ethers.utils.hashMessage(
-               'Sign-in to web3 kigdom-coin e-commerce'
-            );
-            const signature = await signer.signMessage(messageHash);
+   //          const messageHash = ethers.utils.hashMessage(
+   //             'Sign-in to web3 kigdom-coin e-commerce'
+   //          );
+   //          const signature = await signer.signMessage(messageHash);
 
-            // Save the signature in local storage
-            localStorage.setItem('userSignature', signature);
+   //          // Save the signature in local storage
+   //          localStorage.setItem('userSignature', signature);
 
-            console.log(signature);
+   //          console.log(signature);
 
-            const userSignature = localStorage.getItem('userSignature');
+   //          const userSignature = localStorage.getItem('userSignature');
 
-            console.log(userSignature);
+   //          console.log(userSignature);
 
-            if (userSignature) {
-               // Make a POST request to authenticate the user
-               const res = await axios.post(
-                  'http://kingdomcoin-001-site1.ctempurl.com/api/Account/AuthenticateUser',
-                  {
-                     address: accounts[0], // Use the user's address
-                     signature: userSignature, // Use the user's signature
-                  },
-                  {
-                     headers: {
-                        'Content-Type': 'application/json',
-                     },
-                  }
-               );
-               console.log(accounts[0]);
-               console.log(res);
+   //          if (userSignature) {
+   //             // Make a POST request to authenticate the user
+   //             const res = await axios.post(
+   //                'http://kingdomcoin-001-site1.ctempurl.com/api/Account/AuthenticateUser',
+   //                {
+   //                   address: accounts[0], // Use the user's address
+   //                   signature: userSignature, // Use the user's signature
+   //                },
+   //                {
+   //                   headers: {
+   //                      'Content-Type': 'application/json',
+   //                   },
+   //                }
+   //             );
+   //             console.log(accounts[0]);
+   //             console.log(res);
 
-               if (res.status === 200) {
-                  const responseData = res.data.data;
+   //             if (res.status === 200) {
+   //                const responseData = res.data.data;
 
-                  // Store responseData in localStorage
-                  localStorage.setItem(
-                     'responseData',
-                     JSON.stringify(responseData)
-                  );
+   //                // Store responseData in localStorage
+   //                localStorage.setItem(
+   //                   'responseData',
+   //                   JSON.stringify(responseData)
+   //                );
 
-                  // Now you can access it later by parsing it back
-                  const storedData = JSON.parse(
-                     localStorage.getItem('responseData')
-                  );
+   //                // Now you can access it later by parsing it back
+   //                const storedData = JSON.parse(
+   //                   localStorage.getItem('responseData')
+   //                );
 
-                  console.log(responseData);
+   //                console.log(responseData);
 
-                  // You can use storedData as needed in your application
-               } else {
-                  console.error(
-                     `Authentication request failed with status code ${res.status}`
-                  );
-                  if (res.status === 401) {
-                     console.error(
-                        'Unauthorized: Check your authorization token.'
-                     );
-                  }
-               }
-            } else {
-               console.error('User signature not found in local storage');
-            }
-            setIsLoading(false);
-         } else {
-            console.error('MetaMask not installed');
-         }
-      } catch (error) {
-         console.error('Error signing in with message hash:', error);
-      }
-   };
-
-   const Purchase = async () => {
-      const provider = new ethers.providers.Web3Provider(window.ethereum);
-
-      const signer = provider.getSigner();
-
-      const contract = new ethers.Contract(
-         RMTestnetContractAddress,
-         RMabi,
-         signer
-      );
-
-      try {
-         let tx;
-
-         tx = await contract.purchase(contentId, TokenAddress, {
-            gasLimit: 200000,
-            gasPrice: ethers.utils.parseUnits('10.0', 'gwei'),
-         });
-         console.log(tx);
-         const receipt = await tx.wait();
-         console.log(receipt);
-         if (receipt.status == 1) {
-            window.location.reload();
-         } else {
-         }
-      } catch (err) {
-         console.error(err);
-      }
-   };
+   //                // You can use storedData as needed in your application
+   //             } else {
+   //                console.error(
+   //                   `Authentication request failed with status code ${res.status}`
+   //                );
+   //                if (res.status === 401) {
+   //                   console.error(
+   //                      'Unauthorized: Check your authorization token.'
+   //                   );
+   //                }
+   //             }
+   //          } else {
+   //             console.error('User signature not found in local storage');
+   //          }
+   //          setIsLoading(false);
+   //       } else {
+   //          console.error('MetaMask not installed');
+   //       }
+   //    } catch (error) {
+   //       console.error('Error signing in with message hash:', error);
+   //    }
+   // };
 
    const Approved = async (product) => {
       try {
@@ -554,6 +524,146 @@ export const StateContextProvider = ({ children }) => {
       return updatedBooks;
    };
 
+   const buyNow = async (product) => {
+      console.log(product);
+      try {
+         if (product) {
+            if (window.ethereum) {
+               const provider = new ethers.providers.Web3Provider(
+                  window.ethereum
+               );
+               const signer = provider.getSigner();
+
+               if (address === undefined) {
+                  toast.success(`Please Connect Your Wallet.`, {
+                     duration: 4000,
+                     position: 'top-right',
+                     icon: '❌',
+                     style: {
+                        background: '#fff',
+                        border: '1px solid #a16206',
+                     },
+                  });
+                  return;
+               }
+
+               setBookLoadingStates((prevStates) => ({
+                  ...prevStates,
+                  [product.id]: true,
+               }));
+               const contract = new ethers.Contract(
+                  RMTestnetContractAddress,
+                  RMabi,
+                  signer
+               );
+
+               // Make the purchase through the smart contract
+               const contentId = product.counterId;
+               const token = TokenAddress;
+
+               let tx;
+               tx = await contract.purchase(contentId, token, {
+                  gasLimit: 400000, // Adjust the gas limit as needed
+                  gasPrice: ethers.utils.parseUnits('10.0', 'gwei'), // Adjust the gas price as needed
+               });
+
+               const receipt = await tx.wait();
+               // console.log(receipt);
+
+               if (receipt.status === 1) {
+                  // Update the approvedProducts state
+                  setApprovedProducts((prevProducts) => [
+                     ...prevProducts,
+                     product.recId,
+                  ]);
+                  // Create a product details object
+                  const purchasedBook = {
+                     id: product.recId,
+                     author: product.recId,
+                     title: product.title,
+                     image: product.image,
+                     category: product.category,
+                     bookFile: product.bookFile,
+                     address: address, // Store the user's address with the purchased book
+                  };
+
+                  // console.log(purchasedBook);
+
+                  // // Serialize the purchased product before storing it
+                  // const serializedProduct = JSON.stringify(purchasedBook);
+
+                  // // Add the purchased product to localStorage
+                  // const storedPurchasedBooks =
+                  //    JSON.parse(localStorage.getItem('purchasedBooks')) || [];
+                  // storedPurchasedBooks.push(serializedProduct);
+                  // localStorage.setItem(
+                  //    'purchasedBooks',
+                  //    JSON.stringify(storedPurchasedBooks)
+                  // );
+
+                  const purchasedBookTitle = purchasedBook.title;
+
+                  // Display a success toast notification
+                  toast.success(`${purchasedBookTitle}, Purchase successful`, {
+                     duration: 4000,
+                     position: 'bottom-right',
+                     icon: '✅',
+                  });
+
+                  // Call the API to add the transaction
+                  const transactionData = {
+                     hash: product.hash,
+                     address: address,
+                     counterId: product.counterId,
+                     type: product.type,
+                     transactionHash: receipt.transactionHash,
+                  };
+
+                  // console.log(transactionData);
+
+                  // Make a POST request to the API endpoint
+                  const addTransactionResponse = await axios.post(
+                     'https://hokoshokos-001-site1.etempurl.com/api/Catalog/AddTransactions',
+                     transactionData
+                  );
+
+                  // Check the response from the API
+                  if (addTransactionResponse.status === 200) {
+                  } else {
+                     console.error(
+                        'Failed to add transaction:',
+                        addTransactionResponse.statusText
+                     );
+                  }
+
+                  setBookLoadingStates((prevStates) => ({
+                     ...prevStates,
+                     [product.id]: false,
+                  }));
+               } else {
+                  console.error('Transaction Not Successful');
+               }
+               console.log('done');
+            } else {
+               console.error('User is not connected to a Web3 provider.');
+            }
+            // Perform any other actions here if needed
+         } else {
+            console.error('Product not found in Book Details.');
+         }
+      } catch (err) {
+         console.error('Purchase failed:', err.message);
+         setBookLoadingStates((prevStates) => ({
+            ...prevStates,
+            [product.id]: false,
+         }));
+      }
+      setBookLoadingStates((prevStates) => ({
+         ...prevStates,
+         [product.id]: false,
+      }));
+   };
+
    // useEffect(() => {
    //    const checkPurchasedStatus = async () => {
    //       try {
@@ -587,7 +697,9 @@ export const StateContextProvider = ({ children }) => {
          value={{
             // connectWallet,
             fetchPrices,
-            Purchase,
+            // fetchMessagePrices,
+            // fetchSongPrices,
+            // Purchase,
             // signIn,
             handlePlayClick,
             isAllowance,
@@ -605,7 +717,7 @@ export const StateContextProvider = ({ children }) => {
             handleSongEnd,
 
             // walletConnected,
-            Connect,
+            // Connect,
          }}
       >
          {children}

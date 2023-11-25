@@ -20,7 +20,7 @@ const Header = () => {
       disconnect,
       connect,
       connectWallet,
-      ConnectButton,
+      // ConnectButton,
       // signIn,
       // isConnected,
       Connect,
@@ -345,13 +345,11 @@ const Header = () => {
                      </div>
                   </ul>
                ))}
-               <div className="">
+               {/* <div className="">
                   <w3m-button balance="hide" />
-               </div>
+               </div> */}
 
-               {/* <button className="text-white" onClick={signTx}>
-                  Connect
-               </button> */}
+               <ConnectButton />
             </div>
             <style jsx>{`
                .active-link {

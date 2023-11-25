@@ -14,8 +14,8 @@ import {
    SearchIconWhenThereIsNoFilter,
 } from '@/components/utils';
 import Image from 'next/image';
-// import MessageModalContent from '@/components/messageModalContent';
-import Modal from '@/components/messageModalContent';
+import MessageModal from '@/components/modal/messageModalContent';
+import Link from 'next/link';
 
 const Messages = () => {
    const {
@@ -25,6 +25,7 @@ const Messages = () => {
       approveLoadingStates,
       isAllowance,
       Connect,
+      fetchPrices,
    } = useContext(StateContext);
 
    const ipfsHash = 'QmfMQiWGrcswgwc3BsjLuprEV95ZQhHQj6a4Ygy1NHhVs9';
@@ -38,8 +39,8 @@ const Messages = () => {
    const [individualPurchasedStatus, setIndividualPurchasedStatus] =
       useState(false);
 
-   const [isModalOpen, setIsModalOpen] = useState(false);
-   const [modalContent, setModalContent] = useState(null);
+   const [isApprovalModalOpen, setIsApprovalModalOpen] = useState(false);
+   const [approvalmodalContent, setApprovalModalContent] = useState(null);
 
    // const [approveLoadingStates, setApproveLoadingStates] = useState({});
    // const [isApproved, setIsApproved] = useState(false);
@@ -123,50 +124,50 @@ const Messages = () => {
    // };
 
    // Function to fetch prices for each message
-   const fetchPrices = useCallback(async () => {
-      // const provider = new ethers.providers.Web3Provider(window.ethereum);
+   // const fetchPrices = useCallback(async () => {
+   //    // const provider = new ethers.providers.Web3Provider(window.ethereum);
 
-      const alchemyApiKey = 'o_O5LwKav_r5UECR-59GtRZsIqnhD0N8';
-      const provider = new ethers.providers.JsonRpcProvider(
-         `https://polygon-mumbai.g.alchemyapi.io/v2/${alchemyApiKey}`
-      );
+   //    const alchemyApiKey = 'o_O5LwKav_r5UECR-59GtRZsIqnhD0N8';
+   //    const provider = new ethers.providers.JsonRpcProvider(
+   //       `https://polygon-mumbai.g.alchemyapi.io/v2/${alchemyApiKey}`
+   //    );
 
-      // const signer = provider.getSigner();
+   //    // const signer = provider.getSigner();
 
-      const contract = new ethers.Contract(
-         RMTestnetContractAddress,
-         RMabi,
-         provider
-         // signer
-      );
-      const updatedMessages = [];
-      for (const message of kingdomMessages) {
-         const contentId = message.counterId;
-         // const { counterId } = message;
-         // console.log(counterId);
+   //    const contract = new ethers.Contract(
+   //       RMTestnetContractAddress,
+   //       RMabi,
+   //       provider
+   //       // signer
+   //    );
+   //    const updatedMessages = [];
+   //    for (const message of kingdomMessages) {
+   //       const contentId = message.counterId;
+   //       // const { counterId } = message;
+   //       // console.log(counterId);
 
-         const contentData = await contract.content(contentId);
-         const contentSplit = contentData.toString();
-         const contentValues = contentSplit.split(','); // Splitting the string by comma
+   //       const contentData = await contract.content(contentId);
+   //       const contentSplit = contentData.toString();
+   //       const contentValues = contentSplit.split(','); // Splitting the string by comma
 
-         // Assuming the second value (index 1) represents the price
-         const contentPrice = contentValues[1] ? parseInt(contentValues[1]) : 0;
+   //       // Assuming the second value (index 1) represents the price
+   //       const contentPrice = contentValues[1] ? parseInt(contentValues[1]) : 0;
 
-         // const priceToNormal = contentPrice / 1e15;
+   //       // const priceToNormal = contentPrice / 1e15;
 
-         // // Assuming other values in 'contentData' correspond to other properties in 'message'
-         const messageWithPrice = { ...message, contentPrice };
-         // console.log(messageWithPrice);
+   //       // // Assuming other values in 'contentData' correspond to other properties in 'message'
+   //       const messageWithPrice = { ...message, contentPrice };
+   //       // console.log(messageWithPrice);
 
-         updatedMessages.push(messageWithPrice);
-      }
+   //       updatedMessages.push(messageWithPrice);
+   //    }
 
-      return updatedMessages;
-   }, [kingdomMessages]);
+   //    return updatedMessages;
+   // }, [kingdomMessages]);
 
    useEffect(() => {
       const FetchMessagesWithPrice = async () => {
-         const messagesWithPrices = await fetchPrices();
+         const messagesWithPrices = await fetchPrices(kingdomMessages);
          setKingdomMessagesWithPrice(messagesWithPrices);
 
          // const response = await axios.get('/api/message');
@@ -368,14 +369,14 @@ const Messages = () => {
       }));
    };
 
-   const openModal = (product) => {
-      setModalContent(product);
-      setIsModalOpen(true);
+   const openApprovalModal = (product) => {
+      setApprovalModalContent(product);
+      setIsApprovalModalOpen(true);
    };
 
-   const closeModal = () => {
-      setModalContent(null);
-      setIsModalOpen(false);
+   const closeApprovalModal = () => {
+      setApprovalModalContent(null);
+      setIsApprovalModalOpen(false);
    };
 
    if (kingdomMessagesWithPrice.length === 0) {
@@ -418,18 +419,23 @@ const Messages = () => {
                         // className="border rounded-md p-2"
                         className=" rounded-md p-3 m-2 transition duration-500 ease-in-out transform hover:-translate-y-1 hover:scale-110 shadow-custom"
                      >
-                        <div
-                           class="md:flex-shrink-0 cursor-pointer"
-                           onClick={() => openModal(message)}
+                        <Link
+                           href={`/singleMessages?id=${message.recId}`}
+                           passHref
                         >
-                           <Image
-                              src={`https://gateway.pinata.cloud/ipfs/${message.image}`}
-                              alt={message.title}
-                              width={200}
-                              height={150}
-                              className="h-42 w-72 md:w-52 rounded-md object-center"
-                           />
-                        </div>
+                           <div
+                              class="md:flex-shrink-0 cursor-pointer"
+                              // onClick={() => openModal(message)}
+                           >
+                              <Image
+                                 src={`https://gateway.pinata.cloud/ipfs/${message.image}`}
+                                 alt={message.title}
+                                 width={200}
+                                 height={150}
+                                 className="h-42 w-72 md:w-52 rounded-md object-center"
+                              />
+                           </div>
+                        </Link>
                         <div className="flex flex-col justify-center items-start pt-1">
                            <span className="text-white text-sm pt-1 pb-1">
                               {message.title}
@@ -442,9 +448,27 @@ const Messages = () => {
                               {(message.contentPrice / 1e15).toLocaleString()}
                            </span>
                         </div>
-                        <div className="flex justify-center items-center">
+                        <div className="w-full">
+                           <button
+                              onClick={() => {
+                                 openApprovalModal(message);
+                              }}
+                              className="w-full text-white  bg-yellow-700 py-1 px-5 rounded-sm"
+                           >
+                              Approve
+                           </button>
+                           {/* <BookModal
+                                    isOpen={isApprovalModalOpen}
+                                    closeModal={closeApprovalModal}
+                                    book={approvalmodalContent}
+                                    individualPurchasedStatus={
+                                       individualPurchasedStatus
+                                    }
+                                    buyNow={buyNow}
+                                    bookLoad */}
+
                            {/* {hasPurchased(address, message.recId) ? ( */}
-                           {individualPurchasedStatus[message.counterId] ? (
+                           {/* {individualPurchasedStatus[message.counterId] ? (
                               <button
                                  disabled
                                  className="w-full text-white mt-1 bg-gray-500 py-1 px-2 rounded-sm cursor-not-allowed"
@@ -453,7 +477,6 @@ const Messages = () => {
                               </button>
                            ) : (
                               <>
-                                 {/* {isApproved ? ( */}
                                  {approvedProducts.includes(message.recId) ||
                                  isAllowance ? (
                                     <button
@@ -484,19 +507,21 @@ const Messages = () => {
                                        )}
                                     </button>
                                  )}
-                              </>
-                           )}
+                              </> */}
+                           {/* )} */}
                         </div>
                      </div>
                   ))}
                </>
             )}
          </div>
-         {/* Modal */}
-         <Modal
-            isOpen={isModalOpen}
-            closeModal={closeModal}
-            content={modalContent}
+         <MessageModal
+            isOpen={isApprovalModalOpen}
+            closeModal={closeApprovalModal}
+            message={approvalmodalContent}
+            individualPurchasedStatus={individualPurchasedStatus}
+            buyNow={buyNow}
+            messagesLoadingStates={messagesLoadingStates}
          />
 
          {/* {isModalOpen && (

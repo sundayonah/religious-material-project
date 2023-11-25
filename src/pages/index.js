@@ -83,11 +83,15 @@ export default function Home() {
 
    ////////////////////////////////////////////////////////////////
    const { address, disconnect, connect } = useContext(StateContext);
+   const [darkMode, setDarkMode] = useState(false);
 
    // p {
    //    margin-bottom: 1.5rem;
    //    max-width: 35em;
    // }
+   const toggleDarkMode = () => {
+      setDarkMode(!darkMode);
+   };
 
    return (
       <div className="mt-14 p-4 m-6">
@@ -116,6 +120,16 @@ export default function Home() {
                />
             </div>
          </div>
+         {/* <div
+            className={darkMode ? 'bg-black text-white' : 'bg-white text-black'}
+         >
+            <h1>{darkMode ? 'Dark mode is here!' : 'Light mode is active'}</h1>
+            <p>{darkMode ? 'Lorem ipsum...' : 'Some other content...'}</p>
+            <button onClick={toggleDarkMode}>
+               {darkMode ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
+            </button>
+         </div> */}
+
          <PerkImage />
       </div>
    );

@@ -14,6 +14,8 @@ import {
    SearchIconWhenThereIsNoFilter,
 } from '@/components/utils';
 import Image from 'next/image';
+import SongModal from '@/components/modal/songModalContent';
+import Link from 'next/link';
 // import { addSong } from '../reduxToolkit/slices/songsSlices';
 
 const Songs = () => {
@@ -25,6 +27,8 @@ const Songs = () => {
       setApprovedProducts,
       approveLoadingStates,
       isAllowance,
+      fetchSongPrices,
+      fetchPrices,
    } = useContext(StateContext); // Initialize purchasedSongs and activeSongIndex state variables
 
    const [purchasedSongs, setPurchasedSongs] = useState([]);
@@ -45,6 +49,8 @@ const Songs = () => {
    const [kingdomSongsWithPrice, setKingdomSongsWithPrice] = useState([]);
    const [individualPurchasedStatus, setIndividualPurchasedStatus] =
       useState(false);
+   const [isApprovalModalOpen, setIsApprovalModalOpen] = useState(false);
+   const [approvalmodalContent, setApprovalModalContent] = useState(null);
 
    const { address } = useAccount();
    // console.log(address);
@@ -60,41 +66,41 @@ const Songs = () => {
    const [searchInput, setSearchInput] = useState('');
    const [filteredSongs, setFilteredSongs] = useState(kingdomSongs);
 
-   const fetchPrices = useCallback(async () => {
-      // const provider = new ethers.providers.Web3Provider(window.ethereum);
-      // const signer = provider.getSigner();
+   // const fetchPrices = useCallback(async () => {
+   //    // const provider = new ethers.providers.Web3Provider(window.ethereum);
+   //    // const signer = provider.getSigner();
 
-      const alchemyApiKey = 'o_O5LwKav_r5UECR-59GtRZsIqnhD0N8';
-      const provider = new ethers.providers.JsonRpcProvider(
-         `https://polygon-mumbai.g.alchemy.com/v2/${alchemyApiKey}`
-      );
+   //    const alchemyApiKey = 'o_O5LwKav_r5UECR-59GtRZsIqnhD0N8';
+   //    const provider = new ethers.providers.JsonRpcProvider(
+   //       `https://polygon-mumbai.g.alchemy.com/v2/${alchemyApiKey}`
+   //    );
 
-      // const signer = provider.getSigner();
+   //    // const signer = provider.getSigner();
 
-      const contract = new ethers.Contract(
-         RMTestnetContractAddress,
-         RMabi,
-         provider
-         // signer
-      );
+   //    const contract = new ethers.Contract(
+   //       RMTestnetContractAddress,
+   //       RMabi,
+   //       provider
+   //       // signer
+   //    );
 
-      const updatedSongs = [];
-      for (const song of kingdomSongs) {
-         const contentId = song.id;
+   //    const updatedSongs = [];
+   //    for (const song of kingdomSongs) {
+   //       const contentId = song.id;
 
-         const contentData = await contract.content(contentId);
-         const contentSplit = contentData.toString();
-         const contentValues = contentSplit.split(',');
+   //       const contentData = await contract.content(contentId);
+   //       const contentSplit = contentData.toString();
+   //       const contentValues = contentSplit.split(',');
 
-         const contentPrice = contentValues[1] ? parseInt(contentValues[1]) : 0;
+   //       const contentPrice = contentValues[1] ? parseInt(contentValues[1]) : 0;
 
-         const songWithPrice = { ...song, contentPrice };
+   //       const songWithPrice = { ...song, contentPrice };
 
-         updatedSongs.push(songWithPrice);
-      }
+   //       updatedSongs.push(songWithPrice);
+   //    }
 
-      return updatedSongs;
-   }, [kingdomSongs]);
+   //    return updatedSongs;
+   // }, [kingdomSongs]);
 
    // const songsContent = async () => {
    //    try {
@@ -165,7 +171,7 @@ const Songs = () => {
    useEffect(() => {
       const fetchSongsWithPrice = async () => {
          try {
-            const songsWithPrices = await fetchPrices();
+            const songsWithPrices = await fetchPrices(kingdomSongs);
             setKingdomSongsWithPrice(songsWithPrices);
             // console.log(songsWithPrices);
             // const response = await axios.get('/api/song');
@@ -184,7 +190,7 @@ const Songs = () => {
       };
       // songsContent();
       fetchSongsWithPrice();
-   }, [fetchPrices]);
+   }, [fetchPrices, kingdomSongs]);
 
    useEffect(() => {
       // Filter the messages based on the search input
@@ -221,7 +227,7 @@ const Songs = () => {
                purchasedMap[song.counterId] = isPurchased;
             });
 
-            // console.log(purchasedMap);
+            // console.log(purchasedMap)
 
             setIndividualPurchasedStatus(purchasedMap);
          } catch (error) {
@@ -364,6 +370,16 @@ const Songs = () => {
       }));
    };
 
+   const openApprovalModal = (product) => {
+      setApprovalModalContent(product);
+      setIsApprovalModalOpen(true);
+   };
+
+   const closeApprovalModal = () => {
+      setApprovalModalContent(null);
+      setIsApprovalModalOpen(false);
+   };
+
    // approve address 0x8dFaC13397e766f892bFA55790798A60eaB52921
 
    if (kingdomSongsWithPrice.length === 0) {
@@ -404,13 +420,18 @@ const Songs = () => {
                            {/* <div className="md:flex-shrink-0"> */}
                            {/* <div className=""> */}
                            <div className="flex items-center w-1/2">
-                              <Image
-                                 src={`https://gateway.pinata.cloud/ipfs/${song.image}`}
-                                 alt={song.title}
-                                 width={150}
-                                 height={150}
-                                 className="h-42 w-52 md:w-52 rounded-md object-center"
-                              />
+                              <Link
+                                 href={`/singleSongs?id=${song.recId}`}
+                                 passHref
+                              >
+                                 <Image
+                                    src={`https://gateway.pinata.cloud/ipfs/${song.image}`}
+                                    alt={song.title}
+                                    width={150}
+                                    height={150}
+                                    className="h-42 w-52 md:w-52 rounded-md object-center"
+                                 />
+                              </Link>
                            </div>
 
                            <div className=" flex flex-col ml-6 w-1/2 text-sm">
@@ -427,7 +448,15 @@ const Songs = () => {
                                  {(song.contentPrice / 1e15).toLocaleString()}
                               </span>
                               <div>
-                                 {individualPurchasedStatus[song.counterId] ? (
+                                 <button
+                                    onClick={() => {
+                                       openApprovalModal(song);
+                                    }}
+                                    className="w-full text-white  bg-yellow-700 py-1 px-5 rounded-sm"
+                                 >
+                                    Approve
+                                 </button>
+                                 {/* {individualPurchasedStatus[song.counterId] ? (
                                     <button
                                        disabled
                                        className="w-full text-white mt-1 bg-gray-500 py-1 px-2 rounded-sm cursor-not-allowed"
@@ -469,8 +498,18 @@ const Songs = () => {
                                           </button>
                                        )}
                                     </>
-                                 )}
+                                 )} */}
                               </div>
+                              <SongModal
+                                 isOpen={isApprovalModalOpen}
+                                 closeModal={closeApprovalModal}
+                                 song={approvalmodalContent}
+                                 individualPurchasedStatus={
+                                    individualPurchasedStatus
+                                 }
+                                 buyNow={buyNow}
+                                 songLoadingStates={songLoadingStates}
+                              />
                            </div>
                         </div>
                      ))}

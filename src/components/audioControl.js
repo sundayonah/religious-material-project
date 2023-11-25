@@ -15,6 +15,8 @@ import {
    SpeakerIcon,
    ThumbsUp,
    ThumbsDown,
+   ThumbsDownSolid,
+   ThumbsUpSolid,
 } from '@/components/icons';
 import {
    togglePlayback,
@@ -378,13 +380,10 @@ const AudioPlayer = ({ audioRefs, mp3PurchasedProducts }) => {
    const handleMouseDown = (e, flag) => {
       if (flag && !e.target.classList.contains('progress')) return;
       const currentPoint = e.clientX - e.target.getBoundingClientRect().left;
-      console.log(currentPoint);
       const totalWidth = e.currentTarget.clientWidth;
-      console.log(totalWidth);
       let percentage = ((currentPoint / totalWidth) * 100).toFixed(8);
       if (percentage > 100) percentage = 100;
       const newTime = Math.floor((percentage / 100) * ref.current.duration);
-      console.log(newTime);
       dispatch(setCurrentTime(newTime));
       ref.current.currentTime = newTime;
       dispatch(setProgressBarWidth(percentage));
@@ -466,7 +465,8 @@ const AudioPlayer = ({ audioRefs, mp3PurchasedProducts }) => {
                            isLiked ? 'text-likeColor' : 'text-white'
                         } `}
                      >
-                        <ThumbsUp />
+                        {isLiked ? <ThumbsUpSolid /> : <ThumbsUp />}
+
                         <div className="hidden group-hover:inline-block bg-black text-white text-xs absolute p-2 -mt-16 -ml-4 rounded whitespace-no-wrap">
                            Like
                         </div>
@@ -478,7 +478,7 @@ const AudioPlayer = ({ audioRefs, mp3PurchasedProducts }) => {
                            isDisliked ? 'text-likeColor' : ' text-white'
                         } `}
                      >
-                        <ThumbsDown color="white" />
+                        {isDisliked ? <ThumbsDownSolid /> : <ThumbsDown />}
                         <div className="hidden group-hover:inline-block bg-black text-white text-xs absolute p-2 -mt-16 -ml-4 rounded whitespace-no-wrap">
                            Dislike
                         </div>

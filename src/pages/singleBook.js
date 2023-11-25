@@ -471,14 +471,14 @@ const Single = ({ kingdomBooksWithPrice }) => {
                         // className="flex transition duration-500 ease-in-out transform hover:-translate-y-1 hover:scale-110 "
                         // className="transition transform hover:-translate-y-1 duration-300  motion-reduce:transition-none motion-reduce:transform-none shadow-newCustom py-1 px-2 rounded-lg "
 
-                        className="transition duration-500 ease-in-out transform hover:-translate-y-1 hover:scale-110 shadow-newCustom rounded-lg py-1 px-2"
+                        className="transition duration-500 ease-in-out transform hover:-translate-y-1 hover:scale-110 shadow-newCustom rounded-lg py-2 px-2"
                      >
                         <Link href={`/single?id=${relatedBook.recId}`} passHref>
-                           <img
+                           <Image
                               src={`https://gateway.pinata.cloud/ipfs/${relatedBook.image}`}
                               className="object-cover w-auto h-24 rounded-md"
-                              // width={150}
-                              // height={150}
+                              width={200}
+                              height={150}
                               alt={relatedBook.title}
                            />
                            <div className="flex flex-col">

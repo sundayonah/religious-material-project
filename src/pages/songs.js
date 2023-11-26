@@ -500,22 +500,20 @@ const Songs = () => {
                                     </>
                                  )} */}
                               </div>
-                              <SongModal
-                                 isOpen={isApprovalModalOpen}
-                                 closeModal={closeApprovalModal}
-                                 song={approvalmodalContent}
-                                 individualPurchasedStatus={
-                                    individualPurchasedStatus
-                                 }
-                                 buyNow={buyNow}
-                                 songLoadingStates={songLoadingStates}
-                              />
                            </div>
                         </div>
                      ))}
                   </>
                )}
             </div>
+            <SongModal
+               isOpen={isApprovalModalOpen}
+               closeModal={closeApprovalModal}
+               song={approvalmodalContent}
+               individualPurchasedStatus={individualPurchasedStatus}
+               buyNow={buyNow}
+               songLoadingStates={songLoadingStates}
+            />
          </div>
       </>
    );

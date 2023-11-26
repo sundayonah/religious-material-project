@@ -11,7 +11,6 @@ const SongModal = ({
    individualPurchasedStatus,
    songLoadingStates,
    buyNow,
-   // buyNow,
 }) => {
    const {
       approvedProducts,
@@ -29,7 +28,12 @@ const SongModal = ({
    // console.log({ song });
 
    return (
-      <div className="fixed top-0 left-0 z-50 w-full h-full bg-black bg-opacity-30 flex justify-center items-center  ">
+      // <div className="fixed top-0 left-0 z-50 w-full h-full bg-black bg-opacity-30 flex justify-center items-center">
+      <div
+         className={`fixed top-0 left-0 z-50 w-full h-full bg-black bg-opacity-30 flex justify-center items-center rounded-sm transition-transform duration-300 ${
+            isOpen ? 'scale-100' : 'scale-0'
+         }`}
+      >
          <div className="bg-white p-4 rounded-md max-w-md md:w-full w-[85%]  shadow-generate">
             <div className="flex justify-end">
                <button

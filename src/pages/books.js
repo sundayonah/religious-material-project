@@ -409,17 +409,6 @@ const Books = () => {
                                     Approve
                                  </button>
 
-                                 <BookModal
-                                    isOpen={isApprovalModalOpen}
-                                    closeModal={closeApprovalModal}
-                                    book={approvalmodalContent}
-                                    individualPurchasedStatus={
-                                       individualPurchasedStatus
-                                    }
-                                    buyNow={buyNow}
-                                    bookLoadingStates={bookLoadingStates}
-                                    // approvedProducts={approvedProducts}
-                                 />
                                  {/* {individualPurchasedStatus[book.counterId] ? (
                                     <button
                                        disabled
@@ -469,6 +458,16 @@ const Books = () => {
                   ))}
                </>
             )}
+
+            <BookModal
+               isOpen={isApprovalModalOpen}
+               closeModal={closeApprovalModal}
+               book={approvalmodalContent}
+               individualPurchasedStatus={individualPurchasedStatus}
+               buyNow={buyNow}
+               bookLoadingStates={bookLoadingStates}
+               // approvedProducts={approvedProducts}
+            />
          </>
       );
    };

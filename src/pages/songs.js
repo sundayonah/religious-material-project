@@ -452,7 +452,7 @@ const Songs = () => {
                                     onClick={() => {
                                        openApprovalModal(song);
                                     }}
-                                    className="w-full text-white  bg-yellow-700 py-1 px-5 rounded-sm"
+                                    className="w-full text-white  bg-yellow-700 py-1 px-5 rounded-sm transition-transform transform"
                                  >
                                     Approve
                                  </button>

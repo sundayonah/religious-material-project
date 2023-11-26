@@ -16,15 +16,26 @@ const CommentsSection = () => {
             className="fixed right-0 flex justify-center pr-2 items-center  cursor-pointer"
             onClick={toggleCommentsVisibility}
          >
-            {isCommentsVisible ? (
+            {/* {isCommentsVisible ? (
                <>
                   <ChevronRight />
                   <div className="hidden group-hover:inline-block bg-black text-white text-xs absolute p-2  rounded whitespace-no-wrap">
-                     Comment
+                     Show Comments
                   </div>
                </>
             ) : (
                <ChevronLeft />
+            )} */}
+
+            {isCommentsVisible ? (
+               <>
+                  <ChevronLeft />
+                  {/* <span className="group- hover:inline-block absolute bg-black text-white text-xs p-2 px-4 -ml-20 mb-16 rounded whitespace-no-wrap">
+                     Show Comments
+                  </span> */}
+               </>
+            ) : (
+               <ChevronRight />
             )}
          </div>
 
@@ -35,9 +46,9 @@ const CommentsSection = () => {
                style={{ pointerEvents: 'all' }} */}
                {/* > */}
                <span className="text-white">Comment</span>
-               <div className="py-2">
+               <div className=" py-2">
                   <input
-                     className=" px-4 py-2 rounded-md border border-[#DAA851] bg-[#342b1c] text-white focus:outline-none focus:ring-2 focus:ring-[#DAA851] focus:border-transparent"
+                     className="w-full px-4 py-2 rounded-md border border-[#DAA851] bg-[#342b1c] text-white focus:outline-none focus:ring-2 focus:ring-[#DAA851] focus:border-transparent"
                      type="text"
                      placeholder="Say Something"
                   />
@@ -105,8 +116,8 @@ const CommentsSection = () => {
                      <Image
                         src="/images/logo.png"
                         alt="comment avatar"
-                        width={150}
-                        height={150}
+                        width={80}
+                        height={80}
                      />
                   </div>
                   <div className="bg-[#63533c] py-1 px-2 rounded-r-2xl rounded-bl-2xl ">
@@ -124,8 +135,8 @@ const CommentsSection = () => {
                      <Image
                         src="/images/logo.png"
                         alt="comment avatar"
-                        width={150}
-                        height={150}
+                        width={80}
+                        height={80}
                      />
                   </div>
                   <div className="bg-[#63533c] py-1 px-2 rounded-r-2xl rounded-bl-2xl ">

@@ -109,44 +109,6 @@ const CommentsSection = () => {
                         </p>
                      </div>
                   </div>
-                  <div className="flex justify-center py-2">
-                     <div>
-                        <Image
-                           src="/images/logo.png"
-                           alt="comment avatar"
-                           width={80}
-                           height={80}
-                        />
-                     </div>
-                     <div className="bg-[#63533c] py-1 px-2 rounded-r-2xl rounded-bl-2xl ">
-                        <span className="text-white test-small font-bold ">
-                           0x43xxx...xxxxx
-                        </span>
-                        <p className="text-white test-small">
-                           For verily I say unto you, That whosoever shall say
-                           unto this mountain.
-                        </p>
-                     </div>
-                  </div>
-                  <div className="flex justify-center">
-                     <div>
-                        <Image
-                           src="/images/logo.png"
-                           alt="comment avatar"
-                           width={80}
-                           height={80}
-                        />
-                     </div>
-                     <div className="bg-[#63533c] py-1 px-2 rounded-r-2xl rounded-bl-2xl ">
-                        <span className="text-white test-small font-bold ">
-                           0x43xxx...xxxxx
-                        </span>
-                        <p className="text-white test-small">
-                           For verily I say unto you, That whosoever shall say
-                           unto this mountain.
-                        </p>
-                     </div>
-                  </div>
 
                   <span className="text-purple-400 capitalize text-sm flex justify-end pt-2 ">
                      view more comments...

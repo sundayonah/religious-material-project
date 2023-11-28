@@ -48,7 +48,7 @@ const CommentsSection = ({ recId, type }) => {
 
    const handleCommentSubmit = async () => {
       const commentUrl =
-         'https://hokoshokos-001-site1.etempurl.com/api/Catalog/CommentonItem';
+         'https://hokoshokos-001-site1.etempurl.com/api/Catalog/CommentOnItem';
 
       try {
          const response = await axios.post(commentUrl, {
@@ -59,8 +59,8 @@ const CommentsSection = ({ recId, type }) => {
          });
 
          // Update comments state to include the new comment
-         setComments([
-            ...comments,
+         setComments((prevComments) => [
+            ...(Array.isArray(prevComments) ? prevComments : []),
             { recId: response.data.recId, address, commentText },
          ]);
 
@@ -74,14 +74,13 @@ const CommentsSection = ({ recId, type }) => {
          console.error('Error submitting comment:', error);
       }
    };
-
    useEffect(() => {
       const fetchComments = async () => {
-         const commentsUrl =
+         const getCommentsForItemUrl =
             'https://hokoshokos-001-site1.etempurl.com/api/Catalog/GetCommentsForItem';
 
          try {
-            const response = await axios.post(commentsUrl, {
+            const response = await axios.post(getCommentsForItemUrl, {
                address: address,
                fileId: recId,
                type: type,
@@ -89,7 +88,16 @@ const CommentsSection = ({ recId, type }) => {
 
             console.log(response.data);
 
-            // Set the comments in the state
+            // // Sort comments in ascending order based on timestamps
+            // const sortedComments = response.data.sort((a, b) => {
+            //    // Replace 'timestamp' with your comment timestamp field
+            //    return new Date(b.createdAt) - new Date(a.createdAt);
+            // });
+
+            // console.log(sortedComments);
+
+            // Set the sorted comments in the state
+            // setComments(response.data || []);
             setComments(response.data || []);
 
             // Handle the response as needed (e.g., update the state with comments)
@@ -103,6 +111,8 @@ const CommentsSection = ({ recId, type }) => {
       // Fetch comments when the component mounts
       fetchComments();
    }, [recId, type, address]);
+
+   // console.log(comments);
 
    function shortenAddress(address, startLength = 6, endLength = 4) {
       if (!address) return '';
@@ -126,8 +136,13 @@ const CommentsSection = ({ recId, type }) => {
                   onChange={(e) => setCommentText(e.target.value)}
                />
                <button
-                  className=" text-white px-2 py-1 rounded-md"
+                  className={` px-2 py-1 rounded-md  text-yellow-500 hover:text-yellow-600  transform -rotate-45  ${
+                     !commentText.trim()
+                        ? 'cursor-not-allowed  text-gray-900  hover:text-gray-900'
+                        : ''
+                  }`}
                   onClick={handleCommentSubmit}
+                  disabled={!commentText.trim()}
                >
                   <SendComment />
                </button>
@@ -143,9 +158,9 @@ const CommentsSection = ({ recId, type }) => {
                   {Array.isArray(comments) && (
                      <>
                         {showAllComments
-                           ? comments.map((comment) => (
+                           ? comments.map((comment, index) => (
                                 <div
-                                   key={comment.recId}
+                                   key={index}
                                    className="flex flex-col justify-center py-2"
                                 >
                                    <div className="flex">
@@ -167,10 +182,10 @@ const CommentsSection = ({ recId, type }) => {
                                    </div>
                                 </div>
                              ))
-                           : comments.slice(0, 2).map((comment) => (
+                           : comments.slice(0, 2).map((comment, index) => (
                                 // Render only the first two comments
                                 <div
-                                   key={comment.recId}
+                                   key={index}
                                    className="flex flex-col justify-center py-2"
                                 >
                                    <div className="flex">
@@ -206,30 +221,11 @@ const CommentsSection = ({ recId, type }) => {
                   )}
                </>
             )}
-            {/* Display the newly added comment */}
-            {/* {newComment && (
-               <div className="flex flex-col justify-center py-2">
-                  <div className="flex">
-                     <Image
-                        src="/images/logo.png"
-                        alt="comment avatar"
-                        className="w-12 h-12"
-                        width={80}
-                        height={80}
-                     />
-                     <div className="bg-[#63533c] py-1 px-2 rounded-r-2xl rounded-bl-2xl ">
-                        <span className="text-white test-small font-bold ">
-                           {shortenAddress(address)}
-                        </span>
-                        <p className="text-white test-small">{newComment}</p>
-                     </div>
-                  </div>
-               </div>
-            )} */}
          </>
          {/* </div> */}
       </div>
    );
 };
+local;
 
 export default CommentsSection;

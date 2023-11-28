@@ -17,6 +17,7 @@ import {
 import Image from 'next/image';
 import axios from 'axios';
 import CommentsSection from '@/components/commentsSection';
+import { ThumbsUp, ThumbsUpSolid } from '@/components/icons';
 
 const Single = ({ kingdomBooksWithPrice }) => {
    const {
@@ -39,6 +40,7 @@ const Single = ({ kingdomBooksWithPrice }) => {
    const [individualPurchasedStatus, setIndividualPurchasedStatus] =
       useState(false);
    const [viewBooksBasedOnCategory, setViewBooksBasedOnCategory] = useState([]);
+   const [likedItem, setLikedItem] = useState(false); // State to manage liked status
 
    const RMTestnetContractAddress =
       '0xF00Ab09b8FA49dD07da19024d6D213308314Ddb8';
@@ -317,6 +319,60 @@ const Single = ({ kingdomBooksWithPrice }) => {
       }));
    };
 
+   const likeUrl =
+      'https://hokoshokos-001-site1.etempurl.com/api/Catalog/LikeItem';
+
+   const handleLikeSubmit = async (product) => {
+      try {
+         const response = await axios.post(likeUrl, {
+            address: address,
+            fileId: product.recId,
+            type: product.type,
+         });
+
+         if (response.data?.status === 'SUCCESS') {
+            if (!likedItem) {
+               setLikedItem(true); // Update liked state only if it wasn't previously liked
+               // Update likesCount after successful like
+               setBookDetails((prevDetails) => ({
+                  ...prevDetails,
+                  likesCount: prevDetails.likesCount + 1,
+               }));
+            }
+         }
+      } catch (error) {
+         console.error('Error liking item:', error);
+      }
+   };
+
+   // console.log(bookDetails);
+
+   // useEffect(() => {
+   // const handleLikeSubmit = async (product) => {
+   //    try {
+   //       const response = await axios.post(likeUrl, {
+   //          address: address,
+   //          fileId: product.recId,
+   //          type: product.type,
+   //       });
+   //       // console.log(response);
+   //       if (response.data?.status === 'SUCCESS') {
+   //          setLikedItem(true); // Update liked state only if the like was successful
+   //       } else if (
+   //          response.data?.statusCode === 400 &&
+   //          response.data?.status === 'ERROR' &&
+   //          response.data?.message === 'User already liked this Item.'
+   //       ) {
+   //          setLikedItem(true); // Update liked state if the user has already liked the item
+   //       }
+   //    } catch (error) {
+   //       // Handle any errors during the fetch
+   //       console.error('Error liking item:', error);
+   //    }
+   // };
+
+   // console.log(bookDetails);
+
    if (!bookDetails) {
       return (
          <div className="mt-28">
@@ -378,6 +434,22 @@ const Single = ({ kingdomBooksWithPrice }) => {
                      </h2>
                      <h4 className="text-gray-500">{bookDetails.category}</h4>
                      <p className="text-white">{bookDetails.description}</p>
+
+                     <span className="flex justify-start items-center space-x-3 mt-2">
+                        <button
+                           // className={`${
+                           //    likedItem ? 'text-yellow-700' : 'text-white'
+                           // }`}
+                           className="text-yellow-600"
+                           onClick={() => handleLikeSubmit(bookDetails)}
+                        >
+                           {likedItem ? <ThumbsUpSolid /> : <ThumbsUp />}
+                        </button>
+                        <span className="text-white">
+                           {bookDetails.likesCount}{' '}
+                           {bookDetails.likesCount < 1 ? 'like' : 'likes'}
+                        </span>
+                     </span>
 
                      <div className="w-full flex justify-between items-center space-x-4 ">
                         <div className="w-full">

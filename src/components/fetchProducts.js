@@ -75,6 +75,8 @@ export const fetchBooks = async () => {
                      category: book.category,
                      bookFile: book.bookFile,
                      type: book.type,
+                     likesCount: book.likesCount,
+                     commentsCount: book.commentsCount,
                      ...ipfsContent,
                   };
 
@@ -136,6 +138,8 @@ export const fetchSongs = async () => {
                   category: song.category,
                   bookFile: song.bookFile,
                   type: song.type,
+                  likesCount: song.likesCount,
+                  commentsCount: song.commentsCount,
                   ...ipfsContent,
                };
 
@@ -196,6 +200,8 @@ export const useFetchMessages = () => {
                      category: message.category,
                      bookFile: message.bookFile,
                      type: message.type,
+                     likesCount: message.likesCount,
+                     commentsCount: message.commentsCount,
                      ...ipfsContent,
                   };
 

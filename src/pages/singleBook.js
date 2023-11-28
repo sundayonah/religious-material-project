@@ -350,9 +350,7 @@ const Single = ({ kingdomBooksWithPrice }) => {
                </svg>
             </Link>
          </div>
-         <div className="">
-            <CommentsSection />
-         </div>
+
          <div className="md:flex w-[90%] flex-row m-auto pt-8 justify-around  gap-4">
             {bookDetails ? (
                <>
@@ -371,7 +369,7 @@ const Single = ({ kingdomBooksWithPrice }) => {
                         </span>
                      </div>
                   </div> */}
-                  <div className=" relative">
+                  <div className=" relative w-full h-full">
                      {/* <div className="w-full h-full"> */}
                      {/* <div class="md:flex-shrink-0 "> */}
                      <Image
@@ -454,6 +452,13 @@ const Single = ({ kingdomBooksWithPrice }) => {
                            )}
                         </div>
                      </div>
+                  </div>
+                  <div className="w-full">
+                     {/* <CommentsSection /> */}
+                     <CommentsSection
+                        recId={bookDetails.recId}
+                        type={bookDetails.type}
+                     />
                   </div>
                </>
             ) : (

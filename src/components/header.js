@@ -63,9 +63,9 @@ const Header = () => {
 
    const { address, isConnecting, isDisconnected } = useAccount();
 
-   const { data, isError, isLoading, isSuccess, signMessage } = useSignMessage({
-      message: 'Sign-in to web3 kigdom-coin e-commerce',
-   });
+   // const { data, isError, isLoading, isSuccess, signMessage } = useSignMessage({
+   //    message: 'Sign-in to web3 kigdom-coin e-commerce',
+   // });
    // const handleAuthenticate = async () => {
    //    try {
    //       if (address && data) {

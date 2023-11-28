@@ -7,20 +7,44 @@ import axios from 'axios';
 const CommentsSection = ({ recId, type }) => {
    const { address } = useAccount();
 
-   const [isCommentsVisible, setCommentsVisible] = useState(false);
+   // const [isCommentsVisible, setCommentsVisible] = useState(false);
    const [commentText, setCommentText] = useState('');
    const [comments, setComments] = useState([]);
    const [showAllComments, setShowAllComments] = useState(false);
+   const [newComment, setNewComment] = useState('');
 
-   const toggleCommentsVisibility = () => {
-      setCommentsVisible((prev) => !prev);
-   };
+   // const toggleCommentsVisibility = () => {
+   //    setCommentsVisible((prev) => !prev);
+   // };
 
    // Function to toggle showing all comments
    const toggleShowAllComments = () => {
       setShowAllComments((prev) => !prev);
       // console.log('show all');
    };
+
+   // const handleCommentSubmit = async () => {
+   //    const commentUrl =
+   //       'https://hokoshokos-001-site1.etempurl.com/api/Catalog/CommentonItem';
+
+   //    try {
+   //       const response = await axios.post(commentUrl, {
+   //          address: address,
+   //          fileId: recId,
+   //          type: type,
+   //          commentText,
+   //       });
+
+   //       // Handle the response as needed (e.g., show a success message)
+   //       //  console.log('Comment submitted successfully:', response);
+
+   //       // Clear the input field
+   //       setCommentText('');
+   //    } catch (error) {
+   //       // Handle any errors during the fetch
+   //       console.error('Error submitting comment:', error);
+   //    }
+   // };
 
    const handleCommentSubmit = async () => {
       const commentUrl =
@@ -34,8 +58,14 @@ const CommentsSection = ({ recId, type }) => {
             commentText,
          });
 
-         // Handle the response as needed (e.g., show a success message)
-         //  console.log('Comment submitted successfully:', response);
+         // Update comments state to include the new comment
+         setComments([
+            ...comments,
+            { recId: response.data.recId, address, commentText },
+         ]);
+
+         // Display the new comment immediately after submission
+         setNewComment(commentText);
 
          // Clear the input field
          setCommentText('');
@@ -57,7 +87,7 @@ const CommentsSection = ({ recId, type }) => {
                type: type,
             });
 
-            // console.log(response.data);
+            console.log(response.data);
 
             // Set the comments in the state
             setComments(response.data || []);
@@ -176,6 +206,26 @@ const CommentsSection = ({ recId, type }) => {
                   )}
                </>
             )}
+            {/* Display the newly added comment */}
+            {/* {newComment && (
+               <div className="flex flex-col justify-center py-2">
+                  <div className="flex">
+                     <Image
+                        src="/images/logo.png"
+                        alt="comment avatar"
+                        className="w-12 h-12"
+                        width={80}
+                        height={80}
+                     />
+                     <div className="bg-[#63533c] py-1 px-2 rounded-r-2xl rounded-bl-2xl ">
+                        <span className="text-white test-small font-bold ">
+                           {shortenAddress(address)}
+                        </span>
+                        <p className="text-white test-small">{newComment}</p>
+                     </div>
+                  </div>
+               </div>
+            )} */}
          </>
          {/* </div> */}
       </div>

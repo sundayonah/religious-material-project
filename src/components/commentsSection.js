@@ -88,7 +88,7 @@ const CommentsSection = ({ recId, type }) => {
 
          // Assuming the response.data contains an array of comments for the item
          const fetchedComments = response.data.data || [];
-         console.log(fetchedComments);
+         // console.log(fetchedComments);
 
          // Update the comments state with the fetched comments
          setComments(fetchedComments);
@@ -150,6 +150,13 @@ const CommentsSection = ({ recId, type }) => {
       )}`;
    }
 
+   function formatTimestamp(timestamp) {
+      const date = new Date(timestamp);
+      const formattedDate = `${date.toLocaleDateString()} ${date.toLocaleTimeString()}`;
+      // console.log(formattedDate);
+      return formattedDate;
+   }
+
    return (
       <div className="mt-4">
          {/* <div> */}
@@ -203,11 +210,14 @@ const CommentsSection = ({ recId, type }) => {
                                          height={80}
                                       />
                                       <div className="bg-[#63533c] py-1 px-2 rounded-r-2xl rounded-bl-2xl ">
-                                         <span className="text-white test-small font-bold ">
+                                         <span className="text-white text-sm font-bold ">
                                             {shortenAddress(comment.address)}
                                          </span>
-                                         <p className="text-white test-small">
+                                         <p className="text-white text-xs">
                                             {comment.commentText}
+                                         </p>
+                                         <p className="text-yellow-300 text-xs text-end">
+                                            {formatTimestamp(comment.createdAt)}
                                          </p>
                                       </div>
                                    </div>
@@ -228,11 +238,14 @@ const CommentsSection = ({ recId, type }) => {
                                          height={80}
                                       />
                                       <div className="bg-[#63533c] py-1 px-2 rounded-r-2xl rounded-bl-2xl ">
-                                         <span className="text-white test-small font-bold ">
+                                         <span className="text-white text-sm font-bold ">
                                             {shortenAddress(comment.address)}
                                          </span>
-                                         <p className="text-white text-sm">
+                                         <p className="text-white text-xs">
                                             {comment.commentText}
+                                         </p>
+                                         <p className="text-yellow-300 text-xs text-end">
+                                            {formatTimestamp(comment.createdAt)}
                                          </p>
                                       </div>
                                    </div>

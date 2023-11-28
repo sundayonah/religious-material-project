@@ -16,8 +16,9 @@ import {
 } from '@/components/utils';
 import Image from 'next/image';
 import axios from 'axios';
+import CommentsSection from '@/components/commentsSection';
 
-const SingleMessage = ({ kingdomBooksWithPrice }) => {
+const SingleMessage = () => {
    const {
       approvedProducts,
       Approved,
@@ -359,44 +360,21 @@ const SingleMessage = ({ kingdomBooksWithPrice }) => {
                </svg>
             </Link>
          </div>
-         <div className="md:flex w-[70%] flex-row m-auto pt-8 justify-around items-center gap-4">
+         <div className="md:flex w-[85%] flex-row m-auto pt-8 justify-around  gap-4">
             {messageDetails ? (
                <>
-                  {/* <div className="relative w-full h-full">
+                  <div className=" relative w-full h-full">
                      <Image
                         src={`https://gateway.pinata.cloud/ipfs/${messageDetails.image}`}
-                        className="m-auto object-cover rounded-md"
-                        width={300}
-                        height={200}
                         alt="single image"
-                     />
-                     <div className="absolute top-0 left-0  bg-black bg-opacity-50 rounded-md p-1 text-yellow-600">
-                        <span>
-                           TKC$
-                           {(messageDetails.contentPrice / 1e15).toLocaleString()}
-                        </span>
-                     </div>
-                  </div> */}
-                  <div className="relative">
-                     {/* <div className="w-full h-full"> */}
-                     {/* <div class="md:flex-shrink-0 "> */}
-                     <Image
-                        src={`https://gateway.pinata.cloud/ipfs/${messageDetails.image}`}
-                        // className="object-center w-80 h-48 rounded-md"
-                        alt="single image"
-                        // width={300}
-                        // height={200}
                         width={200}
                         height={150}
                         className="h-72 w-[100%] md:w-full rounded-md object-center"
                      />
-                     {/* </div> */}
-                     {/* <div className="absolute right-0 bottom-0 bg-black bg-opacity-70 rounded-md p-1 text-yellow-600"> */}
                      <span className="absolute right-0 bottom-0 bg-black bg-opacity-70 rounded-md p-1 text-yellow-600">
                         TKC${' '}
                         {(messageDetails.contentPrice / 1e15).toLocaleString()}
                      </span>
-                     {/* </div> */}
                   </div>
 
                   <div className="w-full">
@@ -409,14 +387,6 @@ const SingleMessage = ({ kingdomBooksWithPrice }) => {
                      <p className="text-white">{messageDetails.description}</p>
 
                      <div className="w-full flex justify-between items-center space-x-4 ">
-                        {/* <div className="w-[50%] flex justify-center text-yellow-600 mt-1 border  border-yellow-700 py-1 px-2 rounded-sm  focus:outline-none focus:ring-1 focus:ring-yellow-500 focus:ring-opacity-50"> */}
-                        {/* <span>
-                              TKC${' '}
-                              {(
-                                 messageDetails.contentPrice / 1e15
-                              ).toLocaleString()}
-                           </span> */}
-                        {/* </div> */}
                         <div className="w-full">
                            {individualPurchasedStatus[
                               messageDetails.counterId
@@ -466,6 +436,13 @@ const SingleMessage = ({ kingdomBooksWithPrice }) => {
                            )}
                         </div>
                      </div>
+                  </div>
+                  <div className="w-full">
+                     {/* <CommentsSection /> */}
+                     <CommentsSection
+                        recId={messageDetails.recId}
+                        type={messageDetails.type}
+                     />
                   </div>
                </>
             ) : (

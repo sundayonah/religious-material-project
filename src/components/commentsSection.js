@@ -19,7 +19,7 @@ const CommentsSection = ({ recId, type }) => {
    // Function to toggle showing all comments
    const toggleShowAllComments = () => {
       setShowAllComments((prev) => !prev);
-      console.log('show all');
+      // console.log('show all');
    };
 
    const handleCommentSubmit = async () => {
@@ -122,6 +122,7 @@ const CommentsSection = ({ recId, type }) => {
                                       <Image
                                          src="/images/logo.png"
                                          alt="comment avatar"
+                                         className="w-12 h-12"
                                          width={80}
                                          height={80}
                                       />
@@ -146,6 +147,7 @@ const CommentsSection = ({ recId, type }) => {
                                       <Image
                                          src="/images/logo.png"
                                          alt="comment avatar"
+                                         className="w-12 h-12"
                                          width={80}
                                          height={80}
                                       />

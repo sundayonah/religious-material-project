@@ -118,7 +118,6 @@ export const fetchSongs = async () => {
    try {
       const res = await axios.get(songsURL);
       const data = res.data.data;
-      console.log('Response:', res.data.data);
 
       const songDetails = await Promise.all(
          data.map(async (song) => {

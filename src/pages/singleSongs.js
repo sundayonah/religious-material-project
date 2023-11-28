@@ -352,7 +352,9 @@ const SingleSong = ({ kingdomBooksWithPrice }) => {
                         {songDetails.title}
                      </h2>
                      <h4 className="text-gray-500">{songDetails.category}</h4>
-                     <p className="text-white">{songDetails.description}</p>
+                     <p className="text-white text-sm">
+                        {songDetails.description}
+                     </p>
 
                      <div className="w-full flex justify-between items-center space-x-4 ">
                         <div className="w-full">

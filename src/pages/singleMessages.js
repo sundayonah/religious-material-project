@@ -315,17 +315,17 @@ const SingleMessage = () => {
 
    const handleLikeSubmit = async (product) => {
       try {
-         console.log('Starting like operation...');
+         // console.log('Starting like operation...');
          const response = await axios.post(likeUrl, {
             address: address,
             fileId: product.recId,
             type: product.type,
          });
 
-         console.log('API Response:', response.data);
+         // console.log('API Response:', response.data);
 
          if (response.data?.status === 'SUCCESS') {
-            console.log('Like operation successful!');
+            // console.log('Like operation successful!');
             if (!likedItem) {
                setLikedItem(true);
                setMessageDetails((prevDetails) => ({
@@ -396,7 +396,9 @@ const SingleMessage = () => {
                      <h4 className="text-gray-500">
                         {messageDetails.category}
                      </h4>
-                     <p className="text-white">{messageDetails.description}</p>
+                     <p className="text-white text-sm ">
+                        {messageDetails.description}
+                     </p>
                      <span className="flex justify-start items-center space-x-3 mt-2">
                         <button
                            // className={`${

@@ -19,7 +19,7 @@ import axios from 'axios';
 import CommentsSection from '@/components/commentsSection';
 import { ThumbsUp, ThumbsUpSolid } from '@/components/icons';
 
-const Single = ({ kingdomBooksWithPrice }) => {
+const SingleBook = ({ kingdomBooksWithPrice }) => {
    const {
       approvedProducts,
       Approved,
@@ -330,6 +330,8 @@ const Single = ({ kingdomBooksWithPrice }) => {
             type: product.type,
          });
 
+         // console.log(response);
+
          if (response.data?.status === 'SUCCESS') {
             if (!likedItem) {
                setLikedItem(true); // Update liked state only if it wasn't previously liked
@@ -344,32 +346,6 @@ const Single = ({ kingdomBooksWithPrice }) => {
          console.error('Error liking item:', error);
       }
    };
-
-   // console.log(bookDetails);
-
-   // useEffect(() => {
-   // const handleLikeSubmit = async (product) => {
-   //    try {
-   //       const response = await axios.post(likeUrl, {
-   //          address: address,
-   //          fileId: product.recId,
-   //          type: product.type,
-   //       });
-   //       // console.log(response);
-   //       if (response.data?.status === 'SUCCESS') {
-   //          setLikedItem(true); // Update liked state only if the like was successful
-   //       } else if (
-   //          response.data?.statusCode === 400 &&
-   //          response.data?.status === 'ERROR' &&
-   //          response.data?.message === 'User already liked this Item.'
-   //       ) {
-   //          setLikedItem(true); // Update liked state if the user has already liked the item
-   //       }
-   //    } catch (error) {
-   //       // Handle any errors during the fetch
-   //       console.error('Error liking item:', error);
-   //    }
-   // };
 
    // console.log(bookDetails);
 
@@ -433,7 +409,9 @@ const Single = ({ kingdomBooksWithPrice }) => {
                         {bookDetails.title}
                      </h2>
                      <h4 className="text-gray-500">{bookDetails.category}</h4>
-                     <p className="text-white">{bookDetails.description}</p>
+                     <p className="text-white text-sm">
+                        {bookDetails.description}
+                     </p>
 
                      <span className="flex justify-start items-center space-x-3 mt-2">
                         <button
@@ -564,4 +542,4 @@ const Single = ({ kingdomBooksWithPrice }) => {
    );
 };
 
-export default Single;
+export default SingleBook;

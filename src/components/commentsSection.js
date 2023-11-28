@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { ChevronLeft, ChevronRight, SendComment } from './icons';
 import { useAccount } from 'wagmi';
 import axios from 'axios';
@@ -74,43 +74,72 @@ const CommentsSection = ({ recId, type }) => {
          console.error('Error submitting comment:', error);
       }
    };
-   useEffect(() => {
-      const fetchComments = async () => {
-         const getCommentsForItemUrl =
-            'https://hokoshokos-001-site1.etempurl.com/api/Catalog/GetCommentsForItem';
 
-         try {
-            const response = await axios.post(getCommentsForItemUrl, {
-               address: address,
-               fileId: recId,
-               type: type,
-            });
+   const fetchComments = useCallback(async () => {
+      const getCommentsForItemUrl =
+         'https://hokoshokos-001-site1.etempurl.com/api/Catalog/GetCommentsForItem';
 
-            console.log(response.data);
+      try {
+         const response = await axios.post(getCommentsForItemUrl, {
+            address: address,
+            fileId: recId,
+            type: type,
+         });
 
-            // // Sort comments in ascending order based on timestamps
-            // const sortedComments = response.data.sort((a, b) => {
-            //    // Replace 'timestamp' with your comment timestamp field
-            //    return new Date(b.createdAt) - new Date(a.createdAt);
-            // });
+         // Assuming the response.data contains an array of comments for the item
+         const fetchedComments = response.data.data || [];
+         console.log(fetchedComments);
 
-            // console.log(sortedComments);
-
-            // Set the sorted comments in the state
-            // setComments(response.data || []);
-            setComments(response.data || []);
-
-            // Handle the response as needed (e.g., update the state with comments)
-            // console.log('Comments fetched successfully:', response);
-         } catch (error) {
-            // Handle any errors during the fetch
-            console.error('Error fetching comments:', error);
-         }
-      };
-
-      // Fetch comments when the component mounts
-      fetchComments();
+         // Update the comments state with the fetched comments
+         setComments(fetchedComments);
+      } catch (error) {
+         // Handle error if the request fails
+         console.error('Error fetching comments:', error);
+      }
    }, [recId, type, address]);
+
+   // Call the fetchComments function when the component mounts or as needed
+   useEffect(() => {
+      fetchComments();
+   }, [recId, type, address, fetchComments]);
+
+   // useEffect(() => {
+   //    const fetchComments = async () => {
+   //       const getCommentsForItemUrl =
+   //          'https://hokoshokos-001-site1.etempurl.com/api/Catalog/GetCommentsForItem';
+
+   //       try {
+   //          const response = await axios.post(getCommentsForItemUrl, {
+   //             address: address,
+   //             fileId: recId,
+   //             type: type,
+   //          });
+
+   //          console.log(response.data);
+
+   //          // // Sort comments in ascending order based on timestamps
+   //          // const sortedComments = response.data.sort((a, b) => {
+   //          //    // Replace 'timestamp' with your comment timestamp field
+   //          //    return new Date(b.createdAt) - new Date(a.createdAt);
+   //          // });
+
+   //          // console.log(sortedComments);
+
+   //          // Set the sorted comments in the state
+   //          // setComments(response.data || []);
+   //          setComments(response.data || []);
+
+   //          // Handle the response as needed (e.g., update the state with comments)
+   //          // console.log('Comments fetched successfully:', response);
+   //       } catch (error) {
+   //          // Handle any errors during the fetch
+   //          console.error('Error fetching comments:', error);
+   //       }
+   //    };
+
+   //    // Fetch comments when the component mounts
+   //    fetchComments();
+   // }, [recId, type, address]);
 
    // console.log(comments);
 
@@ -138,7 +167,7 @@ const CommentsSection = ({ recId, type }) => {
                <button
                   className={` px-2 py-1 rounded-md  text-yellow-500 hover:text-yellow-600  transform -rotate-45  ${
                      !commentText.trim()
-                        ? 'cursor-not-allowed  text-gray-900  hover:text-gray-900'
+                        ? ' text-gray-800  hover:text-gray-900 cursor-not-allowed '
                         : ''
                   }`}
                   onClick={handleCommentSubmit}
@@ -148,7 +177,9 @@ const CommentsSection = ({ recId, type }) => {
                </button>
             </div>
             {comments.length === undefined || comments.length === 0 ? (
-               <p className="text-white">No comments yet for this item.</p>
+               <p className="text-white text-sm">
+                  No comments yet for this item.
+               </p>
             ) : (
                <>
                   <span className="text-[#DAA851] capitalize">
@@ -200,7 +231,7 @@ const CommentsSection = ({ recId, type }) => {
                                          <span className="text-white test-small font-bold ">
                                             {shortenAddress(comment.address)}
                                          </span>
-                                         <p className="text-white test-small">
+                                         <p className="text-white text-sm">
                                             {comment.commentText}
                                          </p>
                                       </div>
@@ -226,6 +257,5 @@ const CommentsSection = ({ recId, type }) => {
       </div>
    );
 };
-local;
 
 export default CommentsSection;

@@ -229,7 +229,7 @@ const CommentsSection = ({ recId, type }) => {
                                          <span className="text-white test-small font-bold ">
                                             {shortenAddress(comment.address)}
                                          </span>
-                                         <p className="text-white test-small">
+                                         <p className="text-white text-sm">
                                             {comment.commentText}
                                          </p>
                                       </div>

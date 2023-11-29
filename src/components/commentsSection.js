@@ -157,6 +157,8 @@ const CommentsSection = ({ recId, type }) => {
       return formattedDate;
    }
 
+   // console.log(comments.length);
+
    return (
       <div className="mt-4">
          {/* <div> */}
@@ -172,7 +174,7 @@ const CommentsSection = ({ recId, type }) => {
                   onChange={(e) => setCommentText(e.target.value)}
                />
                <button
-                  className={` px-2 py-1 rounded-md  text-yellow-500 hover:text-yellow-600  transform -rotate-45  ${
+                  className={` px-2 py-1 rounded-md text-[#DAA851] hover:text-yellow-600  transform -rotate-45  ${
                      !commentText.trim()
                         ? ' text-gray-800  hover:text-gray-900 cursor-not-allowed '
                         : ''
@@ -209,14 +211,14 @@ const CommentsSection = ({ recId, type }) => {
                                          width={80}
                                          height={80}
                                       />
-                                      <div className="bg-[#63533c] py-1 px-2 rounded-r-2xl rounded-bl-2xl ">
+                                      <div className="bg-[#483a25] py-1 px-2 rounded-r-md rounded-bl-md ">
                                          <span className="text-white text-sm font-bold ">
                                             {shortenAddress(comment.address)}
                                          </span>
                                          <p className="text-white text-xs">
                                             {comment.commentText}
                                          </p>
-                                         <p className="text-yellow-300 text-xs text-end">
+                                         <p className="text-[#DAA851] text-xs text-end">
                                             {formatTimestamp(comment.createdAt)}
                                          </p>
                                       </div>
@@ -237,14 +239,14 @@ const CommentsSection = ({ recId, type }) => {
                                          width={80}
                                          height={80}
                                       />
-                                      <div className="bg-[#63533c] py-1 px-2 rounded-r-2xl rounded-bl-2xl ">
+                                      <div className="bg-[#483a25] py-1 px-2 rounded-r-md rounded-bl-md ">
                                          <span className="text-white text-sm font-bold ">
                                             {shortenAddress(comment.address)}
                                          </span>
                                          <p className="text-white text-xs">
                                             {comment.commentText}
                                          </p>
-                                         <p className="text-yellow-300 text-xs text-end">
+                                         <p className="text-[#DAA851] text-xs text-end">
                                             {formatTimestamp(comment.createdAt)}
                                          </p>
                                       </div>

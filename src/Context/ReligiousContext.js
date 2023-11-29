@@ -71,6 +71,8 @@ export const StateContextProvider = ({ children }) => {
    const [approvedProducts, setApprovedProducts] = useState([]);
    const [approveLoadingStates, setApproveLoadingStates] = useState({});
    const [isAllowance, setIsAllowance] = useState(false);
+   // const [likedItem, setLikedItem] = useState(false); // State to manage liked status
+   // const [likeDetails, setLikeDetails] = useState( null);
 
    // //FETCH CONTRACT
    // const Fetch_Contract = (PROVIDER) =>
@@ -664,6 +666,32 @@ export const StateContextProvider = ({ children }) => {
       }));
    };
 
+   // const handleLikeSubmit = async (product) => {
+   //    try {
+   //       // console.log('Starting like operation...');
+   //       const response = await axios.post(likeUrl, {
+   //          address: address,
+   //          fileId: product.recId,
+   //          type: product.type,
+   //       });
+
+   //       // console.log('API Response:', response.data);
+
+   //       if (response.data?.status === 'SUCCESS') {
+   //          // console.log('Like operation successful!');
+   //          if (!likedItem) {
+   //             setLikedItem(true);
+   //             setMessageDetails((prevDetails) => ({
+   //                ...prevDetails,
+   //                likesCount: prevDetails.likesCount + 1,
+   //             }));
+   //          }
+   //       }
+   //    } catch (error) {
+   //       console.error('Error liking item:', error);
+   //    }
+   // };
+
    // useEffect(() => {
    //    const checkPurchasedStatus = async () => {
    //       try {
@@ -701,6 +729,7 @@ export const StateContextProvider = ({ children }) => {
             // fetchSongPrices,
             // Purchase,
             // signIn,
+            // handleLikeSubmit,
             handlePlayClick,
             isAllowance,
             songStates,

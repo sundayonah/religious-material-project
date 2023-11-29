@@ -21,6 +21,7 @@ import {
 import Image from 'next/image';
 import axios from 'axios';
 import CommentsSection from '@/components/commentsSection';
+import { ThumbsUp, ThumbsUpSolid } from '@/components/icons';
 
 const SingleSong = ({ kingdomBooksWithPrice }) => {
    const {
@@ -44,6 +45,7 @@ const SingleSong = ({ kingdomBooksWithPrice }) => {
    const [individualPurchasedStatus, setIndividualPurchasedStatus] =
       useState(false);
    const [viewSongsBasedOnCategory, setViewSongsBasedOnCategory] = useState([]);
+   const [likedItem, setLikedItem] = useState(false); // State to manage liked status
 
    const RMTestnetContractAddress =
       '0xF00Ab09b8FA49dD07da19024d6D213308314Ddb8';
@@ -296,6 +298,35 @@ const SingleSong = ({ kingdomBooksWithPrice }) => {
       }));
    };
 
+   const likeUrl =
+      'https://hokoshokos-001-site1.etempurl.com/api/Catalog/LikeItem';
+
+   const handleLikeSubmit = async (product) => {
+      try {
+         // console.log('Starting like operation...');
+         const response = await axios.post(likeUrl, {
+            address: address,
+            fileId: product.recId,
+            type: product.type,
+         });
+
+         // console.log('API Response:', response.data);
+
+         if (response.data?.status === 'SUCCESS') {
+            // console.log('Like operation successful!');
+            if (!likedItem) {
+               setLikedItem(true);
+               setSongDetails((prevDetails) => ({
+                  ...prevDetails,
+                  likesCount: prevDetails.likesCount + 1,
+               }));
+            }
+         }
+      } catch (error) {
+         console.error('Error liking item:', error);
+      }
+   };
+
    if (!songDetails) {
       return (
          <div className="mt-28">
@@ -304,9 +335,8 @@ const SingleSong = ({ kingdomBooksWithPrice }) => {
       );
    }
 
-   // console.log(filteredCategories);
+   // console.log(songDetails);
 
-   // Render the product details
    return (
       <div className="mt-16">
          <Toaster />
@@ -355,6 +385,18 @@ const SingleSong = ({ kingdomBooksWithPrice }) => {
                      <p className="text-white text-sm">
                         {songDetails.description}
                      </p>
+                     <span className="flex justify-start items-center space-x-3 mt-2">
+                        <button
+                           className="text-yellow-600"
+                           onClick={() => handleLikeSubmit(songDetails)}
+                        >
+                           {likedItem ? <ThumbsUpSolid /> : <ThumbsUp />}
+                        </button>
+                        <span className="text-white">
+                           {songDetails.likesCount}{' '}
+                           {songDetails.likesCount < 1 ? 'like' : 'likes'}
+                        </span>
+                     </span>
 
                      <div className="w-full flex justify-between items-center space-x-4 ">
                         <div className="w-full">

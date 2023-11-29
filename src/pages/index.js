@@ -1,7 +1,6 @@
 import Image from 'next/image';
 import Header from '@/components/header';
 import React, { useContext, useEffect, useState } from 'react';
-import Style from '@/styles/home.module.css';
 import axios from 'axios';
 import { StateContext } from '@/Context/ReligiousContext';
 

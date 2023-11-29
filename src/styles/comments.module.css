@@ -1,0 +1,16 @@
+/* Customize the scrollbar thumb (the draggable part) */
+.customScrollbar::-webkit-scrollbar-thumb {
+   background-color: #342b1c; /* Change the color of the thumb */
+   border-radius: 6px; /* Add rounded corners to the thumb */
+}
+
+/* Customize the scrollbar track (the background) */
+.customScrollbar::-webkit-scrollbar-track {
+   background-color: #2c2518;
+}
+
+/* Customize the scrollbar's width and height */
+.customScrollbar::-webkit-scrollbar {
+   width: 5px; /* Set the width of the scrollbar */
+   height: 10px; /* Set the height of the scrollbar */
+}

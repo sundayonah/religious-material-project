@@ -405,10 +405,10 @@ const SingleBook = ({ kingdomBooksWithPrice }) => {
                   </div>
 
                   <div className="w-full">
-                     <h2 className="text-white text-2xl">
-                        {bookDetails.title}
-                     </h2>
-                     <h4 className="text-gray-500">{bookDetails.category}</h4>
+                     <h2 className="text-white text-xl">{bookDetails.title}</h2>
+                     <h4 className="text-gray-500 text-sm">
+                        {bookDetails.category}
+                     </h4>
                      <p className="text-white text-sm">
                         {bookDetails.description}
                      </p>
@@ -476,7 +476,8 @@ const SingleBook = ({ kingdomBooksWithPrice }) => {
                         </div>
                      </div>
                   </div>
-                  <div className="w-full">
+                  <div className="w-full md:mt-1 mt-9 ">
+                     <span className="text-white">Comment</span>
                      {/* <CommentsSection /> */}
                      <CommentsSection
                         recId={bookDetails.recId}
@@ -517,10 +518,10 @@ const SingleBook = ({ kingdomBooksWithPrice }) => {
                               alt={relatedBook.title}
                            />
                            <div className="flex flex-col">
-                              <span className="text-gray-500">
+                              <span className="text-gray-500 text-sm">
                                  {relatedBook.author}
                               </span>
-                              <span className="text-white">
+                              <span className="text-white text-sm">
                                  {relatedBook.title}
                               </span>
                            </div>

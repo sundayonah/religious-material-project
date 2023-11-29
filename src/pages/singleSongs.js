@@ -381,7 +381,9 @@ const SingleSong = ({ kingdomBooksWithPrice }) => {
                      <h2 className="text-white text-2xl">
                         {songDetails.title}
                      </h2>
-                     <h4 className="text-gray-500">{songDetails.category}</h4>
+                     <h4 className="text-gray-500 text-sm">
+                        {songDetails.category}
+                     </h4>
                      <p className="text-white text-sm">
                         {songDetails.description}
                      </p>
@@ -445,7 +447,8 @@ const SingleSong = ({ kingdomBooksWithPrice }) => {
                         </div>
                      </div>
                   </div>
-                  <div className="w-full">
+                  <div className="w-full md:mt-1 mt-9 ">
+                     <span className="text-white">Comment</span>
                      {/* <CommentsSection /> */}
                      <CommentsSection
                         recId={songDetails.recId}
@@ -486,10 +489,10 @@ const SingleSong = ({ kingdomBooksWithPrice }) => {
                               alt={relatedSong.title}
                            />
                            <div className="flex flex-col">
-                              <span className="text-gray-500">
+                              <span className="text-gray-500 text-sm">
                                  {relatedSong.author}
                               </span>
-                              <span className="text-white">
+                              <span className="text-white text-sm">
                                  {relatedSong.title}
                               </span>
                            </div>

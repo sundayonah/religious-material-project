@@ -390,10 +390,10 @@ const SingleMessage = () => {
                   </div>
 
                   <div className="w-full">
-                     <h2 className="text-white text-2xl">
+                     <h2 className="text-white text-xl">
                         {messageDetails.title}
                      </h2>
-                     <h4 className="text-gray-500">
+                     <h4 className="text-gray-500 text-sm">
                         {messageDetails.category}
                      </h4>
                      <p className="text-white text-sm ">
@@ -466,8 +466,8 @@ const SingleMessage = () => {
                         </div>
                      </div>
                   </div>
-                  <div className="w-full">
-                     {/* <CommentsSection /> */}
+                  <div className="w-full md:mt-1 mt-9 ">
+                     <span className="text-white">Comment</span>
                      <CommentsSection
                         recId={messageDetails.recId}
                         type={messageDetails.type}
@@ -510,16 +510,16 @@ const SingleMessage = () => {
                               <span className="text-gray-500">
                                  {/* {relatedMessage.author} */}
 
-                                 <span className="text-gray-500">
-                                    {relatedMessage.author.length > 15
+                                 <span className="text-gray-500 text-sm">
+                                    {relatedMessage.author.length > 20
                                        ? `${relatedMessage.author.slice(
                                             0,
-                                            15
+                                            20
                                          )}...`
                                        : relatedMessage.author}
                                  </span>
                               </span>
-                              <span className="text-white">
+                              <span className="text-white text-sm">
                                  {relatedMessage.title}
                               </span>
                            </div>

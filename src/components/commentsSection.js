@@ -1,8 +1,10 @@
 import Image from 'next/image';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { ChevronLeft, ChevronRight, SendComment } from './icons';
 import { useAccount } from 'wagmi';
 import axios from 'axios';
+import styles from '@/styles/comments.module.css';
+import QRCode, { QRCodeCanvas, QRCodeSVG } from 'qrcode.react';
 
 const CommentsSection = ({ recId, type }) => {
    const { address } = useAccount();
@@ -12,6 +14,19 @@ const CommentsSection = ({ recId, type }) => {
    const [comments, setComments] = useState([]);
    const [showAllComments, setShowAllComments] = useState(false);
    const [newComment, setNewComment] = useState('');
+
+   ///////////////////////////////////////
+   const commentSectionRef = useRef(null);
+   const [commentSectionHeight, setCommentSectionHeight] = useState('auto');
+
+   // // Function to toggle showing all comments
+   // const toggleShowAllComments = () => {
+   //    setShowAllComments((prev) => !prev);
+   //    // Adjust the comment section height when toggling comments visibility
+   //    setCommentSectionHeight((prevHeight) =>
+   //       prevHeight === 'auto' ? '50%' : 'auto'
+   //    );
+   // };
 
    // const toggleCommentsVisibility = () => {
    //    setCommentsVisible((prev) => !prev);
@@ -160,14 +175,22 @@ const CommentsSection = ({ recId, type }) => {
    // console.log(comments.length);
 
    return (
-      <div className="mt-4">
+      <div
+         className="mt-1 "
+
+         // style={{
+         //    maxHeight: showAllComments ? '350px' : 'none',
+         //    overflowY: 'auto',
+         //    scrollbarColor: '#DAA851 #342b1c',
+         // }}
+         // ref={commentSectionRef}
+      >
          {/* <div> */}
-         <>
-            <span className="text-white">Comment</span>
-            <div className=" flex justify-between items-center rounded-md border border-[#DAA851] mb-2 ">
+         <div className="mx-2">
+            {/* <span className="text-white">Comment</span> */}
+            <div className=" flex justify-between items-center rounded-md border border-[#DAA851] mb-2  ">
                <input
                   className="w-full px-4 py-2 bg-transparent text-white focus:outline-none focus:none focus:none focus:border-transparent"
-                  //   className="w-full px-4 py-2 rounded-md border border-[#DAA851] bg-[#342b1c] text-white focus:outline-none focus:ring-2 focus:ring-[#DAA851] focus:border-transparent"
                   type="text"
                   placeholder="Say Something"
                   value={commentText}
@@ -196,29 +219,36 @@ const CommentsSection = ({ recId, type }) => {
                   </span>
 
                   {Array.isArray(comments) && (
-                     <>
+                     // <div className="mr-2 overflow-y-scroll h-32">
+                     <div
+                        className={`mr-2  ${
+                           showAllComments
+                              ? 'overflow-y-scroll scroll-smooth h-72 '
+                              : ''
+                        } ${styles.customScrollbar}`}
+                     >
                         {showAllComments
                            ? comments.map((comment, index) => (
                                 <div
                                    key={index}
-                                   className="flex flex-col justify-center py-2"
+                                   className="flex flex-col justify-center py-2 px-1 "
                                 >
                                    <div className="flex">
-                                      <Image
-                                         src="/images/logo.png"
-                                         alt="comment avatar"
-                                         className="w-12 h-12"
-                                         width={80}
-                                         height={80}
+                                      <QRCodeCanvas
+                                         value={address}
+                                         size={32}
+                                         //   bgColor="#fff"
+                                         //   fgColor="#000"
+                                         className="rounded-full m-1 object-cover"
                                       />
                                       <div className="bg-[#483a25] py-1 px-2 rounded-r-md rounded-bl-md ">
-                                         <span className="text-white text-sm font-bold ">
+                                         <span className="text-gray-500 text-xs font-bold ">
                                             {shortenAddress(comment.address)}
                                          </span>
                                          <p className="text-white text-xs">
                                             {comment.commentText}
                                          </p>
-                                         <p className="text-[#DAA851] text-xs text-end">
+                                         <p className="text-[#DAA851] text-small text-end">
                                             {formatTimestamp(comment.createdAt)}
                                          </p>
                                       </div>
@@ -232,42 +262,43 @@ const CommentsSection = ({ recId, type }) => {
                                    className="flex flex-col justify-center py-2"
                                 >
                                    <div className="flex">
-                                      <Image
-                                         src="/images/logo.png"
-                                         alt="comment avatar"
-                                         className="w-12 h-12"
-                                         width={80}
-                                         height={80}
+                                      <QRCodeCanvas
+                                         value={address}
+                                         size={32}
+                                         //   bgColor="#fff"
+                                         //   fgColor="#000"
+                                         className="rounded-full m-1 object-cover"
                                       />
+
                                       <div className="bg-[#483a25] py-1 px-2 rounded-r-md rounded-bl-md ">
-                                         <span className="text-white text-sm font-bold ">
+                                         <span className="text-gray-500 text-xs font-bold ">
                                             {shortenAddress(comment.address)}
                                          </span>
                                          <p className="text-white text-xs">
                                             {comment.commentText}
                                          </p>
-                                         <p className="text-[#DAA851] text-xs text-end">
+                                         <p className="text-[#DAA851] text-small text-end">
                                             {formatTimestamp(comment.createdAt)}
                                          </p>
                                       </div>
                                    </div>
                                 </div>
                              ))}
-                     </>
+                     </div>
                   )}
                   {Array.isArray(comments) && comments.length > 2 && (
                      <span
-                        className="text-purple-400 capitalize text-sm flex justify-end pt-2 cursor-pointer"
+                        className="text-purple-400 capitalize text-sm flex justify-end pt-2 mr-2 cursor-pointer"
                         onClick={toggleShowAllComments}
                      >
                         {showAllComments
-                           ? 'hide comments'
+                           ? 'hide comments...'
                            : 'view more comments...'}
                      </span>
                   )}
                </>
             )}
-         </>
+         </div>
          {/* </div> */}
       </div>
    );

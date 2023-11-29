@@ -1,5 +1,4 @@
 import React from 'react';
-import Style from '../styles/home.module.css';
 import Image from 'next/image';
 
 const thePerks = [

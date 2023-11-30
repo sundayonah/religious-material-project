@@ -315,17 +315,17 @@ const SingleMessage = () => {
 
    const handleLikeSubmit = async (product) => {
       try {
-         // console.log('Starting like operation...');
+         console.log('Starting like operation...');
          const response = await axios.post(likeUrl, {
             address: address,
             fileId: product.recId,
             type: product.type,
          });
 
-         // console.log('API Response:', response.data);
+         console.log('API Response:', response.data);
 
          if (response.data?.status === 'SUCCESS') {
-            // console.log('Like operation successful!');
+            console.log('Like operation successful!');
             if (!likedItem) {
                setLikedItem(true);
                setMessageDetails((prevDetails) => ({
@@ -348,6 +348,8 @@ const SingleMessage = () => {
    }
 
    // console.log(messageDetails);
+
+   // console.log(typeof messageDetails.likesCount);
 
    // Render the product details
    return (
@@ -502,7 +504,7 @@ const SingleMessage = () => {
                            alt="single image"
                            width={200}
                            height={150}
-                           className="h-72 w-[100%] md:w-full rounded-md object-center"
+                           className="h-72 w-[100%] md:w-full rounded-md object-cover"
                         />
                         <span className="absolute right-0 bottom-0 bg-black bg-opacity-70 rounded-md p-1 text-yellow-600">
                            TKC${' '}

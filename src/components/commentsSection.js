@@ -72,6 +72,7 @@ const CommentsSection = ({ recId, type }) => {
             type: type,
             commentText,
          });
+         console.log(response);
 
          // Update comments state to include the new comment
          setComments((prevComments) => [

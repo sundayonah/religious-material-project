@@ -222,6 +222,12 @@ const Header = () => {
 
    // const signTx = useCallback(async () => {
    //    try {
+   //       // eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTI1NiIsInR5cCI6IkpXVCJ9
+   //       //    .eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiMWVkN2UwZTctNDgwYS00OWVkLWE5ZDYtM2QyYjNlZjY2ZjNkIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbmFtZWlkZW50aWZpZXIiOiIweDAxQjk0RDU1MERDNDY4YTU2MTMyRmJhOUY5MjQ4ZTM0NmM1QmE1NGMiLCJleHAiOjE3MDE0MzYxMzUsImlzcyI6Imh0dHA6Ly9yb2Fkc3Rhci5jb20iLCJhdWQiOiJodHRwOi8vcm9hZHN0YXIuY29tIn0
+   //       //    .UsyZKfaT -
+   //       //    k9AA5b626QBefq8y_rFgI9 -
+   //       //    Aag -
+   //       //    H_UbjZE;
    //       // Initialize provider and signer
    //       const provider = new ethers.providers.Web3Provider(window.ethereum);
    //       const signer = provider.getSigner();

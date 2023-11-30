@@ -303,7 +303,7 @@ const SingleSong = ({ kingdomBooksWithPrice }) => {
 
    const handleLikeSubmit = async (product) => {
       try {
-         // console.log('Starting like operation...');
+         console.log('Starting like operation...');
          const response = await axios.post(likeUrl, {
             address: address,
             fileId: product.recId,
@@ -327,6 +327,8 @@ const SingleSong = ({ kingdomBooksWithPrice }) => {
       }
    };
 
+   // console.log(songDetails.likesCount);
+
    if (!songDetails) {
       return (
          <div className="mt-28">
@@ -335,7 +337,7 @@ const SingleSong = ({ kingdomBooksWithPrice }) => {
       );
    }
 
-   // console.log(songDetails);
+   console.log(songDetails);
 
    return (
       <div className="mt-16">

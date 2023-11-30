@@ -516,23 +516,84 @@ const SingleMessage = () => {
                   {/* Second div */}
                   <div className="w-full md:w-[98%] lg:w-full flex justify-center  items-start">
                      <div className="max-w-full">
-                        {' '}
-                        {/* Set a fixed width for content */}
                         <h2 className="text-white text-xl">
                            {messageDetails.title}
                         </h2>
                         <h4 className="text-gray-500 text-sm">
                            {messageDetails.category}
                         </h4>
-                        <p className="text-white text-sm">
+                        <p className="text-white text-sm ">
                            {messageDetails.description}
                         </p>
-                        {/* ... (rest of the content) */}
+                        <span className="flex justify-start items-center space-x-3 mt-2">
+                           <button
+                              className="text-yellow-600"
+                              onClick={() => handleLikeSubmit(messageDetails)}
+                           >
+                              {likedItem ? <ThumbsUpSolid /> : <ThumbsUp />}
+                           </button>
+                           <span className="text-white">
+                              {messageDetails.likesCount}{' '}
+                              {messageDetails.likesCount === 1
+                                 ? 'like'
+                                 : 'likes'}
+                           </span>
+                        </span>
+
+                        <div className="w-full flex justify-between items-center space-x-4 ">
+                           <div className="w-full">
+                              {individualPurchasedStatus[
+                                 messageDetails.counterId
+                              ] ? (
+                                 <button
+                                    disabled
+                                    className="w-full text-white mt-1 bg-gray-500 py-1 px-2 rounded-sm cursor-not-allowed"
+                                 >
+                                    Purchased
+                                 </button>
+                              ) : (
+                                 <>
+                                    {approvedProducts.includes(
+                                       messageDetails.recId
+                                    ) || isAllowance ? (
+                                       <button
+                                          onClick={() => {
+                                             buyNow(messageDetails);
+                                          }}
+                                          className="w-full text-white mt-1 bg-yellow-700 py-1 px-2 rounded-sm hover:bg-yellow-800 focus:outline-none focus:ring-1 focus:ring-yellow-500 focus:ring-opacity-50"
+                                       >
+                                          {messageLoadingStates[
+                                             messageDetails.recId
+                                          ] ? (
+                                             <LoadingSpinner />
+                                          ) : (
+                                             'Buy Now'
+                                          )}
+                                       </button>
+                                    ) : (
+                                       <button
+                                          onClick={() => {
+                                             Approved(messageDetails);
+                                          }}
+                                          className="w-full  text-white mt-1 bg-yellow-700 py-1 px-2 rounded-sm hover:bg-yellow-800 focus:outline-none focus:ring-1 focus:ring-yellow-500 focus:ring-opacity-50"
+                                       >
+                                          {approveLoadingStates[
+                                             messageDetails.recId
+                                          ] ? (
+                                             <LoadingSpinner />
+                                          ) : (
+                                             'Approve'
+                                          )}
+                                       </button>
+                                    )}
+                                 </>
+                              )}
+                           </div>
+                        </div>
                      </div>
                   </div>
                   {/* Third div */}
                   <div className="w-full">
-                     {/* <div className="w-full"> */}
                      <div className="">
                         <span className="text-white">Comment</span>
                         <CommentsSection

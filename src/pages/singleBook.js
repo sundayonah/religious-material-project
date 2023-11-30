@@ -383,108 +383,124 @@ const SingleBook = ({ kingdomBooksWithPrice }) => {
             </Link>
          </div>
 
-         <div className="md:flex w-[85%] flex-row m-auto pt-8 justify-around  gap-4">
+         {/* <div className="md:flex w-[85%] flex-row m-auto pt-8 justify-around  gap-4"> */}
+         <div className="w-[85%] pt-5 m-auto">
             {bookDetails ? (
-               <>
-                  <div className=" relative w-full h-full">
-                     <Image
-                        src={`https://gateway.pinata.cloud/ipfs/${bookDetails.image}`}
-                        // className="object-center w-80 h-48 rounded-md"
-                        alt="single image"
-                        width={200}
-                        height={150}
-                        className="h-72 w-[100%] md:w-full rounded-md object-center"
-                     />
-                     {/* </div> */}
-                     {/* <div className="absolute right-0 bottom-0 bg-black bg-opacity-70 rounded-md p-1 text-yellow-600"> */}
-                     <span className="absolute right-0 bottom-0 bg-black bg-opacity-70 rounded-md p-1 text-yellow-600">
-                        TKC${' '}
-                        {(bookDetails.contentPrice / 1e15).toLocaleString()}
-                     </span>
-                     {/* </div> */}
+               <div className="grid grid-cols-1 flex-wrap md:grid-cols-2 lg:grid-cols-3 gap-4">
+                  {/* <div className=" relative w-full h-full"> */}
+                  <div className="">
+                     <div className="relative flex justify-center items-start">
+                        <Image
+                           src={`https://gateway.pinata.cloud/ipfs/${bookDetails.image}`}
+                           // className="object-center w-80 h-48 rounded-md"
+                           alt="single image"
+                           width={200}
+                           height={150}
+                           className="h-72 w-[100%] md:w-full rounded-md object-center"
+                        />
+                        {/* </div> */}
+                        {/* <div className="absolute right-0 bottom-0 bg-black bg-opacity-70 rounded-md p-1 text-yellow-600"> */}
+                        <span className="absolute right-0 bottom-0 bg-black bg-opacity-70 rounded-md p-1 text-yellow-600">
+                           TKC${' '}
+                           {(bookDetails.contentPrice / 1e15).toLocaleString()}
+                        </span>
+                     </div>
                   </div>
 
-                  <div className="w-full">
-                     <h2 className="text-white text-xl">{bookDetails.title}</h2>
-                     <h4 className="text-gray-500 text-sm">
-                        {bookDetails.category}
-                     </h4>
-                     <p className="text-white text-sm">
-                        {bookDetails.description}
-                     </p>
+                  {/* <div className="w-full"> */}
 
-                     <span className="flex justify-start items-center space-x-3 mt-2">
-                        <button
-                           // className={`${
-                           //    likedItem ? 'text-yellow-700' : 'text-white'
-                           // }`}
-                           className="text-yellow-600"
-                           onClick={() => handleLikeSubmit(bookDetails)}
-                        >
-                           {likedItem ? <ThumbsUpSolid /> : <ThumbsUp />}
-                        </button>
-                        <span className="text-white">
-                           {bookDetails.likesCount}{' '}
-                           {bookDetails.likesCount < 1 ? 'like' : 'likes'}
+                  {/* Second div */}
+                  <div className="w-full md:w-[98%] lg:w-full flex justify-center  items-start">
+                     <div className="max-w-full">
+                        <h2 className="text-white text-xl">
+                           {bookDetails.title}
+                        </h2>
+                        <h4 className="text-gray-500 text-sm">
+                           {bookDetails.category}
+                        </h4>
+                        <p className="text-white text-sm">
+                           {bookDetails.description}
+                        </p>
+
+                        <span className="flex justify-start items-center space-x-3 mt-2">
+                           <button
+                              // className={`${
+                              //    likedItem ? 'text-yellow-700' : 'text-white'
+                              // }`}
+                              className="text-yellow-600"
+                              onClick={() => handleLikeSubmit(bookDetails)}
+                           >
+                              {likedItem ? <ThumbsUpSolid /> : <ThumbsUp />}
+                           </button>
+                           <span className="text-white">
+                              {bookDetails.likesCount}{' '}
+                              {bookDetails.likesCount < 1 ? 'like' : 'likes'}
+                           </span>
                         </span>
-                     </span>
 
-                     <div className="w-full flex justify-between items-center space-x-4 ">
-                        <div className="w-full">
-                           {individualPurchasedStatus[bookDetails.counterId] ? (
-                              <button
-                                 disabled
-                                 className="w-full text-white mt-1 bg-gray-500 py-1 px-2 rounded-sm cursor-not-allowed"
-                              >
-                                 Purchased
-                              </button>
-                           ) : (
-                              <>
-                                 {approvedProducts.includes(
-                                    bookDetails.recId
-                                 ) || isAllowance ? (
-                                    <button
-                                       onClick={() => {
-                                          buyNow(bookDetails);
-                                       }}
-                                       className="w-full text-white mt-1 bg-yellow-700 py-1 px-2 rounded-sm hover:bg-yellow-800 focus:outline-none focus:ring-1 focus:ring-yellow-500 focus:ring-opacity-50"
-                                    >
-                                       {bookLoadingStates[bookDetails.recId] ? (
-                                          <LoadingSpinner />
-                                       ) : (
-                                          'Buy Now'
-                                       )}
-                                    </button>
-                                 ) : (
-                                    <button
-                                       onClick={() => {
-                                          Approved(bookDetails);
-                                       }}
-                                       className="w-full  text-white mt-1 bg-yellow-700 py-1 px-2 rounded-sm hover:bg-yellow-800 focus:outline-none focus:ring-1 focus:ring-yellow-500 focus:ring-opacity-50"
-                                    >
-                                       {approveLoadingStates[
-                                          bookDetails.recId
-                                       ] ? (
-                                          <LoadingSpinner />
-                                       ) : (
-                                          'Approve'
-                                       )}
-                                    </button>
-                                 )}
-                              </>
-                           )}
+                        <div className="w-full flex justify-between items-center space-x-4 ">
+                           <div className="w-full">
+                              {individualPurchasedStatus[
+                                 bookDetails.counterId
+                              ] ? (
+                                 <button
+                                    disabled
+                                    className="w-full text-white mt-1 bg-gray-500 py-1 px-2 rounded-sm cursor-not-allowed"
+                                 >
+                                    Purchased
+                                 </button>
+                              ) : (
+                                 <>
+                                    {approvedProducts.includes(
+                                       bookDetails.recId
+                                    ) || isAllowance ? (
+                                       <button
+                                          onClick={() => {
+                                             buyNow(bookDetails);
+                                          }}
+                                          className="w-full text-white mt-1 bg-yellow-700 py-1 px-2 rounded-sm hover:bg-yellow-800 focus:outline-none focus:ring-1 focus:ring-yellow-500 focus:ring-opacity-50"
+                                       >
+                                          {bookLoadingStates[
+                                             bookDetails.recId
+                                          ] ? (
+                                             <LoadingSpinner />
+                                          ) : (
+                                             'Buy Now'
+                                          )}
+                                       </button>
+                                    ) : (
+                                       <button
+                                          onClick={() => {
+                                             Approved(bookDetails);
+                                          }}
+                                          className="w-full  text-white mt-1 bg-yellow-700 py-1 px-2 rounded-sm hover:bg-yellow-800 focus:outline-none focus:ring-1 focus:ring-yellow-500 focus:ring-opacity-50"
+                                       >
+                                          {approveLoadingStates[
+                                             bookDetails.recId
+                                          ] ? (
+                                             <LoadingSpinner />
+                                          ) : (
+                                             'Approve'
+                                          )}
+                                       </button>
+                                    )}
+                                 </>
+                              )}
+                           </div>
                         </div>
                      </div>
                   </div>
-                  <div className="w-full md:mt-1 mt-9 ">
-                     <span className="text-white">Comment</span>
-                     {/* <CommentsSection /> */}
-                     <CommentsSection
-                        recId={bookDetails.recId}
-                        type={bookDetails.type}
-                     />
+                  {/* Third div */}
+                  <div className="w-full">
+                     <div className="">
+                        <span className="text-white">Comment</span>
+                        <CommentsSection
+                           recId={bookDetails.recId}
+                           type={bookDetails.type}
+                        />
+                     </div>
                   </div>
-               </>
+               </div>
             ) : (
                <p>Product not found</p>
             )}

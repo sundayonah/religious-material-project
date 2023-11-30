@@ -359,9 +359,10 @@ const SingleSong = ({ kingdomBooksWithPrice }) => {
                </svg>
             </Link>
          </div>
-         <div className="md:flex w-[85%] flex-row m-auto pt-8 justify-around gap-4">
+
+         <div className="w-[85%] pt-5 m-auto">
             {songDetails ? (
-               <>
+               <div className="grid grid-cols-1 flex-wrap md:grid-cols-2 lg:grid-cols-3 gap-4">
                   <div className=" relative w-full h-full">
                      <Image
                         src={`https://gateway.pinata.cloud/ipfs/${songDetails.image}`}
@@ -455,7 +456,7 @@ const SingleSong = ({ kingdomBooksWithPrice }) => {
                         type={songDetails.type}
                      />
                   </div>
-               </>
+               </div>
             ) : (
                <p>Product not found</p>
             )}

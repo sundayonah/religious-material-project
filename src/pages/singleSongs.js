@@ -360,22 +360,24 @@ const SingleSong = ({ kingdomBooksWithPrice }) => {
             </Link>
          </div>
 
-         <div className="w-[85%] pt-5 m-auto">
+         <div className="w-[90%] pt-5 m-auto">
             {songDetails ? (
                <div className="grid grid-cols-1 flex-wrap md:grid-cols-2 lg:grid-cols-3 gap-4">
-                  <div className=" relative w-full h-full">
-                     <Image
-                        src={`https://gateway.pinata.cloud/ipfs/${songDetails.image}`}
-                        alt="single image"
-                        width={200}
-                        height={150}
-                        className="h-72 w-[100%] md:w-full rounded-md object-center"
-                     />
-                     <span className="absolute right-0 bottom-0 bg-black bg-opacity-70 rounded-md p-1 text-yellow-600">
-                        TKC${' '}
-                        {(songDetails.contentPrice / 1e15).toLocaleString()}
-                     </span>
-                     {/* </div> */}
+                  {/* First div */}
+                  <div className="">
+                     <div className="relative flex justify-center items-start">
+                        <Image
+                           src={`https://gateway.pinata.cloud/ipfs/${songDetails.image}`}
+                           alt="single image"
+                           width={200}
+                           height={150}
+                           className="h-72 w-[100%] md:w-full rounded-md object-center"
+                        />
+                        <span className="absolute right-0 bottom-0 bg-black bg-opacity-70 rounded-md p-1 text-yellow-600">
+                           TKC${' '}
+                           {(songDetails.contentPrice / 1e15).toLocaleString()}
+                        </span>
+                     </div>
                   </div>
 
                   <div className="w-full">

@@ -354,7 +354,7 @@ const SingleMessage = () => {
       <div className="mt-16">
          <Toaster />
 
-         <div className=" w-[5%] ml-8">
+         <div className=" w-[5%] ml-6">
             <Link href="/messages">
                <svg
                   xmlns="http://www.w3.org/2000/svg"

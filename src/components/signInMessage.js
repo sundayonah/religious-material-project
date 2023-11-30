@@ -31,274 +31,169 @@
 
 // export default SignInToConnect;
 
-import Image from 'next/image';
-import React, { useEffect, useState } from 'react';
-import { ChevronLeft, ChevronRight, SendComment } from './icons';
-import { useAccount } from 'wagmi';
-import axios from 'axios';
+//   <div className="md:flex w-[85%] flex-row m-auto pt-8 justify-around  gap-4">
+//          {messageDetails ? (
+//             <>
+//                <div className=" relative w-full h-full">
+//                   <Image
+//                      src={`https://gateway.pinata.cloud/ipfs/${messageDetails.image}`}
+//                      alt="single image"
+//                      width={200}
+//                      height={150}
+//                      className="h-72 w-[100%] md:w-full rounded-md object-center"
+//                      // className="h-72 w-full rounded-md object-center"
+//                      // layout="fixed"
+//                   />
+//                   <span className="absolute right-0 bottom-0 bg-black bg-opacity-70 rounded-md p-1 text-yellow-600">
+//                      TKC${' '}
+//                      {(messageDetails.contentPrice / 1e15).toLocaleString()}
+//                   </span>
+//                </div>
 
-const CommentsSection = ({ recId, type }) => {
-   const { address } = useAccount();
+//                <div className="w-full">
+//                   <h2 className="text-white text-xl">
+//                      {messageDetails.title}
+//                   </h2>
+//                   <h4 className="text-gray-500 text-sm">
+//                      {messageDetails.category}
+//                   </h4>
+//                   <p className="text-white text-sm ">
+//                      {messageDetails.description}
+//                   </p>
+//                   <span className="flex justify-start items-center space-x-3 mt-2">
+//                      <button
+//                         // className={`${
+//                         //    likedItem ? 'text-yellow-700' : 'text-white'
+//                         // }`}
+//                         className="text-yellow-600"
+//                         onClick={() => handleLikeSubmit(messageDetails)}
+//                      >
+//                         {likedItem ? <ThumbsUpSolid /> : <ThumbsUp />}
+//                      </button>
+//                      <span className="text-white">
+//                         {messageDetails.likesCount}{' '}
+//                         {messageDetails.likesCount === 1 ? 'like' : 'likes'}
+//                      </span>
+//                   </span>
 
-   // const [isCommentsVisible, setCommentsVisible] = useState(false);
-   const [commentText, setCommentText] = useState('');
-   const [comments, setComments] = useState([]);
-   const [showAllComments, setShowAllComments] = useState(false);
-   const [newComment, setNewComment] = useState('');
-   const [commentsByAddress, setCommentsByAddress] = useState({});
-   const [currentAddress, setCurrentAddress] = useState('');
+//                   <div className="w-full flex justify-between items-center space-x-4 ">
+//                      <div className="w-full">
+//                         {individualPurchasedStatus[
+//                            messageDetails.counterId
+//                         ] ? (
+//                            <button
+//                               disabled
+//                               className="w-full text-white mt-1 bg-gray-500 py-1 px-2 rounded-sm cursor-not-allowed"
+//                            >
+//                               Purchased
+//                            </button>
+//                         ) : (
+//                            <>
+//                               {approvedProducts.includes(
+//                                  messageDetails.recId
+//                               ) || isAllowance ? (
+//                                  <button
+//                                     onClick={() => {
+//                                        buyNow(messageDetails);
+//                                     }}
+//                                     className="w-full text-white mt-1 bg-yellow-700 py-1 px-2 rounded-sm hover:bg-yellow-800 focus:outline-none focus:ring-1 focus:ring-yellow-500 focus:ring-opacity-50"
+//                                  >
+//                                     {messageLoadingStates[
+//                                        messageDetails.recId
+//                                     ] ? (
+//                                        <LoadingSpinner />
+//                                     ) : (
+//                                        'Buy Now'
+//                                     )}
+//                                  </button>
+//                               ) : (
+//                                  <button
+//                                     onClick={() => {
+//                                        Approved(messageDetails);
+//                                     }}
+//                                     className="w-full  text-white mt-1 bg-yellow-700 py-1 px-2 rounded-sm hover:bg-yellow-800 focus:outline-none focus:ring-1 focus:ring-yellow-500 focus:ring-opacity-50"
+//                                  >
+//                                     {approveLoadingStates[
+//                                        messageDetails.recId
+//                                     ] ? (
+//                                        <LoadingSpinner />
+//                                     ) : (
+//                                        'Approve'
+//                                     )}
+//                                  </button>
+//                               )}
+//                            </>
+//                         )}
+//                      </div>
+//                   </div>
+//                </div>
+//                <div className="w-full md:mt-1 mt-9 ">
+//                   <span className="text-white">Comment</span>
+//                   <CommentsSection
+//                      recId={messageDetails.recId}
+//                      type={messageDetails.type}
+//                   />
+//                </div>
+//             </>
+//          ) : (
+//             <p>Product not found</p>
+//          )}
+//       </div>
+//       <div className="mt-20 mb-8 w-[90%] m-auto">
+//          <div>
+//             <h2 className="text-[#DAA851]  my-8">
+//                Related items Based On Category
+//             </h2>
 
-   // const toggleCommentsVisibility = () => {
-   //    setCommentsVisible((prev) => !prev);
-   // };
+//             <div className="flex flex-wrap gap-3 p-2 justify-center md:justify-start items-center">
+//                {filteredCategories.map((relatedMessage) => (
+//                   <div
+//                      key={relatedMessage.recId}
+//                      // className="flex transition duration-500 ease-in-out transform hover:-translate-y-1 hover:scale-110 "
+//                      // className="transition transform hover:-translate-y-1 duration-300  motion-reduce:transition-none motion-reduce:transform-none shadow-newCustom py-1 px-2 rounded-lg "
 
-   // Function to toggle showing all comments
-   const toggleShowAllComments = () => {
-      setShowAllComments((prev) => !prev);
-      // console.log('show all');
-   };
+//                      className="transition duration-500 ease-in-out transform hover:-translate-y-1 hover:scale-110 shadow-newCustom rounded-lg py-2 px-2"
+//                   >
+//                      <Link
+//                         href={`/singleMessages?id=${relatedMessage.recId}`}
+//                         passHref
+//                      >
+//                         <Image
+//                            src={`https://gateway.pinata.cloud/ipfs/${relatedMessage.image}`}
+//                            className="object-cover w-auto h-24 rounded-md"
+//                            width={200}
+//                            height={150}
+//                            alt={relatedMessage.title}
+//                         />
+//                         <div className="flex flex-col">
+//                            <span className="text-gray-500">
+//                               {/* {relatedMessage.author} */}
 
-   // const handleCommentSubmit = async () => {
-   //    const commentUrl =
-   //       'https://hokoshokos-001-site1.etempurl.com/api/Catalog/CommentonItem';
-
-   //    try {
-   //       const response = await axios.post(commentUrl, {
-   //          address: address,
-   //          fileId: recId,
-   //          type: type,
-   //          commentText,
-   //       });
-
-   //       // Handle the response as needed (e.g., show a success message)
-   //       //  console.log('Comment submitted successfully:', response);
-
-   //       // Clear the input field
-   //       setCommentText('');
-   //    } catch (error) {
-   //       // Handle any errors during the fetch
-   //       console.error('Error submitting comment:', error);
-   //    }
-   // };
-
-   const handleCommentSubmit = async () => {
-      const commentUrl =
-         'https://hokoshokos-001-site1.etempurl.com/api/Catalog/CommentOnItem';
-
-      try {
-         const response = await axios.post(commentUrl, {
-            address: address,
-            fileId: recId,
-            type: type,
-            commentText,
-         });
-
-         // Update comments state to include the new comment for the current address
-         setCommentsByAddress((prevComments) => ({
-            ...prevComments,
-            [currentAddress]: [
-               ...(prevComments[currentAddress] || []),
-               {
-                  recId: response.data.recId,
-                  address: currentAddress,
-                  commentText,
-               },
-            ],
-         }));
-
-         // // Update comments state to include the new comment
-         // setComments([
-         //    ...comments,
-         //    { recId: response.data.recId, address, commentText },
-         // ]);
-
-         // // Display the new comment immediately after submission
-         // setNewComment(commentText);
-
-         // Clear the input field
-         setCommentText('');
-      } catch (error) {
-         // Handle any errors during the fetch
-         console.error('Error submitting comment:', error);
-      }
-   };
-
-   useEffect(() => {
-      const fetchComments = async () => {
-         const commentsUrl =
-            'https://hokoshokos-001-site1.etempurl.com/api/Catalog/GetCommentsForItem';
-
-         try {
-            const response = await axios.post(commentsUrl, {
-               address: address,
-               fileId: recId,
-               type: type,
-            });
-
-            console.log(response.data);
-
-            // // Sort comments in ascending order based on timestamps
-            // const sortedComments = response.data.sort((a, b) => {
-            //    // Replace 'timestamp' with your comment timestamp field
-            //    return new Date(b.createdAt) - new Date(a.createdAt);
-            // });
-
-            // console.log(sortedComments);
-
-            // Set the sorted comments in the state
-            // setComments(response.data || []);
-            setComments(response.data || []);
-
-            // Handle the response as needed (e.g., update the state with comments)
-            // console.log('Comments fetched successfully:', response);
-         } catch (error) {
-            // Handle any errors during the fetch
-            console.error('Error fetching comments:', error);
-         }
-      };
-
-      // Fetch comments when the component mounts
-      fetchComments();
-   }, [recId, type, address]);
-
-   // Function to handle address change
-   const handleAddressChange = (newAddress) => {
-      setCurrentAddress(newAddress);
-   };
-
-   // console.log(comments);
-
-   function shortenAddress(address, startLength = 6, endLength = 4) {
-      if (!address) return '';
-      return `${address.substring(0, startLength)}...${address.substring(
-         address.length - endLength
-      )}`;
-   }
-
-   return (
-      <div className="mt-4">
-         {/* <div> */}
-         <>
-            <span className="text-white">Comment</span>
-            <div className=" flex justify-between items-center rounded-md border border-[#DAA851] mb-2 ">
-               <input
-                  className="w-full px-4 py-2 bg-transparent text-white focus:outline-none focus:none focus:none focus:border-transparent"
-                  //   className="w-full px-4 py-2 rounded-md border border-[#DAA851] bg-[#342b1c] text-white focus:outline-none focus:ring-2 focus:ring-[#DAA851] focus:border-transparent"
-                  type="text"
-                  placeholder="Say Something"
-                  value={commentText}
-                  onChange={(e) => setCommentText(e.target.value)}
-               />
-               <button
-                  className={` px-2 py-1 rounded-md  text-yellow-500 hover:text-yellow-600  transform -rotate-45  ${
-                     !commentText.trim()
-                        ? 'cursor-not-allowed  text-gray-900  hover:text-gray-900'
-                        : ''
-                  }`}
-                  onClick={handleCommentSubmit}
-                  disabled={!commentText.trim()}
-               >
-                  <SendComment />
-               </button>
-            </div>
-            {comments.length === undefined || comments.length === 0 ? (
-               <p className="text-white">No comments yet for this item.</p>
-            ) : (
-               <>
-                  <span className="text-[#DAA851] capitalize">
-                     previous comments
-                  </span>
-
-                  {Array.isArray(comments) && (
-                     <>
-                        {showAllComments
-                           ? comments.map((comment, index) => (
-                                <div
-                                   key={index}
-                                   className="flex flex-col justify-center py-2"
-                                >
-                                   <div className="flex">
-                                      <Image
-                                         src="/images/logo.png"
-                                         alt="comment avatar"
-                                         className="w-12 h-12"
-                                         width={80}
-                                         height={80}
-                                      />
-                                      <div className="bg-[#63533c] py-1 px-2 rounded-r-2xl rounded-bl-2xl ">
-                                         <span className="text-white test-small font-bold ">
-                                            {shortenAddress(comment.address)}
-                                         </span>
-                                         <p className="text-white text-sm">
-                                            {comment.commentText}
-                                         </p>
-                                      </div>
-                                   </div>
-                                </div>
-                             ))
-                           : comments.slice(0, 2).map((comment, index) => (
-                                // Render only the first two comments
-                                <div
-                                   key={index}
-                                   className="flex flex-col justify-center py-2"
-                                >
-                                   <div className="flex">
-                                      <Image
-                                         src="/images/logo.png"
-                                         alt="comment avatar"
-                                         className="w-12 h-12"
-                                         width={80}
-                                         height={80}
-                                      />
-                                      <div className="bg-[#63533c] py-1 px-2 rounded-r-2xl rounded-bl-2xl ">
-                                         <span className="text-white test-small font-bold ">
-                                            {shortenAddress(comment.address)}
-                                         </span>
-                                         <p className="text-white test-small">
-                                            {comment.commentText}
-                                         </p>
-                                      </div>
-                                   </div>
-                                </div>
-                             ))}
-                     </>
-                  )}
-                  {Array.isArray(comments) && comments.length > 2 && (
-                     <span
-                        className="text-purple-400 capitalize text-sm flex justify-end pt-2 cursor-pointer"
-                        onClick={toggleShowAllComments}
-                     >
-                        {showAllComments
-                           ? 'hide comments'
-                           : 'view more comments...'}
-                     </span>
-                  )}
-               </>
-            )}
-            {/* Display the newly added comment */}
-            {/* {newComment && (
-               <div className="flex flex-col justify-center py-2">
-                  <div className="flex">
-                     <Image
-                        src="/images/logo.png"
-                        alt="comment avatar"
-                        className="w-12 h-12"
-                        width={80}
-                        height={80}
-                     />
-                     <div className="bg-[#63533c] py-1 px-2 rounded-r-2xl rounded-bl-2xl ">
-                        <span className="text-white test-small font-bold ">
-                           {shortenAddress(address)}
-                        </span>
-                        <p className="text-white test-small">{newComment}</p>
-                     </div>
-                  </div>
-               </div>
-            )} */}
-         </>
-         {/* </div> */}
-      </div>
-   );
-};
-
-export default CommentsSection;
+//                               <span className="text-gray-500 text-sm">
+//                                  {relatedMessage.author.length > 20
+//                                     ? `${relatedMessage.author.slice(
+//                                          0,
+//                                          20
+//                                       )}...`
+//                                     : relatedMessage.author}
+//                               </span>
+//                            </span>
+//                            <span className="text-white text-sm">
+//                               {relatedMessage.title}
+//                            </span>
+//                         </div>
+//                         <div className=" flex justify-center text-white mt-1   bg-yellow-700 py-1 px-2 rounded-sm hover:bg-yellow-800 focus:outline-none focus:ring-1 focus:ring-yellow-500 focus:ring-opacity-50">
+//                            <span className="text-sm">
+//                               TKC${' '}
+//                               {(
+//                                  relatedMessage.contentPrice / 1e15
+//                               ).toLocaleString()}
+//                            </span>
+//                         </div>
+//                      </Link>
+//                   </div>
+//                ))}
+//             </div>
+//          </div>
+//       </div>
+//    </div>

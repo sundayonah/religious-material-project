@@ -372,112 +372,181 @@ const SingleMessage = () => {
                </svg>
             </Link>
          </div>
-         <div className="md:flex w-[85%] flex-row m-auto pt-8 justify-around  gap-4">
+
+         {/* //////////////////////////////////////////// */}
+
+         {/* <div className="w-[90%]  pt-5  m-auto">
             {messageDetails ? (
-               <>
-                  <div className=" relative w-full h-full">
-                     <Image
-                        src={`https://gateway.pinata.cloud/ipfs/${messageDetails.image}`}
-                        alt="single image"
-                        width={200}
-                        height={150}
-                        className="h-72 w-[100%] md:w-full rounded-md object-center"
-                     />
-                     <span className="absolute right-0 bottom-0 bg-black bg-opacity-70 rounded-md p-1 text-yellow-600">
-                        TKC${' '}
-                        {(messageDetails.contentPrice / 1e15).toLocaleString()}
-                     </span>
+               <div className="flex justify-center items-start  flex-wrap space-x-8">
+
+                  <div className=" ">
+                     <div className="relative flex justify-center items-start">
+                        <Image
+                           src={`https://gateway.pinata.cloud/ipfs/${messageDetails.image}`}
+                           alt="single image"
+                           width={200}
+                           height={150}
+                           className="h-72 w-[100%] md:w-full rounded-md object-center"
+                        />
+                        <span className="absolute right-0 bottom-0 bg-black bg-opacity-70 rounded-md p-1 text-yellow-600">
+                           TKC${' '}
+                           {(
+                              messageDetails.contentPrice / 1e15
+                           ).toLocaleString()}
+                        </span>
+                     </div>
                   </div>
 
-                  <div className="w-full">
-                     <h2 className="text-white text-xl">
-                        {messageDetails.title}
-                     </h2>
-                     <h4 className="text-gray-500 text-sm">
-                        {messageDetails.category}
-                     </h4>
-                     <p className="text-white text-sm ">
-                        {messageDetails.description}
-                     </p>
-                     <span className="flex justify-start items-center space-x-3 mt-2">
-                        <button
-                           // className={`${
-                           //    likedItem ? 'text-yellow-700' : 'text-white'
-                           // }`}
-                           className="text-yellow-600"
-                           onClick={() => handleLikeSubmit(messageDetails)}
-                        >
-                           {likedItem ? <ThumbsUpSolid /> : <ThumbsUp />}
-                        </button>
-                        <span className="text-white">
-                           {messageDetails.likesCount}{' '}
-                           {messageDetails.likesCount === 1 ? 'like' : 'likes'}
+                  <div className="md:w-[30%] w-[90%] md:mt-0 mt-5 ">
+                     <div className="flex flex-col justify-center items-start">
+                        <h2 className="text-white text-xl">
+                           {messageDetails.title}
+                        </h2>
+                        <h4 className="text-gray-500 text-sm">
+                           {messageDetails.category}
+                        </h4>
+                        <p className="text-white text-sm ">
+                           {messageDetails.description}
+                        </p>
+                        <span className="flex justify-start items-center space-x-3 mt-2">
+                           <button
+                              className="text-yellow-600"
+                              onClick={() => handleLikeSubmit(messageDetails)}
+                           >
+                              {likedItem ? <ThumbsUpSolid /> : <ThumbsUp />}
+                           </button>
+                           <span className="text-white">
+                              {messageDetails.likesCount}{' '}
+                              {messageDetails.likesCount === 1
+                                 ? 'like'
+                                 : 'likes'}
+                           </span>
                         </span>
-                     </span>
 
-                     <div className="w-full flex justify-between items-center space-x-4 ">
-                        <div className="w-full">
-                           {individualPurchasedStatus[
-                              messageDetails.counterId
-                           ] ? (
-                              <button
-                                 disabled
-                                 className="w-full text-white mt-1 bg-gray-500 py-1 px-2 rounded-sm cursor-not-allowed"
-                              >
-                                 Purchased
-                              </button>
-                           ) : (
-                              <>
-                                 {approvedProducts.includes(
-                                    messageDetails.recId
-                                 ) || isAllowance ? (
-                                    <button
-                                       onClick={() => {
-                                          buyNow(messageDetails);
-                                       }}
-                                       className="w-full text-white mt-1 bg-yellow-700 py-1 px-2 rounded-sm hover:bg-yellow-800 focus:outline-none focus:ring-1 focus:ring-yellow-500 focus:ring-opacity-50"
-                                    >
-                                       {messageLoadingStates[
-                                          messageDetails.recId
-                                       ] ? (
-                                          <LoadingSpinner />
-                                       ) : (
-                                          'Buy Now'
-                                       )}
-                                    </button>
-                                 ) : (
-                                    <button
-                                       onClick={() => {
-                                          Approved(messageDetails);
-                                       }}
-                                       className="w-full  text-white mt-1 bg-yellow-700 py-1 px-2 rounded-sm hover:bg-yellow-800 focus:outline-none focus:ring-1 focus:ring-yellow-500 focus:ring-opacity-50"
-                                    >
-                                       {approveLoadingStates[
-                                          messageDetails.recId
-                                       ] ? (
-                                          <LoadingSpinner />
-                                       ) : (
-                                          'Approve'
-                                       )}
-                                    </button>
-                                 )}
-                              </>
-                           )}
+                        <div className="w-full flex justify-between items-center space-x-4 ">
+                           <div className="w-full">
+                              {individualPurchasedStatus[
+                                 messageDetails.counterId
+                              ] ? (
+                                 <button
+                                    disabled
+                                    className="w-full text-white mt-1 bg-gray-500 py-1 px-2 rounded-sm cursor-not-allowed"
+                                 >
+                                    Purchased
+                                 </button>
+                              ) : (
+                                 <>
+                                    {approvedProducts.includes(
+                                       messageDetails.recId
+                                    ) || isAllowance ? (
+                                       <button
+                                          onClick={() => {
+                                             buyNow(messageDetails);
+                                          }}
+                                          className="w-full text-white mt-1 bg-yellow-700 py-1 px-2 rounded-sm hover:bg-yellow-800 focus:outline-none focus:ring-1 focus:ring-yellow-500 focus:ring-opacity-50"
+                                       >
+                                          {messageLoadingStates[
+                                             messageDetails.recId
+                                          ] ? (
+                                             <LoadingSpinner />
+                                          ) : (
+                                             'Buy Now'
+                                          )}
+                                       </button>
+                                    ) : (
+                                       <button
+                                          onClick={() => {
+                                             Approved(messageDetails);
+                                          }}
+                                          className="w-full  text-white mt-1 bg-yellow-700 py-1 px-2 rounded-sm hover:bg-yellow-800 focus:outline-none focus:ring-1 focus:ring-yellow-500 focus:ring-opacity-50"
+                                       >
+                                          {approveLoadingStates[
+                                             messageDetails.recId
+                                          ] ? (
+                                             <LoadingSpinner />
+                                          ) : (
+                                             'Approve'
+                                          )}
+                                       </button>
+                                    )}
+                                 </>
+                              )}
+                           </div>
                         </div>
                      </div>
                   </div>
-                  <div className="w-full md:mt-1 mt-9 ">
+                  <div className="w-full md:w-[30%] md:mt-0 mt-5">
                      <span className="text-white">Comment</span>
                      <CommentsSection
                         recId={messageDetails.recId}
                         type={messageDetails.type}
                      />
                   </div>
-               </>
+               </div>
+            ) : (
+               <p>Product not found</p>
+            )}
+         </div> */}
+
+         {/* //////////////////////////////////////////// */}
+
+         {/* EXPERIMENTAL */}
+         <div className="w-[85%] pt-5 m-auto">
+            {messageDetails ? (
+               <div className="grid grid-cols-1 flex-wrap md:grid-cols-2 lg:grid-cols-3 gap-4">
+                  {/* First div */}
+                  <div className="">
+                     <div className="relative flex justify-center items-start">
+                        <Image
+                           src={`https://gateway.pinata.cloud/ipfs/${messageDetails.image}`}
+                           alt="single image"
+                           width={200}
+                           height={150}
+                           className="h-72 w-[100%] md:w-full rounded-md object-center"
+                        />
+                        <span className="absolute right-0 bottom-0 bg-black bg-opacity-70 rounded-md p-1 text-yellow-600">
+                           TKC${' '}
+                           {(
+                              messageDetails.contentPrice / 1e15
+                           ).toLocaleString()}
+                        </span>
+                     </div>
+                  </div>
+
+                  {/* Second div */}
+                  <div className="w-full md:w-[98%] lg:w-full flex justify-center  items-start">
+                     <div className="max-w-full">
+                        {' '}
+                        {/* Set a fixed width for content */}
+                        <h2 className="text-white text-xl">
+                           {messageDetails.title}
+                        </h2>
+                        <h4 className="text-gray-500 text-sm">
+                           {messageDetails.category}
+                        </h4>
+                        <p className="text-white text-sm">
+                           {messageDetails.description}
+                        </p>
+                        {/* ... (rest of the content) */}
+                     </div>
+                  </div>
+                  {/* Third div */}
+                  <div className="w-full">
+                     {/* <div className="w-full"> */}
+                     <div className="">
+                        <span className="text-white">Comment</span>
+                        <CommentsSection
+                           recId={messageDetails.recId}
+                           type={messageDetails.type}
+                        />
+                     </div>
+                  </div>
+               </div>
             ) : (
                <p>Product not found</p>
             )}
          </div>
+
          {/* DISPLAY BOOKS BASED ON CATEGORY */}
          <div className="mt-20 mb-8 w-[90%] m-auto">
             <div>

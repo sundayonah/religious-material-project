@@ -337,7 +337,7 @@ const SingleSong = ({ kingdomBooksWithPrice }) => {
       );
    }
 
-   console.log(songDetails);
+   // console.log(songDetails);
 
    return (
       <div className="mt-16">

@@ -134,16 +134,16 @@ const Books = () => {
             const purchasedProducts = response.data.data;
             // console.log(purchasedProducts);
             const purchasedMap = {};
-            filteredBooks.forEach((song) => {
+            filteredBooks.forEach((book) => {
                const isPurchased = purchasedProducts.some(
-                  (product) => product.counterId === song.counterId
+                  (product) => product.counterId === book.counterId
                );
-               purchasedMap[song.counterId] = isPurchased;
+               purchasedMap[book.counterId] = isPurchased;
             });
             // console.log(purchasedMap);
             setIndividualPurchasedStatus(purchasedMap);
          } catch (error) {
-            console.error('Error checking purchase status:', error);
+            // console.error('Error checking purchase status:', error);
          }
       };
       checkPurchasedStatus();
@@ -422,7 +422,7 @@ const Books = () => {
                                        isAllowance ? (
                                           <button
                                              onClick={() => {
-                                                // setSelectedProduct(song);
+                                                // setSelectedProduct(book);
                                                 buyNow(book);
                                              }}
                                              className="w-[95%] text-white px-4 ml-2 py-1 bg-yellow-700  rounded-sm hover:bg-yellow-800 focus:outline-none focus:ring-1 focus:ring-yellow-500 focus:ring-opacity-50"

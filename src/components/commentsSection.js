@@ -166,9 +166,20 @@ const CommentsSection = ({ recId, type }) => {
       )}`;
    }
 
+   // function formatTimestamp(timestamp) {
+   //    const date = new Date(timestamp);
+   //    const formattedDate = `${date.toLocaleDateString()} ${date.toLocaleTimeString()}`;
+   //    // console.log(formattedDate);
+   //    return formattedDate;
+   // }
+
    function formatTimestamp(timestamp) {
       const date = new Date(timestamp);
-      const formattedDate = `${date.toLocaleDateString()} ${date.toLocaleTimeString()}`;
+      const watOptions = {
+         timeZone: 'Africa/Lagos',
+         // hour12: false,
+      };
+      const formattedDate = date.toLocaleString('en-US', watOptions);
       // console.log(formattedDate);
       return formattedDate;
    }

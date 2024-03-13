@@ -216,7 +216,7 @@ const Messages = () => {
 
             setIndividualPurchasedStatus(purchasedMap);
          } catch (error) {
-            console.error('Error checking purchase status:', error);
+            // console.error('Error checking purchase status:', error);
          }
       };
 

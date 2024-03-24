@@ -48,7 +48,8 @@ const BookModal = ({
                      className="rounded-md mb-4"
                   />
                   <span className="absolute right-0 bottom-4 font-bold bg-black bg-opacity-70 rounded-md p-1 text-yellow-600">
-                     $TKC {(book.contentPrice / 1e15).toLocaleString()}
+                     {/* $TKC {(book.contentPrice / 1e15).toLocaleString()} */}
+                     $TKC {book.contentPrice}
                   </span>
                </div>
                <h2 className="text-xl font-bold">{book.title}</h2>

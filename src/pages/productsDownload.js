@@ -262,7 +262,7 @@ const ProductsDownload = ({ selectedFilter, filteredDownloadProduct }) => {
             const newDurations = {};
 
             for (const { recId, dataFile, type } of mp3PurchasedProducts) {
-               const audioFileURL = `https://hokoshokos-001-site1.etempurl.com/${type}/${dataFile}`; // Replace this with your audio file URL
+               const audioFileURL = `https://kinccoin.bsite.net/${type}/${dataFile}`; // Replace this with your audio file URL
                const audio = new Audio(audioFileURL);
                // console.log(audio);
 
@@ -483,7 +483,7 @@ const ProductsDownload = ({ selectedFilter, filteredDownloadProduct }) => {
                                  onEnded={() => handleSongEnd(recId)}
                               >
                                  <source
-                                    src={`https://hokoshokos-001-site1.etempurl.com/${type}/${dataFile}`}
+                                    src={`https://kinccoin.bsite.net/${type}/${dataFile}`}
                                     type="audio/mpeg"
                                  />
                               </audio>

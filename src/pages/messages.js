@@ -199,7 +199,7 @@ const Messages = () => {
       const checkPurchasedStatus = async () => {
          try {
             const response = await axios.get(
-               `https://hokoshokos-001-site1.etempurl.com/api/Catalog/GetTransactions/${address}`
+               `https://kinccoin.bsite.net/api/Catalog/GetTransactions/${address}`
             );
 
             const purchasedProducts = response.data.data;
@@ -323,7 +323,7 @@ const Messages = () => {
 
                   // Make a POST request to the API endpoint
                   const addTransactionResponse = await axios.post(
-                     'https://hokoshokos-001-site1.etempurl.com/api/Catalog/AddTransactions',
+                     'https://kinccoin.bsite.net/api/Catalog/AddTransactions',
                      transactionData
                   );
                   console.log(addTransactionResponse);
@@ -445,7 +445,8 @@ const Messages = () => {
                            </span>
                            <span className="text-gray-300">
                               $TKC{' '}
-                              {(message.contentPrice / 1e15).toLocaleString()}
+                              {/* {(message.contentPrice / 1e15).toLocaleString()} */}
+                              {message.contentPrice}
                            </span>
                         </div>
                         <div className="w-full">

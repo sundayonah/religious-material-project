@@ -92,8 +92,8 @@ import { ethers } from 'ethers';
 // };
 // const [logIn, setLogIn] = useState(false);
 
-const signIn = async () => {
-   setIsConnected(false);
+export const signIn = async () => {
+   // setIsConnected(false);
    try {
       // if (!isConnected) {
       if (window.ethereum) {

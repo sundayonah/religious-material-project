@@ -213,7 +213,7 @@ const Songs = () => {
       const checkPurchasedStatus = async () => {
          try {
             const response = await axios.get(
-               `https://hokoshokos-001-site1.etempurl.com/api/Catalog/GetTransactions/${address}`
+               `https://kinccoin.bsite.net/api/Catalog/GetTransactions/${address}`
             );
 
             const purchasedProducts = response.data.data;
@@ -324,10 +324,10 @@ const Songs = () => {
 
                   // Make a POST request to the API endpoint
                   const addTransactionResponse = await axios.post(
-                     'https://hokoshokos-001-site1.etempurl.com/api/Catalog/AddTransactions',
+                     'https://kinccoin.bsite.net/api/Catalog/AddTransactions',
                      transactionData
                   );
-                  console.log(addTransactionResponse);
+                  // console.log(addTransactionResponse);
 
                   // Check the response from the API
                   if (addTransactionResponse.status === 200) {
@@ -445,7 +445,8 @@ const Songs = () => {
                               </span>
                               <span className="text-gray-400">
                                  $TKC{' '}
-                                 {(song.contentPrice / 1e15).toLocaleString()}
+                                 {song.contentPrice}
+                                 {/* {(song.contentPrice / 1e15).toLocaleString()} */}
                               </span>
                               <div>
                                  <button

@@ -53,7 +53,8 @@ const SongModal = ({
                      className="rounded-md mb-4"
                   />
                   <span className="absolute right-0 bottom-4 font-bold bg-black bg-opacity-70 rounded-md p-1 text-yellow-600">
-                     $TKC {(song.contentPrice / 1e15).toLocaleString()}
+                     {/* $TKC {(song.contentPrice / 1e15).toLocaleString()} */}
+                     $TKC {song.contentPrice}
                   </span>
                </div>
                <h2 className="text-xl font-bold">{song.title}</h2>

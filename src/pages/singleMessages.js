@@ -139,7 +139,7 @@ const SingleMessage = () => {
       const checkPurchasedStatus = async () => {
          try {
             const response = await axios.get(
-               `https://hokoshokos-001-site1.etempurl.com/api/Catalog/GetTransactions/${address}`
+               `https://kinccoin.bsite.net/api/Catalog/GetTransactions/${address}`
             );
 
             // console.log(messageDetails.counterId);
@@ -269,7 +269,7 @@ const SingleMessage = () => {
 
                   // Make a POST request to the API endpoint
                   const addTransactionResponse = await axios.post(
-                     'https://hokoshokos-001-site1.etempurl.com/api/Catalog/AddTransactions',
+                     'https://kinccoin.bsite.net/api/Catalog/AddTransactions',
                      transactionData
                   );
 
@@ -311,7 +311,7 @@ const SingleMessage = () => {
    };
 
    const likeUrl =
-      'https://hokoshokos-001-site1.etempurl.com/api/Catalog/LikeItem';
+      'https://kinccoin.bsite.net/api/Catalog/LikeItem';
 
    const handleLikeSubmit = async (product) => {
       try {
@@ -507,10 +507,12 @@ const SingleMessage = () => {
                            className="h-72 w-[100%] md:w-full rounded-md object-cover"
                         />
                         <span className="absolute right-0 bottom-0 bg-black bg-opacity-70 rounded-md p-1 text-yellow-600">
-                           TKC${' '}
+                           {/* TKC${' '}
                            {(
                               messageDetails.contentPrice / 1e15
-                           ).toLocaleString()}
+                           ).toLocaleString()} */}   TKC${' '}
+                           {
+                              messageDetails.contentPrice}
                         </span>
                      </div>
                   </div>

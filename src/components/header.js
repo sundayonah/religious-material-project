@@ -122,7 +122,7 @@ const Header = () => {
 
             if (signature) {
                const authURL =
-                  'http://hokoshokos-001-site1.etempurl.com/api/Account/AuthenticateUser';
+                  'https://kinccoin.bsite.net/api/Account/AuthenticateUser';
 
                const res = await axios.post(
                   authURL,
@@ -347,6 +347,7 @@ const Header = () => {
                </div> */}
 
                <ConnectButton />
+            {/* <button onClick={signIn}>Sign In</button> */}
             </div>
             <style jsx>{`
                .active-link {

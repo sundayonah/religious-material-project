@@ -49,7 +49,8 @@ const MessageModal = ({
                      className="rounded-md mb-4"
                   />
                   <span className="absolute right-0 bottom-4 font-bold bg-black bg-opacity-70 rounded-md p-1 text-yellow-600">
-                     $TKC {(message.contentPrice / 1e15).toLocaleString()}
+                     {/* $TKC {(message.contentPrice / 1e15).toLocaleString()} */}
+                     $TKC {message.contentPrice}
                   </span>
                </div>
                <h2 className="text-xl font-bold">{message.title}</h2>

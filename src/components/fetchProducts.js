@@ -48,18 +48,21 @@ export const fetchBooks = async () => {
 
    try {
       const bookURL =
-         'https://hokoshokos-001-site1.etempurl.com/api/Catalog/GetAllBooks';
+         'https://kinccoin.bsite.net/api/Catalog/GetAllBooks';
+
       const response = await axios.get(bookURL);
+      // console.log(response, 'RESPONSE');
 
       const data = response.data.data;
 
-      console.log('Original Data:', data);
+      // console.log('Original Data:', data);
 
       const bookDetails = await Promise.all(
          data.map(async (book) => {
             // console.log(book);
             try {
                const ipfsHash = book.hash;
+               // console.log(ipfsHash, 'Hash');
                const pinataApiUrl = `https://gateway.pinata.cloud/ipfs/${ipfsHash}`;
 
                const pinataResponse = await axios.get(pinataApiUrl);
@@ -101,6 +104,8 @@ export const fetchBooks = async () => {
 
       const filteredBooks = bookDetails.filter((book) => book !== null);
       // console.log('Filtered Books:', filteredBooks);
+    
+    
       return filteredBooks;
       // Inside the catch block for IPFS content retrieval
    } catch (error) {
@@ -116,7 +121,7 @@ export const fetchBooks = async () => {
 
 export const fetchSongs = async () => {
    const songsURL =
-      'https://hokoshokos-001-site1.etempurl.com/api/Catalog/GetAllSongs';
+      'https://kinccoin.bsite.net/api/Catalog/GetAllSongs';
 
    try {
       const response = await axios.get(songsURL);
@@ -175,7 +180,7 @@ export const useFetchMessages = () => {
    const fetchMessages = useCallback(async () => {
       try {
          const messageURL =
-            'https://hokoshokos-001-site1.etempurl.com/api/Catalog/GetAllMessages';
+            'https://kinccoin.bsite.net/api/Catalog/GetAllMessages';
 
          // const messageURL = '/api/message';
 
@@ -235,7 +240,7 @@ export const useFetchMessages = () => {
 };
 
 export const getTransactions = async (address) => {
-   const downloadsUrl = `https://hokoshokos-001-site1.etempurl.com/api/Catalog/GetTransactions/${address}`;
+   const downloadsUrl = `https://kinccoin.bsite.net/api/Catalog/GetTransactions/${address}`;
 
    try {
       const response = await axios.get(downloadsUrl);

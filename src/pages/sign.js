@@ -64,7 +64,7 @@ const SignaturePopup = () => {
          console.log(signature);
 
          const response = await axios.post(
-            'https://hokoshokos-001-site1.etempurl.com/api/Account/AuthenticateUser',
+            'https://kinccoin.bsite.net/api/Account/AuthenticateUser',
             {
                address: address,
                signature: signature,
@@ -115,7 +115,7 @@ const SignaturePopup = () => {
       if (variables?.message && data) {
          (async () => {
             const response = await axios.post(
-               'https://hokoshokos-001-site1.etempurl.com/api/Account/AuthenticateUser',
+               'https://kinccoin.bsite.net/api/Account/AuthenticateUser',
                {
                   address: address,
                   //   message: variables?.message,

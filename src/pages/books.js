@@ -71,65 +71,11 @@ const Books = () => {
       setIsApprovalModalOpen(false);
    };
 
-   // const booksContent = async () => {
-   //    try {
-   //       const messageURL =
-   //          'http://hokoshokos-001-site1.etempurl.com/api/Catalog/GetAllBooks';
-   //       const response = await axios.get(messageURL);
-   //       const data = response.data.data;
-   //       // console.log('Original Data:', data);
-   //       const bookDetails = await Promise.all(
-   //          data.map(async (message) => {
-   //             try {
-   //                const ipfsHash = message.hash;
-   //                const pinataApiUrl = `https://gateway.pinata.cloud/ipfs/${ipfsHash}`;
-   //                const pinataResponse = await axios.get(pinataApiUrl);
-   //                // console.log(pinataResponse);
-   //                if (pinataResponse.status === 200) {
-   //                   const ipfsContent = pinataResponse.data;
-   //                   const completeMessageInfo = {
-   //                      recId: message.recId,
-   //                      hash: message.hash,
-   //                      counterId: message.counterId,
-   //                      category: message.category,
-   //                      bookFile: message.bookFile,
-   //                      type: message.type,
-   //                      ...ipfsContent,
-   //                   };
-   //                   // console.log('Complete Message Info:', completeMessageInfo);
-   //                   return completeMessageInfo;
-   //                } else {
-   //                   console.error(
-   //                      'Pinata API returned an error:',
-   //                      pinataResponse.status,
-   //                      pinataResponse.statusText
-   //                   );
-   //                   return null;
-   //                }
-   //             } catch (error) {
-   //                console.error('Error fetching IPFS content:', error);
-   //                return null;
-   //             }
-   //          })
-   //       );
-   //       // console.log('Message Details:', bookDetails);
-   //       // const filteredMessages = bookDetails.filter(
-   //       //    (detail) => detail !== null
-   //       // );
-   //       setKingdomBook(bookDetails);
-   //       // console.log('Filtered Messages:', bookDetails);
-   //       // Return the filteredDownloads as the API response
-   //       // res.status(200).json(filteredMessages);
-   //    } catch (error) {
-   //       console.error('Error fetching Message details:', error);
-   //    }
-   // };
-
    useEffect(() => {
       const checkPurchasedStatus = async () => {
          try {
             const response = await axios.get(
-               `https://hokoshokos-001-site1.etempurl.com/api/Catalog/GetTransactions/${address}`
+               `https://kinccoin.bsite.net/api/Catalog/GetTransactions/${address}`
             );
             const purchasedProducts = response.data.data;
             // console.log(purchasedProducts);
@@ -248,7 +194,7 @@ const Books = () => {
 
                   // Make a POST request to the API endpoint
                   const addTransactionResponse = await axios.post(
-                     'https://hokoshokos-001-site1.etempurl.com/api/Catalog/AddTransactions',
+                     'https://kinccoin.bsite.net/api/Catalog/AddTransactions',
                      transactionData
                   );
 
@@ -302,9 +248,9 @@ const Books = () => {
 
             // const response = await axios.get('/api/book');
             // const data = response.data;
-            // // console.log(data);
+            // console.log(data);
 
-            // setKingdomBook(data);
+            // setKingdomBook(data)
          } catch (error) {
             console.error('Error fetching books:', error);
          }
@@ -343,7 +289,7 @@ const Books = () => {
       // setFilteredBooks(filtered);
    }, [searchInput, selectedCompany, kingdomBooksWithPrice]);
 
-   const router = useRouter();
+
    if (kingdomBooksWithPrice.length === 0) {
       return (
          <>
@@ -359,6 +305,11 @@ const Books = () => {
    //       </div>
    //    );
    // }
+
+
+
+
+
    const displayProducts = () => {
       return (
          <>
@@ -396,7 +347,8 @@ const Books = () => {
                            <div className="w-full flex justify-center items-center">
                               <span className="md:w-[70%] w-[40%] bg-[#DAA851] mr-auto px-2 py-1 text-gray-700 font-bold text-sm rounded-sm space-x-3">
                                  $TKC{' '}
-                                 {(book.contentPrice / 1e15).toLocaleString()}
+                                 {/* {(book.contentPrice / 1e15).toLocaleString()} */}
+                                 {book.contentPrice}
                               </span>
                               {/* <span className="bg-yellow-700 my-1 px-4 py-2 text-white font-bold text-sm  rounded-md hover:bg-yellow-800 focus:outline-none focus:ring-1 focus:ring-yellow-500 focus:ring-opacity-50"> */}
                               <div className="w-full">

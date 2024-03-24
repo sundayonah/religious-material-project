@@ -144,7 +144,7 @@ const SingleBook = ({ kingdomBooksWithPrice }) => {
       const checkPurchasedStatus = async () => {
          try {
             const response = await axios.get(
-               `https://hokoshokos-001-site1.etempurl.com/api/Catalog/GetTransactions/${address}`
+               `https://kinccoin.bsite.net/api/Catalog/GetTransactions/${address}`
             );
 
             // console.log(bookDetails.counterId);
@@ -320,7 +320,7 @@ const SingleBook = ({ kingdomBooksWithPrice }) => {
    };
 
    const likeUrl =
-      'https://hokoshokos-001-site1.etempurl.com/api/Catalog/LikeItem';
+      'https://kinccoin.bsite.net/api/Catalog/LikeItem';
 
    const handleLikeSubmit = async (product) => {
       try {
@@ -402,7 +402,8 @@ const SingleBook = ({ kingdomBooksWithPrice }) => {
                         {/* <div className="absolute right-0 bottom-0 bg-black bg-opacity-70 rounded-md p-1 text-yellow-600"> */}
                         <span className="absolute right-0 bottom-0 bg-black bg-opacity-70 rounded-md p-1 text-yellow-600">
                            TKC${' '}
-                           {(bookDetails.contentPrice / 1e15).toLocaleString()}
+                           {/* {(bookDetails.contentPrice / 1e15).toLocaleString()} */}
+                           {bookDetails.contentPrice}
                         </span>
                      </div>
                   </div>
@@ -543,10 +544,13 @@ const SingleBook = ({ kingdomBooksWithPrice }) => {
                            </div>
                            <div className=" flex justify-center text-white mt-1   bg-yellow-700 py-1 px-2 rounded-sm hover:bg-yellow-800 focus:outline-none focus:ring-1 focus:ring-yellow-500 focus:ring-opacity-50">
                               <span className="text-sm">
-                                 TKC${' '}
+                                 {/* TKC${' '}
                                  {(
                                     relatedBook.contentPrice / 1e15
-                                 ).toLocaleString()}
+                                 ).toLocaleString()} */}
+                                      TKC${' '}
+                                 {
+                                    relatedBook.contentPrice}
                               </span>
                            </div>
                         </Link>

@@ -28,7 +28,7 @@ export const BooksDownload = ({ pdfPurchasedProducts }) => {
 
    const handleBookSelect = (book) => {
       const { type, dataFile } = book;
-      const fiePath = `http://hokoshokos-001-site1.etempurl.com/${type}/${dataFile}`;
+      const fiePath = `https://kinccoin.bsite.net/${type}/${dataFile}`;
       // console.log(fiePath);
       setSelectedBook(fiePath);
    };

@@ -63,7 +63,7 @@ const CommentsSection = ({ recId, type }) => {
 
    const handleCommentSubmit = async () => {
       const commentUrl =
-         'https://hokoshokos-001-site1.etempurl.com/api/Catalog/CommentOnItem';
+         'https://kinccoin.bsite.net/api/Catalog/CommentOnItem';
 
       try {
          const response = await axios.post(commentUrl, {
@@ -93,7 +93,7 @@ const CommentsSection = ({ recId, type }) => {
 
    const fetchComments = useCallback(async () => {
       const getCommentsForItemUrl =
-         'https://hokoshokos-001-site1.etempurl.com/api/Catalog/GetCommentsForItem';
+         'https://kinccoin.bsite.net/api/Catalog/GetCommentsForItem';
 
       try {
          const response = await axios.post(getCommentsForItemUrl, {

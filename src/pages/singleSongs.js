@@ -120,7 +120,7 @@ const SingleSong = ({ kingdomBooksWithPrice }) => {
       const checkPurchasedStatus = async () => {
          try {
             const response = await axios.get(
-               `https://hokoshokos-001-site1.etempurl.com/api/Catalog/GetTransactions/${address}`
+               `https://kinccoin.bsite.net/api/Catalog/GetTransactions/${address}`
             );
 
             // console.log(songDetails.counterId);
@@ -299,7 +299,7 @@ const SingleSong = ({ kingdomBooksWithPrice }) => {
    };
 
    const likeUrl =
-      'https://hokoshokos-001-site1.etempurl.com/api/Catalog/LikeItem';
+      'https://kinccoin.bsite.net/api/Catalog/LikeItem';
 
    const handleLikeSubmit = async (product) => {
       try {
@@ -503,10 +503,13 @@ const SingleSong = ({ kingdomBooksWithPrice }) => {
                            </div>
                            <div className=" flex justify-center text-white mt-1   bg-yellow-700 py-1 px-2 rounded-sm hover:bg-yellow-800 focus:outline-none focus:ring-1 focus:ring-yellow-500 focus:ring-opacity-50">
                               <span className="text-sm">
-                                 TKC${' '}
+                                 {/* TKC${' '}
                                  {(
                                     relatedSong.contentPrice / 1e15
-                                 ).toLocaleString()}
+                                 ).toLocaleString()} */}
+                                        TKC${' '}
+                                 {
+                                    relatedSong.contentPrice}
                               </span>
                            </div>
                         </Link>

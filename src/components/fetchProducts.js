@@ -198,6 +198,7 @@ export const useFetchMessages = () => {
 
                if (pinataResponse.status === 200) {
                   const ipfsContent = pinataResponse.data;
+                  // console.log(ipfsContent,'ipfs content')
 
                   const completeMessageInfo = {
                      recId: message.recId,
@@ -246,7 +247,7 @@ export const getTransactions = async (address) => {
       const response = await axios.get(downloadsUrl);
       const data = response.data.data;
 
-      console.log(data, response);
+      console.log(data,'liwquhdlijqwh download');
 
       const validDownloadDetails = await Promise.all(
          data.map(async (download) => {

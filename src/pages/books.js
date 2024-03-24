@@ -96,7 +96,7 @@ const Books = () => {
    }, [address, filteredBooks]);
 
    const buyNow = async (product) => {
-      console.log(product);
+      // console.log(product);
       try {
          if (product) {
             if (window.ethereum) {
@@ -120,7 +120,7 @@ const Books = () => {
 
                setBookLoadingStates((prevStates) => ({
                   ...prevStates,
-                  [product.id]: true,
+                  [product.recId]: true,
                }));
                const contract = new ethers.Contract(
                   RMTestnetContractAddress,
@@ -209,7 +209,7 @@ const Books = () => {
 
                   setBookLoadingStates((prevStates) => ({
                      ...prevStates,
-                     [product.id]: false,
+                     [product.recId]: false,
                   }));
                } else {
                   console.error('Transaction Not Successful');
@@ -226,12 +226,12 @@ const Books = () => {
          console.error('Purchase failed:', err.message);
          setBookLoadingStates((prevStates) => ({
             ...prevStates,
-            [product.id]: false,
+            [product.recId]: false,
          }));
       }
       setBookLoadingStates((prevStates) => ({
          ...prevStates,
-         [product.id]: false,
+         [product.recId]: false,
       }));
    };
 

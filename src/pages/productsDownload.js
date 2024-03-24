@@ -161,8 +161,8 @@ const ProductsDownload = ({ selectedFilter, filteredDownloadProduct }) => {
             const pdfProducts = tx.filter((product) => product.type === 'BOOK');
             const mp3Products = tx.filter((product) => product.type !== 'BOOK');
 
-            // console.log(pdfProducts);
-            // console.log(mp3Products);
+            console.log(pdfProducts);
+            console.log(mp3Products);
 
             setPdfPurchasedProducts(pdfProducts);
             setMp3PurchasedProducts(mp3Products);
